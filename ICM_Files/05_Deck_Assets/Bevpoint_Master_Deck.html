@@ -1,0 +1,2608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bevpoint × Roaring Pines — Master Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400&family=Barlow+Condensed:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #06071A;
+  --surface:  #0D0F2E;
+  --border:   rgba(255,255,255,0.08);
+  --blue:     #5B5FE8;
+  --blue-lt:  #A0A4FF;
+  --gold:     #C9A84C;
+  --gold-lt:  #E8D08A;
+  --warm:     #E87B3B;
+  --text:     #F0F2FF;
+  --muted:    rgba(240,242,255,0.55);
+  --radius:   12px;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: #06071A;
+  color: #fff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== TOP NAV BAR ===== */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: rgba(6,7,26,0.97);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  z-index: 200;
+  backdrop-filter: blur(12px);
+}
+
+.nav-brand {
+  display: flex; align-items: center; gap: 9px;
+  flex-shrink: 0;
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-tab {
+  padding: 6px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.nav-tab:hover {
+  color: rgba(255,255,255,0.7);
+}
+.nav-tab.active {
+  color: #C9A84C;
+  border-bottom-color: #C9A84C;
+  background: rgba(201,168,76,0.05);
+  border-radius: 4px 4px 0 0;
+}
+
+.slide-counter {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+.slide-counter .current { color: #fff; font-weight: 700; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%; height: 3px;
+  background: rgba(255,255,255,0.07);
+  z-index: 200;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C9A84C, #5B5FE8);
+  transition: width 0.45s ease;
+}
+
+/* ===== SECTION CONTAINERS ===== */
+.section-container {
+  display: none;
+  position: fixed;
+  top: 56px; left: 0; right: 0; bottom: 0;
+}
+.section-container.active {
+  display: block;
+}
+
+/* ===== SLIDES ===== */
+.slides-wrapper {
+  width: 100%; height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Part I slide style */
+.mktg-slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 80px 80px;
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.48s cubic-bezier(.4,0,.2,1), transform 0.48s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.mktg-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.mktg-slide.exit {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+/* Part II slide style */
+.hosp-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 60px 60px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  overflow: hidden;
+}
+.hosp-slide.active {
+  opacity: 1; transform: translateY(0); pointer-events: all;
+}
+
+/* Investment + Contact slides */
+.inv-slide, .contact-slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 80px 80px;
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.48s cubic-bezier(.4,0,.2,1), transform 0.48s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.inv-slide.active, .contact-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.inv-slide.exit, .contact-slide.exit {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+/* ===== NAV ARROWS ===== */
+.nav-arrows {
+  position: fixed;
+  bottom: 20px; right: 36px;
+  display: flex;
+  gap: 10px;
+  z-index: 199;
+}
+.nav-btn {
+  width: 46px; height: 46px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  backdrop-filter: blur(12px);
+}
+.nav-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.25);
+}
+.nav-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ===== DOTS ===== */
+.dots {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 199;
+}
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.dot.active {
+  background: #C9A84C;
+  width: 22px;
+  border-radius: 3px;
+}
+
+/* ===== SHARED BACKGROUNDS ===== */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+}
+.cover-accent {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cover-accent::before {
+  content: '';
+  position: absolute;
+  top: -40%; right: -8%;
+  width: 55%; height: 200%;
+  background: linear-gradient(175deg, rgba(91,95,232,0.07) 0%, transparent 55%);
+}
+.cover-accent::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(91,95,232,0.25) 50%, transparent 100%);
+}
+.cover-gauge {
+  position: absolute;
+  right: 6%; top: 50%;
+  transform: translateY(-50%);
+  width: 420px; height: 420px;
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+/* ===== PART I TYPOGRAPHY ===== */
+.eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #5B5FE8;
+  margin-bottom: 18px;
+}
+.display-xl {
+  font-size: clamp(52px, 8vw, 108px);
+  font-weight: 900;
+  line-height: 0.93;
+  letter-spacing: -0.03em;
+}
+.display-lg {
+  font-size: clamp(38px, 6vw, 82px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+}
+.display-md {
+  font-size: clamp(26px, 4vw, 56px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.headline {
+  font-size: clamp(20px, 2.6vw, 34px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+}
+.body-lg {
+  font-size: clamp(15px, 1.6vw, 19px);
+  font-weight: 400;
+  line-height: 1.72;
+  color: rgba(255,255,255,0.58);
+}
+.body-sm {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.48);
+}
+.body {
+  font-size: clamp(13px, 1.3vw, 16px);
+  font-weight: 400;
+  line-height: 1.65;
+}
+.caption {
+  font-size: clamp(11px, 1vw, 13px);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.stat-number-p2 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.subhead {
+  font-size: clamp(14px, 1.4vw, 18px);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.condensed { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; letter-spacing: 0.05em; }
+.accent-red { color: #5B5FE8; }
+.accent-gold { color: #C9A84C; }
+.gold  { color: #C9A84C; }
+.gold-lt { color: #E8D08A; }
+.blue  { color: #A0A4FF; }
+.warm  { color: #E87B3B; }
+.muted { color: rgba(240,242,255,0.55); }
+
+/* ===== PART I LAYOUT ===== */
+.full-content {
+  width: 100%;
+  max-width: 1120px;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+.two-col-left {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: start;
+}
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.four-col  { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* ===== PART I CARDS ===== */
+.card-p1 {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 24px;
+}
+.card-red {
+  background: rgba(91,95,232,0.07);
+  border: 1px solid rgba(91,95,232,0.18);
+  border-radius: 12px;
+  padding: 22px 24px;
+}
+.card-highlight {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-left: 3px solid #5B5FE8;
+  border-radius: 0 12px 12px 0;
+  padding: 20px 24px;
+}
+.stat-card {
+  text-align: center;
+  padding: 32px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+}
+.stat-number {
+  font-size: clamp(38px, 5.2vw, 66px);
+  font-weight: 900;
+  color: #5B5FE8;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.42);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+/* ===== TAGS ===== */
+.tag-p1 {
+  display: inline-block;
+  padding: 4px 11px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.tag-p1.tag-red   { background: rgba(91,95,232,0.13); color: #A0A4FF; border: 1px solid rgba(91,95,232,0.28); }
+.tag-p1.tag-white { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.1); }
+.tag-p1.tag-gold  { background: rgba(201,168,76,0.1); color: #C9A84C; border: 1px solid rgba(201,168,76,0.22); }
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tag-gold { background: rgba(201,168,76,0.15); color: #C9A84C; }
+.tag-blue { background: rgba(91,95,232,0.15); color: #A0A4FF; }
+.tag-warm { background: rgba(232,123,59,0.15); color: #F0A070; }
+
+/* ===== PART I DIVIDER ===== */
+.divider { width: 44px; height: 3px; background: #5B5FE8; border-radius: 2px; margin: 20px 0; }
+
+/* ===== CHECK LIST ===== */
+.check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.check-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.55;
+}
+.check-list li::before { content: '→'; color: #5B5FE8; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* ===== SERVICE GRID ===== */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.service-item {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.065);
+  border-radius: 10px;
+  padding: 20px 16px;
+  transition: all 0.3s;
+}
+.service-item:hover {
+  border-color: rgba(91,95,232,0.28);
+  background: rgba(91,95,232,0.04);
+}
+.service-num {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(91,95,232,0.1);
+  border: 1px solid rgba(91,95,232,0.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #5B5FE8;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+.service-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 5px; letter-spacing: -0.005em; }
+.service-detail { font-size: 12.5px; color: rgba(255,255,255,0.42); line-height: 1.5; }
+
+/* ===== TIMELINE ===== */
+.timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.phase { border-top: 2px solid rgba(255,255,255,0.08); padding-top: 20px; }
+.phase.p1 { border-top-color: #5B5FE8; }
+.phase.p2 { border-top-color: rgba(91,95,232,0.45); }
+.phase.p3 { border-top-color: rgba(91,95,232,0.2); }
+.phase-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 6px; }
+.phase-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 14px; letter-spacing: -0.01em; }
+.phase ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.phase ul li { font-size: 12px; color: rgba(255,255,255,0.5); padding-left: 14px; position: relative; line-height: 1.45; }
+.phase ul li::before { content: '·'; position: absolute; left: 0; color: #5B5FE8; font-size: 16px; line-height: 1; }
+
+/* ===== VENDOR ORG ===== */
+.orchestrator {
+  border: 1px solid rgba(91,95,232,0.35);
+  border-top: 2px solid #5B5FE8;
+  background: rgba(91,95,232,0.06);
+  border-radius: 10px;
+  padding: 18px 24px;
+  text-align: center;
+  margin-bottom: 0;
+}
+.vendor-row { display: flex; justify-content: center; gap: 14px; }
+.vendor-box {
+  flex: 1; max-width: 200px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.025);
+  border-radius: 10px;
+  padding: 14px 14px;
+  text-align: center;
+}
+.vert-line { width: 1px; height: 36px; background: rgba(91,95,232,0.35); margin: 0 auto; }
+
+/* ===== WHY ITEMS ===== */
+.why-item { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.055); }
+.why-item:last-child { border-bottom: none; }
+.why-number { font-size: 32px; font-weight: 900; color: rgba(91,95,232,0.28); letter-spacing: -0.03em; line-height: 1; min-width: 44px; flex-shrink: 0; }
+.why-content h4 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.why-content p  { font-size: 13px; color: rgba(255,255,255,0.52); line-height: 1.55; }
+
+/* ===== BLUEPRINT NODES ===== */
+.blueprint-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; position: relative; }
+.blueprint-row::after { content: ''; position: absolute; top: 28px; left: 12%; right: 12%; height: 1px; background: linear-gradient(90deg, rgba(91,95,232,0.4), rgba(255,255,255,0.08)); z-index: 0; }
+.bp-node { text-align: center; position: relative; z-index: 1; }
+.bp-circle { width: 54px; height: 54px; border-radius: 50%; border: 1px solid rgba(91,95,232,0.35); background: rgba(91,95,232,0.07); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 14px; font-weight: 800; color: #5B5FE8; letter-spacing: 0.04em; }
+.bp-phase-label { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+.bp-phase-title { font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 8px; letter-spacing: -0.01em; }
+.bp-phase-detail { font-size: 11px; color: rgba(255,255,255,0.38); line-height: 1.5; padding: 0 4px; }
+
+/* ===== PART II STYLES ===== */
+.col   { display: flex; flex-direction: column; }
+.row   { display: flex; flex-direction: row; align-items: stretch; }
+.center { align-items: center; justify-content: center; text-align: center; }
+.gap-4  { gap: 4px; }
+.gap-6  { gap: 6px; }
+.gap-8  { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+.gap-14 { gap: 14px; }
+.gap-16 { gap: 16px; }
+.gap-20 { gap: 20px; }
+.gap-22 { gap: 22px; }
+.gap-24 { gap: 24px; }
+.gap-28 { gap: 28px; }
+.gap-32 { gap: 32px; }
+.gap-40 { gap: 40px; }
+.gap-48 { gap: 48px; }
+.full-w { width: 100%; }
+.half   { flex: 1; }
+
+.slide-inner {
+  width: 100%; max-width: 1280px;
+  display: flex; flex-direction: column;
+  gap: 28px;
+}
+
+.section-label-p2 {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Barlow Condensed', Impact, sans-serif;
+  font-weight: 700; font-size: 12px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #C9A84C;
+}
+.section-label-p2::before {
+  content: '';
+  display: block; width: 24px; height: 1.5px;
+  background: #C9A84C;
+}
+
+.card-p2 {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 24px 28px;
+}
+.card-gold-p2 {
+  background: rgba(201,168,76,0.07);
+  border-color: rgba(201,168,76,0.25);
+}
+.card-blue-p2 {
+  background: rgba(91,95,232,0.08);
+  border-color: rgba(91,95,232,0.22);
+}
+.card-warm-p2 {
+  background: rgba(232,123,59,0.07);
+  border-color: rgba(232,123,59,0.22);
+}
+.card-featured-p2 {
+  background: linear-gradient(135deg, rgba(201,168,76,0.1) 0%, rgba(91,95,232,0.08) 100%);
+  border: 1px solid rgba(201,168,76,0.3);
+  position: relative; overflow: hidden;
+}
+
+.num-circle {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 14px; letter-spacing: 0.04em;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: #C9A84C;
+}
+.num-circle-blue {
+  background: rgba(91,95,232,0.14);
+  border-color: rgba(91,95,232,0.3);
+  color: #A0A4FF;
+}
+
+.rule { width: 100%; height: 1px; background: rgba(255,255,255,0.08); }
+.rule-gold { background: rgba(201,168,76,0.25); }
+
+.accent-bar {
+  width: 40px; height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, #C9A84C, #5B5FE8);
+}
+
+.icon-box {
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: rgba(201,168,76,0.10);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.icon-box-blue {
+  background: rgba(91,95,232,0.10);
+  border-color: rgba(91,95,232,0.25);
+}
+
+.phase-block {
+  flex: 1; padding: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  position: relative;
+}
+.phase-block:not(:last-child)::after {
+  content: '→';
+  position: absolute; right: -20px; top: 50%;
+  transform: translateY(-50%);
+  color: #C9A84C; font-size: 18px; z-index: 2;
+}
+
+.tick-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.tick-list li { display: flex; align-items: flex-start; gap: 10px; }
+.tick {
+  flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+}
+.tick svg { width: 9px; height: 9px; }
+
+.quote-block {
+  padding: 28px 32px;
+  border-left: 3px solid #C9A84C;
+  background: rgba(201,168,76,0.05);
+  border-radius: 0 12px 12px 0;
+}
+.quote-text {
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 400; line-height: 1.55;
+  font-style: italic;
+  color: rgba(240,242,255,0.88);
+}
+
+.venue-header { display: flex; align-items: center; gap: 14px; }
+.venue-icon {
+  width: 50px; height: 50px; border-radius: 12px; flex-shrink: 0;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.stat-row { display: flex; gap: 24px; align-items: stretch; }
+.stat-box {
+  flex: 1; padding: 18px 22px;
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+}
+.stat-box.gold-line { border-color: rgba(201,168,76,0.25); }
+
+.split-60-40 { display: grid; grid-template-columns: 60fr 40fr; gap: 36px; }
+.split-50-50 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.split-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.split-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+.cap-row { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.cap-row:last-child { border-bottom: none; }
+
+.cover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; width: 100%; max-width: 1280px; align-items: center; }
+.cover-part-pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(201,168,76,0.35); border-radius: 100px; padding: 6px 16px; width: fit-content; }
+.cover-part-dot { width: 6px; height: 6px; border-radius: 50%; background: #C9A84C; }
+.cover-subtext { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.cover-tag { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: rgba(240,242,255,0.55); text-transform: uppercase; }
+.cover-sep { color: rgba(255,255,255,0.08); }
+.hero-metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.hero-metric { padding: 20px 24px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; }
+.hero-metric.gold-border { border-color: rgba(201,168,76,0.3); }
+.metric-val { font-size: clamp(26px, 3.5vw, 46px); font-weight: 700; letter-spacing: -0.025em; color: #C9A84C; line-height: 1; }
+.metric-label { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(240,242,255,0.55); margin-top: 4px; }
+
+/* Hospitality CTA slide special bg - scoped to hospitality section only */
+#hospitality-section #hospitality-slide-11 {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 40%, rgba(201,168,76,0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 70% at 20% 80%, rgba(91,95,232,0.07) 0%, transparent 60%),
+    #06071A;
+}
+
+/* Hospitality cover slide special bg */
+#hospitality-section #hospitality-slide-1 {
+  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(91,95,232,0.10) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 80% at 20% 70%, rgba(201,168,76,0.07) 0%, transparent 60%),
+              #06071A;
+}
+
+.cta-box {
+  padding: 36px 40px;
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 16px;
+}
+.proof-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 100px;
+  font-size: 13px; color: rgba(240,242,255,0.55);
+}
+.proof-chip-dot { width: 5px; height: 5px; border-radius: 50%; background: #C9A84C; }
+
+/* ===== INVESTMENT SECTION STYLES ===== */
+.inv-card {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.inv-card.recommended {
+  border-color: rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.04);
+}
+.inv-tier-top { height: 3px; background: rgba(255,255,255,0.08); }
+.inv-card.recommended .inv-tier-top { background: #C9A84C; }
+.inv-tier-header { padding: 16px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.inv-card.recommended .inv-tier-header { border-bottom-color: rgba(201,168,76,0.15); }
+.inv-tier-badge {
+  display: inline-block;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #C9A84C; background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 2px 8px; border-radius: 20px; margin-bottom: 8px;
+}
+.inv-tier-name { font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.01em; margin-bottom: 3px; }
+.inv-tier-pitch { font-size: 11px; color: rgba(255,255,255,0.48); line-height: 1.4; }
+.inv-pricing { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.inv-card.recommended .inv-pricing { border-bottom-color: rgba(201,168,76,0.12); }
+.inv-price-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
+.inv-price-row:last-child { margin-bottom: 0; }
+.inv-price-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.28); letter-spacing: 0.06em; text-transform: uppercase; }
+.inv-price-value { font-size: 14px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.inv-price-value.gold { color: #C9A84C; }
+.inv-price-total { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; align-items: baseline; }
+.inv-price-total-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.28); letter-spacing: 0.06em; text-transform: uppercase; }
+.inv-price-total-value { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); }
+.inv-includes { padding: 12px 20px; }
+.inv-includes ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.inv-includes ul li { font-size: 11.5px; color: rgba(255,255,255,0.62); line-height: 1.4; display: flex; align-items: flex-start; gap: 7px; }
+.inv-includes ul li::before { content: '→'; color: #A0A4FF; font-size: 10px; flex-shrink: 0; margin-top: 2px; }
+.inv-card.recommended .inv-includes ul li::before { color: #C9A84C; }
+
+.roi-block {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  background: rgba(91,95,232,0.08);
+  border: 1px solid rgba(91,95,232,0.22);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.roi-cell {
+  padding: 22px 24px;
+  border-right: 1px solid rgba(91,95,232,0.15);
+}
+.roi-cell:last-child { border-right: none; }
+.roi-label { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #A0A4FF; margin-bottom: 8px; }
+.roi-value { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 5px; }
+.roi-value.gold { color: #C9A84C; }
+.roi-note { font-size: 11px; color: rgba(255,255,255,0.48); line-height: 1.4; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mktg-slide.active .ai { opacity: 0; animation: fadeUp 0.55s ease forwards; }
+.mktg-slide.active .ai:nth-child(1) { animation-delay: 0.05s; }
+.mktg-slide.active .ai:nth-child(2) { animation-delay: 0.15s; }
+.mktg-slide.active .ai:nth-child(3) { animation-delay: 0.25s; }
+.mktg-slide.active .ai:nth-child(4) { animation-delay: 0.35s; }
+.mktg-slide.active .ai:nth-child(5) { animation-delay: 0.42s; }
+.mktg-slide.active .ai:nth-child(6) { animation-delay: 0.48s; }
+.inv-slide.active .ai { opacity: 0; animation: fadeUp 0.55s ease forwards; }
+.inv-slide.active .ai:nth-child(1) { animation-delay: 0.05s; }
+.inv-slide.active .ai:nth-child(2) { animation-delay: 0.15s; }
+.inv-slide.active .ai:nth-child(3) { animation-delay: 0.25s; }
+.inv-slide.active .ai:nth-child(4) { animation-delay: 0.35s; }
+.contact-slide.active .ai { opacity: 0; animation: fadeUp 0.55s ease forwards; }
+.contact-slide.active .ai:nth-child(1) { animation-delay: 0.05s; }
+.contact-slide.active .ai:nth-child(2) { animation-delay: 0.15s; }
+.contact-slide.active .ai:nth-child(3) { animation-delay: 0.25s; }
+.contact-slide.active .ai:nth-child(4) { animation-delay: 0.38s; }
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAVIGATION BAR ===== -->
+<div class="top-nav">
+  <div class="nav-brand">
+    <div style="background:white;border-radius:6px;padding:4px 10px;display:inline-flex;align-items:center;">
+      <img src="../01_Brand/Logos/Unknown.png" alt="Bevpoint" style="height:26px;width:auto;display:block;">
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-section="marketing" onclick="switchSection('marketing')">Marketing</button>
+    <button class="nav-tab" data-section="hospitality" onclick="switchSection('hospitality')">Hospitality</button>
+    <button class="nav-tab" data-section="investment" onclick="switchSection('investment')">Investment</button>
+    <button class="nav-tab" data-section="contact" onclick="switchSection('contact')">Contact</button>
+  </div>
+  <div class="slide-counter"><span class="current" id="cs">01</span>&nbsp;/&nbsp;<span id="ts">11</span></div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="pf" style="width:9.09%"></div></div>
+
+
+<!-- ===== MARKETING SECTION (Part I — 11 slides) ===== -->
+<div class="section-container active" id="marketing-section">
+<div class="slides-wrapper">
+
+  <!-- MARKETING SLIDE 1: COVER -->
+  <div class="mktg-slide active" id="marketing-slide-1" data-slide="1">
+    <div class="cover-accent"></div>
+    <div class="grid-bg"></div>
+    <svg class="cover-gauge" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="210" cy="210" r="200" stroke="#5B5FE8" stroke-width="0.5"/>
+      <circle cx="210" cy="210" r="170" stroke="#ffffff" stroke-width="0.3"/>
+      <circle cx="210" cy="210" r="140" stroke="#5B5FE8" stroke-width="0.5" stroke-dasharray="4 8"/>
+      <line x1="210" y1="12" x2="210" y2="36" stroke="#5B5FE8" stroke-width="1"/>
+      <line x1="368" y1="87" x2="352" y2="101" stroke="#5B5FE8" stroke-width="1"/>
+      <line x1="408" y1="210" x2="384" y2="210" stroke="#5B5FE8" stroke-width="1"/>
+      <line x1="368" y1="333" x2="352" y2="319" stroke="#5B5FE8" stroke-width="0.5"/>
+      <line x1="52" y1="87" x2="68" y2="101" stroke="#5B5FE8" stroke-width="1"/>
+      <line x1="12" y1="210" x2="36" y2="210" stroke="#5B5FE8" stroke-width="0.5"/>
+    </svg>
+    <div class="full-content" style="position:relative;z-index:2;">
+      <div class="ai eyebrow">Confidential Presentation — Bevpoint × Roaring Pines Motor Club</div>
+      <div class="ai display-xl" style="margin-bottom:20px;">
+        The Marketing<br><span class="accent-red">Engine.</span>
+      </div>
+      <p class="ai body-lg" style="max-width:500px;margin-bottom:48px;">
+        A full-service partnership to launch, grow, and own the Roaring Pines brand — from founding membership through national market position.
+      </p>
+      <div class="ai" style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
+        <div style="width:1px;height:44px;background:rgba(255,255,255,0.12);"></div>
+        <div>
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:5px;">Prepared for</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Scott Lagasse &amp; The Roaring Pines Team</div>
+        </div>
+        <div style="width:1px;height:44px;background:rgba(255,255,255,0.12);"></div>
+        <div>
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Presented by</div>
+          <svg viewBox="0 0 520 95" height="32" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+            <defs>
+              <pattern id="mktg-cover-hatch" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="5" x2="5" y2="0" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linecap="square"/>
+              </pattern>
+            </defs>
+            <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+            <polygon points="40,13 57,57 40,57" fill="white"/>
+            <polygon points="40,13 23,57 40,57" fill="url(#mktg-cover-hatch)"/>
+            <rect x="37.5" y="57" width="5" height="28" fill="white"/>
+            <text x="105" y="67" font-family="'Barlow Condensed',Impact,sans-serif" font-weight="800" font-size="56" fill="white" letter-spacing="1">BEVPOINT</text>
+          </svg>
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:5px;letter-spacing:0.06em;">Full-Service Marketing</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 2: THE MOMENT -->
+  <div class="mktg-slide" id="marketing-slide-2" data-slide="2">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">The Opportunity</div>
+      <div class="ai display-md" style="margin-bottom:8px;">The window is open.<br>Florida has no competitor at this tier.</div>
+      <div class="ai divider"></div>
+      <div class="ai three-col" style="margin-top:32px;">
+        <div class="stat-card">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Private motor clubs at Roaring Pines' level currently operating in Florida</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">+38%</div>
+          <div class="stat-label">Growth in Florida private aviation activity since 2020 — the fly-in market is booming</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">#1</div>
+          <div class="stat-label">F1 is the fastest-growing sport in North America — motorsport culture is having its biggest moment ever</div>
+        </div>
+      </div>
+      <div class="ai card-highlight" style="margin-top:22px;">
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;">
+          Florida's accelerating HNWI migration, a year-round driving climate, and an exploding motorsport culture have created a perfect storm. Roaring Pines isn't arriving late — it's arriving exactly on time, with no true competitor in sight. The question isn't whether there's a market. It's whether you get to market <em style="color:#fff;">first</em>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 3: THE CHALLENGE -->
+  <div class="mktg-slide" id="marketing-slide-3" data-slide="3">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">The Current Landscape</div>
+      <div class="ai display-md" style="margin-bottom:8px;">Great specialists.<br>No unified vision.</div>
+      <div class="ai divider"></div>
+      <div class="ai three-col" style="margin-top:28px;">
+        <div class="card-p1">
+          <div class="tag-p1 tag-white" style="margin-bottom:14px;">TruSpeed / PR</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Racing PR &amp; Media</div>
+          <div class="body-sm">Deep auto racing relationships and media credibility. Coordinating the Dupont Registry advertorials. Years of Team SLR history.</div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Gap</div>
+            <div style="font-size:12px;color:rgba(160,164,255,0.95);margin-top:4px;line-height:1.4;">No brand strategy, no digital infrastructure, no member journey owned end-to-end</div>
+          </div>
+        </div>
+        <div class="card-p1">
+          <div class="tag-p1 tag-white" style="margin-bottom:14px;">DR Digital / Web</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Website &amp; SEO</div>
+          <div class="body-sm">Built the existing site from competitor analysis. Handles security and maintenance. Under contract.</div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Gap</div>
+            <div style="font-size:12px;color:rgba(160,164,255,0.95);margin-top:4px;line-height:1.4;">"Luxury" positioning borrowed from competitors — not authentic to who Roaring Pines actually is</div>
+          </div>
+        </div>
+        <div class="card-p1">
+          <div class="tag-p1 tag-white" style="margin-bottom:14px;">Christie's / Julia</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Real Estate &amp; Sales</div>
+          <div class="body-sm">High-end RE experience. Will coordinate sales approach and process — garage condos and memberships. Agreement pending.</div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Gap</div>
+            <div style="font-size:12px;color:rgba(160,164,255,0.95);margin-top:4px;line-height:1.4;">RE-focused — not motorsport brand builders, not digital marketers, not membership storytellers</div>
+          </div>
+        </div>
+      </div>
+      <div class="ai card-red" style="margin-top:18px;">
+        <div style="font-size:14px;font-weight:700;color:#fff;">The missing piece: <span class="accent-red">Who owns the brand? Who owns the member journey? Who drives the revenue machine?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 4: OUR POV -->
+  <div class="mktg-slide" id="marketing-slide-4" data-slide="4">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="two-col" style="gap:64px;">
+        <div>
+          <div class="ai eyebrow">Our Strategic POV</div>
+          <div class="ai display-lg" style="margin-bottom:20px;">
+            Track First.<br>
+            <span style="color:rgba(255,255,255,0.22);text-decoration:line-through;font-size:65%;">"Luxury"</span> Last.
+          </div>
+          <p class="ai body-lg" style="margin-bottom:20px;">
+            Generic "luxury club" positioning is what every competitor uses. It's noise to a performance car owner who's driven their 911 GT3 on a public road and knows exactly what's missing.
+          </p>
+          <p class="ai body-lg">
+            High-net-worth car enthusiasts are a different buyer. They can smell inauthenticity instantly. What they want: a real FIA-rated track, credentials from real drivers, and a community of people who actually get it.
+          </p>
+        </div>
+        <div>
+          <div class="ai card-p1" style="margin-bottom:14px;border-left:3px solid rgba(255,255,255,0.1);">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);margin-bottom:8px;">✗ &nbsp;What everyone else says</div>
+            <div style="font-size:15px;color:rgba(255,255,255,0.32);font-style:italic;line-height:1.4;">"Curated luxury. Exclusive amenities. Elevated lifestyle."</div>
+          </div>
+          <div class="ai card-red" style="margin-bottom:20px;">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#A0A4FF;margin-bottom:8px;">✓ &nbsp;What Roaring Pines says</div>
+            <div style="font-size:15px;color:#fff;font-weight:600;line-height:1.4;">"The track is real. The drivers are real. The community is real. Come drive."</div>
+          </div>
+          <ul class="ai check-list">
+            <li>Lead with the track — FIA-rated is a credential that means something to this buyer</li>
+            <li>Position garage condos as "your permanent pit lane"</li>
+            <li>Sell the community first, the amenities second</li>
+            <li>Let the Lagasse legacy carry the credibility</li>
+            <li>Fly-in access is a differentiator no competitor at this tier has</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 5: WHO WE ARE -->
+  <div class="mktg-slide" id="marketing-slide-5" data-slide="5">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="two-col" style="gap:64px;">
+        <div>
+          <div class="ai eyebrow">Who We Are</div>
+          <div class="ai display-md" style="margin-bottom:20px;">Bevpoint:<br>Full-Service.<br>Full Throttle.</div>
+          <p class="ai body-lg" style="margin-bottom:16px;">
+            We are a full-service marketing agency built for premium consumer brands — launching them from the ground up and repositioning them for breakthrough growth.
+          </p>
+          <p class="ai body-lg" style="margin-bottom:16px;">
+            We don't do one thing. We own the entire marketing picture and coordinate the specialist team around us. Brand identity, digital, content, analytics, sales enablement — one partner, one strategy.
+          </p>
+          <div class="ai card-red" style="margin-top:4px;">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#A0A4FF;margin-bottom:6px;">Track Record</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.72);line-height:1.6;">We have built and scaled premium consumer brands across THC/cannabis, spirits, lifestyle, and AI technology — each built from concept to market with full in-house execution.</div>
+          </div>
+        </div>
+        <div>
+          <div class="ai card-p1" style="margin-bottom:14px;">
+            <div style="font-size:11px;font-weight:700;color:#5B5FE8;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">What "Full-Service" Means for Roaring Pines</div>
+            <ul class="check-list">
+              <li>One partner who owns the complete marketing vision</li>
+              <li>Brand identity built around the track — not borrowed from competitors</li>
+              <li>Digital marketing precision-targeted at HNW car owners</li>
+              <li>Content that earns attention and drives desire</li>
+              <li>Membership and garage condo sales enablement</li>
+              <li>AI-powered analytics optimizing every dollar spent</li>
+              <li>Coordination of TruSpeed, Christie's, and DR Digital under one unified strategy</li>
+            </ul>
+          </div>
+          <div class="ai" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+            <span class="tag-p1 tag-red">Brand</span>
+            <span class="tag-p1 tag-red">Digital</span>
+            <span class="tag-p1 tag-red">Content</span>
+            <span class="tag-p1 tag-red">AI Analytics</span>
+            <span class="tag-p1 tag-red">Sales Enablement</span>
+            <span class="tag-p1 tag-red">Events</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 6: SERVICES -->
+  <div class="mktg-slide" id="marketing-slide-6" data-slide="6">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">What We Bring to Roaring Pines</div>
+      <div class="ai headline" style="margin-bottom:28px;">Eight capabilities. One integrated strategy.</div>
+      <div class="ai service-grid">
+        <div class="service-item">
+          <div class="service-num">01</div>
+          <div class="service-name">Brand Architecture</div>
+          <div class="service-detail">Identity, voice, messaging hierarchy, visual system — the complete brand foundation built around the track, not borrowed from a competitor</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">02</div>
+          <div class="service-name">Digital Marketing</div>
+          <div class="service-detail">Social, paid, SEO, email — precision-targeted at HNW performance car owners in Florida and across the Southeast</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">03</div>
+          <div class="service-name">Content Production</div>
+          <div class="service-detail">Photo, video, editorial — content that earns attention, builds desire, and converts enthusiasts into members</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">04</div>
+          <div class="service-name">Membership Marketing</div>
+          <div class="service-detail">Positioning garage condos and founding memberships as irresistible to drivers — not just real estate or club buyers</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">05</div>
+          <div class="service-name">Sales Enablement</div>
+          <div class="service-detail">Decks, brochures, CRM strategy, lead nurture — arming Christie's and the sales team with the tools to close</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">06</div>
+          <div class="service-name">Events &amp; Experiences</div>
+          <div class="service-detail">Launch events, press days, prospect track experiences — turning curious prospects into committed founding members</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">07</div>
+          <div class="service-name">PR Strategy</div>
+          <div class="service-detail">Working alongside TruSpeed with a broader narrative — beyond auto racing trade press into lifestyle, aviation, and HNWI media</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">08</div>
+          <div class="service-name">AI Analytics</div>
+          <div class="service-detail">Powered by Profit Axis AI — data-driven optimization across every channel, every dollar tracked from impression to conversion</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 7: BLUEPRINT -->
+  <div class="mktg-slide" id="marketing-slide-7" data-slide="7">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">The Marketing Blueprint</div>
+      <div class="ai headline" style="margin-bottom:28px;">Four phases. One machine. Revenue at every stage.</div>
+      <div class="ai blueprint-row" style="margin-bottom:36px;">
+        <div class="bp-node">
+          <div class="bp-circle">01</div>
+          <div class="bp-phase-label">Phase 1</div>
+          <div class="bp-phase-title">Foundation</div>
+          <div class="bp-phase-detail">Brand identity · Messaging system · Digital infrastructure · Sales toolkit</div>
+        </div>
+        <div class="bp-node">
+          <div class="bp-circle">02</div>
+          <div class="bp-phase-label">Phase 2</div>
+          <div class="bp-phase-title">Awareness</div>
+          <div class="bp-phase-detail">Content launch · Dupont integration · Social organic + paid · Press push</div>
+        </div>
+        <div class="bp-node">
+          <div class="bp-circle">03</div>
+          <div class="bp-phase-label">Phase 3</div>
+          <div class="bp-phase-title">Conversion</div>
+          <div class="bp-phase-detail">Membership campaign · Garage condo sales · Lead nurture · Events</div>
+        </div>
+        <div class="bp-node">
+          <div class="bp-circle">04</div>
+          <div class="bp-phase-label">Phase 4</div>
+          <div class="bp-phase-title">Community</div>
+          <div class="bp-phase-detail">Member program · Referral engine · Culture content · National positioning</div>
+        </div>
+      </div>
+      <div class="ai two-col" style="gap:20px;">
+        <div class="card-highlight">
+          <div style="font-size:11px;font-weight:700;color:#5B5FE8;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Revenue Focus: The Economic Engine</div>
+          <ul class="check-list">
+            <li>Founding memberships — the critical first close, sets the price floor</li>
+            <li>Garage condo sales — highest ticket item, real estate credibility</li>
+            <li>Events and track rentals — community activation + cash flow</li>
+            <li>Hospitality — for members, guests, media, and corporate groups</li>
+          </ul>
+        </div>
+        <div class="card-p1">
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Audience Layers We Target</div>
+          <ul class="check-list">
+            <li>Performance car owners — the primary buyer (track + garage combo)</li>
+            <li>Private pilots — fly-in market, premium and dramatically underserved</li>
+            <li>Corporate groups — track days, team events, client entertainment</li>
+            <li>Motorsport media — credibility, earned press, national reach</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 8: HOW WE FIT -->
+  <div class="mktg-slide" id="marketing-slide-8" data-slide="8">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">The Ecosystem</div>
+      <div class="ai headline" style="margin-bottom:8px;">Bevpoint as marketing orchestrator — every partner plays their position.</div>
+      <div class="ai divider"></div>
+      <div style="margin-top:28px;max-width:720px;margin-left:auto;margin-right:auto;">
+        <div class="ai orchestrator">
+          <div style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#A0A4FF;margin-bottom:5px;">Marketing Lead · Strategy · Brand · Digital · Analytics</div>
+          <div style="font-size:24px;font-weight:900;color:#fff;letter-spacing:-0.02em;">BEVPOINT</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.42);margin-top:3px;">The unified strategy that makes every other partner more effective</div>
+        </div>
+        <div class="ai" style="display:flex;justify-content:space-around;padding:0 60px;">
+          <div class="vert-line"></div>
+          <div class="vert-line" style="background:rgba(91,95,232,0.2);"></div>
+          <div class="vert-line" style="background:rgba(91,95,232,0.2);"></div>
+          <div class="vert-line" style="background:rgba(91,95,232,0.2);"></div>
+        </div>
+        <div class="ai vendor-row">
+          <div class="vendor-box">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px;">Racing PR</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">TruSpeed</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">Auto racing media, trade press, advertorials</div>
+          </div>
+          <div class="vendor-box">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px;">RE Sales</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">Christie's / Julia</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">Exclusive sales, memberships, garage condos</div>
+          </div>
+          <div class="vendor-box">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px;">Web / SEO</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">DR Digital</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">Site maintenance, SEO, security</div>
+          </div>
+          <div class="vendor-box">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px;">Reach</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">Dupont Registry</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">HNWI audience, HPC &amp; exotic car market</div>
+          </div>
+        </div>
+        <div class="ai card-red" style="margin-top:22px;">
+          <div style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.6;">No new egos. No power grabs. Every current partner stays in their lane — Bevpoint ensures every lane leads to the same destination: <strong style="color:#fff;">founding memberships sold and the brand built right.</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 9: FIRST 90 DAYS -->
+  <div class="mktg-slide" id="marketing-slide-9" data-slide="9">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">Immediate Action Plan</div>
+      <div class="ai headline" style="margin-bottom:28px;">First 90 Days — From fragmented to launch-ready.</div>
+      <div class="ai timeline">
+        <div class="phase p1">
+          <div class="phase-label">Days 1–30</div>
+          <div class="phase-title">Foundation</div>
+          <ul>
+            <li>Full brand audit — site, ads, all existing materials</li>
+            <li>Brand identity build — voice, messaging, visual direction</li>
+            <li>Target member persona deep-dive and profiling</li>
+            <li>Competitive audit: Thermal, Monticello, Spring Mountain</li>
+            <li>Align with Christie's on sales tools needed</li>
+            <li>Content strategy and editorial calendar</li>
+            <li>Website brief for DR Digital — messaging and UX improvements</li>
+            <li>AI analytics setup and performance baseline</li>
+          </ul>
+        </div>
+        <div class="phase p2">
+          <div class="phase-label">Days 31–60</div>
+          <div class="phase-title">Build &amp; Launch</div>
+          <ul>
+            <li>Launch new brand narrative across all channels</li>
+            <li>Dupont Registry strategy aligned with TruSpeed</li>
+            <li>Social media launch — organic content calendar live</li>
+            <li>Email list and CRM infrastructure built</li>
+            <li>Membership landing page and lead capture funnel</li>
+            <li>Sales collateral for Christie's — deck, one-pager, RE brochure</li>
+            <li>Track Day prospect event — concept and planning</li>
+            <li>Analytics dashboard live and reporting cadence set</li>
+          </ul>
+        </div>
+        <div class="phase p3">
+          <div class="phase-label">Days 61–90</div>
+          <div class="phase-title">Accelerate</div>
+          <ul>
+            <li>Paid digital campaign — HNW audiences in FL and Southeast</li>
+            <li>First prospect track experience or press day</li>
+            <li>PR push timed to Dupont Registry advertorial</li>
+            <li>Aviation community outreach — AOPA, private pilot networks</li>
+            <li>Performance review and channel optimization</li>
+            <li>Q4 campaign plan and budget recommendation</li>
+            <li>Membership goal tracking — first close target</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 10: WHY BEVPOINT -->
+  <div class="mktg-slide" id="marketing-slide-10" data-slide="10">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="two-col-left" style="gap:64px;align-items:start;">
+        <div>
+          <div class="ai eyebrow">The Case</div>
+          <div class="ai display-md" style="margin-bottom:22px;">Why Bevpoint.<br>Why Now.</div>
+          <p class="ai body-lg" style="margin-bottom:20px;">
+            The Dupont Registry ad is imminent. The Christie's agreement is close to signing. TruSpeed is seeding the narrative. The window to build the brand correctly — before the market sees it fully — is measured in weeks, not months.
+          </p>
+          <p class="ai body-lg">
+            Every day without a unified strategy is a day the message fragments. Bevpoint closes that gap immediately.
+          </p>
+        </div>
+        <div class="ai">
+          <div class="why-item">
+            <div class="why-number">01</div>
+            <div class="why-content">
+              <h4>We see what others missed</h4>
+              <p>Track first. Not luxury. Your buyer is a driver who can smell inauthenticity. We identified that positioning before you asked us to — because we understand who actually writes the check.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-number">02</div>
+            <div class="why-content">
+              <h4>We don't compete with your partners</h4>
+              <p>TruSpeed, Christie's, DR Digital — all stay in their lanes. Bevpoint gives every partner a unified brand and strategy to execute from. No new egos. No overlap. More effectiveness.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-number">03</div>
+            <div class="why-content">
+              <h4>We own the whole picture</h4>
+              <p>Not just PR. Not just web. Brand, digital, content, analytics, sales enablement — under one strategy, one team. Fragments don't win markets. Unified machines do.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-number">04</div>
+            <div class="why-content">
+              <h4>We build premium consumer brands</h4>
+              <p>THC/cannabis, spirits, lifestyle, AI technology — we've launched premium brands from concept to market. We know what it takes to build something people believe in.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-number">05</div>
+            <div class="why-content">
+              <h4>We're powered by AI</h4>
+              <p>Profit Axis AI gives Roaring Pines a marketing intelligence advantage from day one — every dollar tracked to conversion, every channel optimized with data, not gut.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING SLIDE 11: CTA -->
+  <div class="mktg-slide" id="marketing-slide-11" data-slide="11">
+    <div class="cover-accent"></div>
+    <div class="grid-bg"></div>
+    <div class="full-content" style="position:relative;z-index:2;text-align:center;">
+      <div class="ai eyebrow" style="text-align:center;">One Conversation. That's All We Need.</div>
+      <div class="ai display-xl" style="margin-bottom:22px;">
+        The track is ready.<br>
+        <span class="accent-red">Let's build the machine.</span>
+      </div>
+      <p class="ai body-lg" style="max-width:560px;margin:0 auto 18px;">
+        With the Dupont Registry window approaching and Christie's close to signing, foundation work starts in week one. There's no ramp-up period — we know the landscape, we know the gaps, and we know the buyer.
+      </p>
+      <p class="ai" style="max-width:480px;margin:0 auto 44px;font-size:13px;color:rgba(255,255,255,0.32);font-style:italic;line-height:1.6;">
+        This presentation was built by Bevpoint. The quality of what you're looking at right now is what we bring to every client, from day one.
+      </p>
+      <div class="ai" style="display:flex;justify-content:center;gap:0;flex-wrap:wrap;">
+        <div style="padding:0 44px;border-right:1px solid rgba(255,255,255,0.1);">
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Agency</div>
+          <svg viewBox="0 0 520 95" height="28" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+            <defs>
+              <pattern id="mktg-cta-hatch" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="5" x2="5" y2="0" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linecap="square"/>
+              </pattern>
+            </defs>
+            <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+            <polygon points="40,13 57,57 40,57" fill="white"/>
+            <polygon points="40,13 23,57 40,57" fill="url(#mktg-cta-hatch)"/>
+            <rect x="37.5" y="57" width="5" height="28" fill="white"/>
+            <text x="105" y="67" font-family="'Barlow Condensed',Impact,sans-serif" font-weight="800" font-size="56" fill="white" letter-spacing="1">BEVPOINT</text>
+          </svg>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:5px;">Full-Service Marketing</div>
+        </div>
+        <div style="padding:0 44px;border-right:1px solid rgba(255,255,255,0.1);">
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;">Contact</div>
+          <div style="font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.01em;">Bevpoint Team</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;">hello@bevpointteam.com</div>
+        </div>
+        <div style="padding:0 44px;">
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;">For</div>
+          <div style="font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.01em;">Roaring Pines Motor Club</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;">Palatka, Florida</div>
+        </div>
+      </div>
+      <div class="ai" style="margin-top:44px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.05em;">Use ← → arrow keys or click arrows to navigate</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slides-wrapper -->
+</div><!-- /marketing-section -->
+
+<!-- ===== HOSPITALITY SECTION (Part II — 11 slides) ===== -->
+<div class="section-container" id="hospitality-section">
+<div class="slides-wrapper">
+
+  <!-- HOSPITALITY SLIDE 1: COVER -->
+  <section class="hosp-slide active" id="hospitality-slide-1" data-slide="1">
+    <div class="cover-grid">
+      <div class="col gap-24">
+        <div class="cover-part-pill">
+          <span class="cover-part-dot"></span>
+          <span class="caption gold">Part II of II</span>
+        </div>
+        <div class="col gap-16">
+          <div class="display-xl condensed" style="line-height:0.92">
+            Life<br>
+            <span class="gold">Beyond</span><br>
+            the Track.
+          </div>
+          <div class="accent-bar"></div>
+          <p class="body-lg" style="color:rgba(240,242,255,0.55); max-width:480px; margin-top:4px;">
+            Roaring Pines is a destination. Bevpoint leads the brand strategy, concept development, and operations consulting that turns your restaurant, hotel, and hospitality program into the reason members come back — every week, not just on track days.
+          </p>
+        </div>
+        <div class="cover-subtext">
+          <span class="cover-tag">Restaurant</span>
+          <span class="cover-sep">·</span>
+          <span class="cover-tag">Hotel &amp; Lodging</span>
+          <span class="cover-sep">·</span>
+          <span class="cover-tag">Member Experience</span>
+          <span class="cover-sep">·</span>
+          <span class="cover-tag">Events &amp; Revenue</span>
+        </div>
+      </div>
+      <div class="col gap-20">
+        <div class="hero-metric-grid">
+          <div class="hero-metric gold-border">
+            <div class="metric-val">3×</div>
+            <div class="metric-label">More time on property when dining is exceptional</div>
+          </div>
+          <div class="hero-metric">
+            <div class="metric-val" style="color:#A0A4FF">40%</div>
+            <div class="metric-label">Of private club revenue comes from non-dues F&amp;B &amp; events</div>
+          </div>
+          <div class="hero-metric">
+            <div class="metric-val" style="color:#A0A4FF">$0</div>
+            <div class="metric-label">Generic "club dining" experiences worth remembering</div>
+          </div>
+          <div class="hero-metric gold-border">
+            <div class="metric-val">1</div>
+            <div class="metric-label">Chance to define the destination — make it count</div>
+          </div>
+        </div>
+        <div class="quote-block">
+          <p class="quote-text">"The track is the reason they join. The hospitality is the reason they stay."</p>
+          <p class="caption muted" style="margin-top:10px">— Bevpoint Strategic Thesis</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 2: THE BIGGER PICTURE -->
+  <section class="hosp-slide" id="hospitality-slide-2" data-slide="2">
+    <div class="slide-inner">
+      <div class="section-label-p2">The Opportunity</div>
+      <div class="split-60-40" style="align-items:start; gap:48px;">
+        <div class="col gap-24">
+          <div class="display-md">The track is the soul. <span class="gold">The hospitality is what keeps members living in it.</span></div>
+          <p class="body-lg muted">The members writing $800K–$1.2M checks aren't buying laps — they're buying a world built around the track. Race in the morning, host clients at lunch, entertain a spouse at dinner, wake up ready to do it again. The restaurant, hotel, and events don't compete with the track experience. They extend it.</p>
+          <div class="rule"></div>
+          <div class="col gap-16">
+            <p class="subhead gold" style="font-size:11px">What makes a motor club destination-grade</p>
+            <ul class="tick-list">
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">A restaurant worth a special trip — not just "the place you eat when you're at the track"</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">Lodging that completes the overnight experience — not just a place to sleep between sessions</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">An events calendar that gives members 52 reasons to come back — not just track day weekends</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">A brand so cohesive that the restaurant, the track, and the garage loft all feel like chapters in one story</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col gap-16">
+          <p class="subhead" style="color:rgba(240,242,255,0.55); font-size:11px">Revenue beyond founding memberships</p>
+          <div class="col gap-12">
+            <div class="card-p2 card-gold-p2 col gap-8">
+              <span class="caption gold">F&amp;B Revenue</span>
+              <span class="body">Member dining, private events, guest visits. A flagship restaurant running 60 covers/night adds $1M–$2M+ annually at this tier.</span>
+            </div>
+            <div class="card-p2 card-blue-p2 col gap-8">
+              <span class="caption blue">Lodging Revenue</span>
+              <span class="body">Overnight guest fees, weekend packages, corporate buyouts. Drives average spend-per-visit up 3–5×.</span>
+            </div>
+            <div class="card-p2 col gap-8">
+              <span class="caption" style="color:rgba(240,242,255,0.55)">Events &amp; Partnerships</span>
+              <span class="body">Brand partnerships, automotive lifestyle weekends, private club buyouts. Revenue that compounds with reputation.</span>
+            </div>
+            <div class="card-p2 col gap-8" style="border-color:rgba(201,168,76,0.2)">
+              <span class="caption gold">Retention Value</span>
+              <span class="body">Members who use the club 3+ times/month for non-track reasons have 94% renewal rates at comparable clubs.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 3: OUR PHILOSOPHY -->
+  <section class="hosp-slide" id="hospitality-slide-3" data-slide="3">
+    <div class="slide-inner">
+      <div class="section-label-p2">Our Philosophy</div>
+      <div class="col gap-28" style="max-width:960px; margin: 0 auto; text-align:center; align-items:center;">
+        <div class="display-lg">Paddock culture. <span class="gold">Not generic luxury.</span></div>
+        <p class="body-lg muted" style="max-width:720px">The biggest mistake a motor club makes is hiring a hotel company to design its restaurant and a corporate caterer to run its events. The result is exactly what you'd expect: forgettable. We don't let the hospitality contradict the brand.</p>
+      </div>
+      <div class="split-3" style="margin-top:8px;">
+        <div class="card-p2 col gap-14" style="align-items:center; text-align:center; padding:28px 24px;">
+          <div class="num-circle" style="width:44px;height:44px;font-size:18px;">01</div>
+          <p class="headline" style="font-size:clamp(16px,1.8vw,22px)">Authentic over aspirational</p>
+          <p class="body muted">Don't design a "luxury club restaurant." Design the place where drivers eat after a great session and invite their people. Grit + greatness, not white gloves.</p>
+        </div>
+        <div class="card-p2 card-gold-p2 col gap-14" style="align-items:center; text-align:center; padding:28px 24px;">
+          <div class="num-circle" style="width:44px;height:44px;font-size:18px;">02</div>
+          <p class="headline" style="font-size:clamp(16px,1.8vw,22px)">One brand, every touchpoint</p>
+          <p class="body muted">The menu, the room, the overnight experience, the morning coffee — they all have to feel like they came from the same hand. Inconsistency is the most expensive thing you can build.</p>
+        </div>
+        <div class="card-p2 col gap-14" style="align-items:center; text-align:center; padding:28px 24px;">
+          <div class="num-circle" style="width:44px;height:44px;font-size:18px;">03</div>
+          <p class="headline" style="font-size:clamp(16px,1.8vw,22px)">Revenue that earns its room</p>
+          <p class="body muted">Every hospitality decision should serve two masters: the member experience and the P&amp;L. Beautiful concepts that don't generate returns aren't hospitality — they're overhead.</p>
+        </div>
+      </div>
+      <div class="quote-block" style="max-width:800px; margin:0 auto;">
+        <p class="quote-text">"The Thermal Club doesn't have a hotel. Monticello doesn't have a destination restaurant. That's the gap — and Roaring Pines fills it. One property where you land, race, eat, stay, and do it again. There's nothing like it in the Southeast."</p>
+        <p class="caption muted" style="margin-top:10px">— Bevpoint Strategic Positioning</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 4: WHAT WE BRING -->
+  <section class="hosp-slide" id="hospitality-slide-4" data-slide="4">
+    <div class="slide-inner">
+      <div class="section-label-p2">Capabilities</div>
+      <div class="split-60-40" style="align-items:start; gap:48px;">
+        <div class="col gap-8">
+          <div class="headline" style="margin-bottom:8px">What Bevpoint brings to hospitality</div>
+          <div class="cap-row">
+            <div class="num-circle num-circle-blue">01</div>
+            <div class="col gap-4">
+              <p class="body" style="font-weight:600">Restaurant Concept &amp; Brand Development</p>
+              <p class="body muted">Name, concept brief, brand identity, interior design direction, menu philosophy, service model. From blank page to opening night narrative.</p>
+            </div>
+          </div>
+          <div class="cap-row">
+            <div class="num-circle num-circle-blue">02</div>
+            <div class="col gap-4">
+              <p class="body" style="font-weight:600">Hotel &amp; Lodging Brand</p>
+              <p class="body muted">Property naming, guest journey mapping, room concept direction, check-in experience design, overnight brand standards from garage loft to guest suite.</p>
+            </div>
+          </div>
+          <div class="cap-row">
+            <div class="num-circle num-circle-blue">03</div>
+            <div class="col gap-4">
+              <p class="body" style="font-weight:600">Operations Consulting</p>
+              <p class="body muted">Service standards, staffing model recommendations, vendor selection criteria, operational KPIs, revenue management strategy. We sit at the table with your operators.</p>
+            </div>
+          </div>
+          <div class="cap-row">
+            <div class="num-circle num-circle-blue">04</div>
+            <div class="col gap-4">
+              <p class="body" style="font-weight:600">Member Experience Design</p>
+              <p class="body muted">End-to-end journey mapping — from first arrival to 100th visit. Every interaction point designed to earn loyalty and word-of-mouth.</p>
+            </div>
+          </div>
+          <div class="cap-row">
+            <div class="num-circle num-circle-blue">05</div>
+            <div class="col gap-4">
+              <p class="body" style="font-weight:600">Events &amp; Programming Strategy</p>
+              <p class="body muted">Annual events calendar, revenue-producing program design, brand partnership development, launch event execution.</p>
+            </div>
+          </div>
+          <div class="cap-row">
+            <div class="num-circle num-circle-blue">06</div>
+            <div class="col gap-4">
+              <p class="body" style="font-weight:600">Hospitality Marketing</p>
+              <p class="body muted">Marketing the restaurant and hotel to members, non-member guests, regional press, and national automotive/lifestyle media.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col gap-20">
+          <div class="card-p2 card-gold-p2 col gap-12">
+            <p class="subhead gold" style="font-size:11px">Hospitality Partner — Carl Berry</p>
+            <p class="body muted">Carl leads Bevpoint's hospitality vertical. 20+ years Florida F&amp;B — Training Director across all Duffy's Sports Grill locations, Co-Founder of Palm &amp; Ivy, American Icon Brewery, and Kazu. He brought the RPM hospitality concept to Bevpoint. When we consult on your restaurant and hotel, the operator is in the room.</p>
+          </div>
+          <div class="card-p2 col gap-12">
+            <p class="subhead" style="font-size:11px; color:rgba(240,242,255,0.55)">We consult on, not just market:</p>
+            <ul class="tick-list">
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">Concept &amp; positioning</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">Vendor &amp; operator selection</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">Revenue model &amp; pricing</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">Service standards &amp; training brief</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body">Data &amp; performance tracking</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 5: THE RESTAURANT -->
+  <section class="hosp-slide" id="hospitality-slide-5" data-slide="5">
+    <div class="slide-inner">
+      <div class="section-label-p2">The Restaurant</div>
+      <div class="split-60-40" style="gap:40px; align-items:start;">
+        <div class="col gap-24">
+          <div class="col gap-10">
+            <div class="tag tag-gold">Concept Development + Marketing</div>
+            <div class="display-md">Not a club restaurant. <span class="gold">A destination you'd drive two hours for.</span></div>
+            <p class="body-lg muted">The RPM dining experience should feel like the paddock club at a world-class circuit — but permanent, refined, and yours. Think precision cooking meets racing culture. A place where a serious car person feels completely at home AND wants to bring their most impressive client.</p>
+          </div>
+          <div class="rule rule-gold"></div>
+          <div class="col gap-14">
+            <p class="subhead" style="font-size:11px; color:rgba(240,242,255,0.55)">What we deliver</p>
+            <div class="split-50-50" style="gap:14px;">
+              <div class="card-p2 card-gold-p2 col gap-6" style="padding:16px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Concept Brief</span>
+                <span class="body muted" style="font-size:13px">Name, concept, cuisine direction, service model, atmosphere brief for design team</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:16px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Brand Identity</span>
+                <span class="body muted" style="font-size:13px">Logo, menu design direction, signage, uniforms, digital presence</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:16px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Menu Philosophy</span>
+                <span class="body muted" style="font-size:13px">Culinary positioning, dietary range, F&amp;B program (bar, wine, spirits)</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:16px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Revenue Model</span>
+                <span class="body muted" style="font-size:13px">Pricing strategy, private dining tiers, member perks, non-member access policy</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:16px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Grand Opening</span>
+                <span class="body muted" style="font-size:13px">Launch strategy, press &amp; media plan, founding member preview event</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:16px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Ongoing Marketing</span>
+                <span class="body muted" style="font-size:13px">Monthly programming, seasonal menus, digital content, regional PR</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col gap-16">
+          <div class="card-p2 card-gold-p2 col gap-14" style="padding:24px 26px;">
+            <p class="subhead gold" style="font-size:11px">The concept direction</p>
+            <p class="body" style="font-weight:600; font-size:clamp(15px,1.6vw,19px)">"The Grid"<br><span class="muted" style="font-weight:400; font-size:clamp(13px,1.2vw,15px)">— working concept name</span></p>
+            <p class="body muted">Named for the starting grid. Precision as philosophy — in cooking, in service, in hospitality. The same attention that goes into a perfectly tuned machine goes into every plate.</p>
+            <div class="rule rule-gold"></div>
+            <div class="col gap-8">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="body muted" style="font-size:13px">Atmosphere</span>
+                <span class="body" style="font-size:13px">Paddock-meets-refined industrial</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="body muted" style="font-size:13px">Cuisine</span>
+                <span class="body" style="font-size:13px">American precision, open-fire influence</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="body muted" style="font-size:13px">Bar</span>
+                <span class="body" style="font-size:13px">Curated spirits + proprietary cocktail list</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="body muted" style="font-size:13px">Private dining</span>
+                <span class="body" style="font-size:13px">Full track-view buyout capability</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-p2 col gap-8" style="padding:18px 22px;">
+            <p class="caption muted">Revenue Benchmark</p>
+            <p class="stat-number-p2 gold" style="font-size:clamp(28px,3.2vw,46px)">$1.2M+</p>
+            <p class="body muted" style="font-size:13px">Annual F&amp;B revenue potential at 55–65 covers/night, 4–5 nights/week at comparable private clubs in this tier</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 6: HOTEL & LODGING -->
+  <section class="hosp-slide" id="hospitality-slide-6" data-slide="6">
+    <div class="slide-inner">
+      <div class="section-label-p2">Hotel &amp; Lodging</div>
+      <div class="split-60-40" style="gap:40px; align-items:start;">
+        <div class="col gap-22">
+          <div class="col gap-10">
+            <div class="tag tag-blue">Brand + Ops Consulting</div>
+            <div class="display-md">The only <span class="gold">motorsport-lifestyle</span> destination property in the Southeast.</div>
+            <p class="body-lg muted">Roaring Pines has something no competitor has attempted: an overnight experience purpose-built around the track lifestyle. Garage lofts that blend living quarters with vehicle storage. Guest suites for out-of-town driving partners. The experience doesn't end when the track does.</p>
+          </div>
+          <div class="rule"></div>
+          <div class="col gap-14">
+            <p class="subhead" style="font-size:11px; color:rgba(240,242,255,0.55)">Lodging brand scope</p>
+            <div class="col gap-10">
+              <div class="card-p2 card-blue-p2 col gap-6" style="padding:16px 20px;">
+                <span class="body" style="font-weight:600">Garage Loft Brand</span>
+                <span class="body muted">Naming, identity, lifestyle photography brief, owner experience standards, co-ownership/rental program marketing</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:16px 20px;">
+                <span class="body" style="font-weight:600">Guest Suite Program</span>
+                <span class="body muted">Guest experience design from reservation to check-out. Amenity standards, in-room brand, turndown service concept, track-adjacent perks</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:16px 20px;">
+                <span class="body" style="font-weight:600">Booking &amp; Revenue Strategy</span>
+                <span class="body muted">Nightly vs. weekend vs. corporate package pricing, guest policies, non-member access tiers, ancillary revenue (transfers, concierge, track packages)</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:16px 20px;">
+                <span class="body" style="font-weight:600">PR &amp; Press Strategy</span>
+                <span class="body muted">National lifestyle + automotive media placement, Robb Report / duPont Registry / Hemmings positioning, travel editor program</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col gap-16">
+          <div class="card-p2 card-gold-p2 col gap-14" style="padding:24px 26px;">
+            <p class="subhead gold" style="font-size:11px">The guest journey</p>
+            <div class="col gap-12">
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <div class="num-circle" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">1</div>
+                <span class="body muted" style="font-size:13px">Land at Palatka Municipal. Handled pickup, transferred directly to the property.</span>
+              </div>
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <div class="num-circle" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">2</div>
+                <span class="body muted" style="font-size:13px">Check in. Car is already in the garage. Keys waiting. Track briefing scheduled.</span>
+              </div>
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <div class="num-circle" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">3</div>
+                <span class="body muted" style="font-size:13px">Morning sessions. Lunch at The Grid. Afternoon open laps. Post-track debrief at the bar.</span>
+              </div>
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <div class="num-circle" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">4</div>
+                <span class="body muted" style="font-size:13px">Private dinner for clients. Garage night-cap. Sleep above your car. Do it again tomorrow.</span>
+              </div>
+            </div>
+          </div>
+          <div class="stat-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="stat-box gold-line col gap-4">
+              <span class="stat-number-p2 gold" style="font-size:clamp(22px,2.8vw,38px)">3–5×</span>
+              <span class="body muted" style="font-size:12px">Spend increase when members stay overnight vs. day visits</span>
+            </div>
+            <div class="stat-box col gap-4">
+              <span class="stat-number-p2" style="color:#A0A4FF; font-size:clamp(22px,2.8vw,38px)">$2K+</span>
+              <span class="body muted" style="font-size:12px">Revenue per overnight stay at comparable motorsport-lifestyle properties</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 7: MEMBER EXPERIENCE -->
+  <section class="hosp-slide" id="hospitality-slide-7" data-slide="7">
+    <div class="slide-inner">
+      <div class="section-label-p2">Member Experience</div>
+      <div class="split-50-50" style="gap:40px; align-items:start;">
+        <div class="col gap-20">
+          <div class="col gap-10">
+            <div class="display-md">The <span class="gold">360° journey.</span> Designed at every touchpoint.</div>
+            <p class="body-lg muted">Every interaction a member has — from the first welcome email to their 50th track day — should feel intentional. Bevpoint maps and designs the full member lifecycle, not just the marketing layer.</p>
+          </div>
+          <div class="rule rule-gold"></div>
+          <div class="col gap-12">
+            <p class="subhead" style="font-size:11px; color:rgba(240,242,255,0.55)">Member lifecycle touchpoints we design</p>
+            <div class="col gap-10">
+              <div class="card-p2 card-gold-p2 col gap-6" style="padding:14px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Onboarding Program</span>
+                <span class="body muted" style="font-size:13px">Founding member welcome box, orientation experience, first-90-days communications cadence. First impressions define retention.</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:14px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Concierge Standards</span>
+                <span class="body muted" style="font-size:13px">What members can ask for. How fast they get it. The voice and tone of every response. Built from your service model.</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:14px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Member Communications</span>
+                <span class="body muted" style="font-size:13px">Monthly newsletter, track updates, event invites, restaurant specials. Always on-brand. Always useful. Never noise.</span>
+              </div>
+              <div class="card-p2 col gap-6" style="padding:14px 18px;">
+                <span class="body" style="font-weight:600; font-size:14px">Renewal Strategy</span>
+                <span class="body muted" style="font-size:13px">Annual milestone programming, appreciation events, upsell to higher tiers, member referral program design.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col gap-16">
+          <div class="card-p2 card-gold-p2 col gap-14" style="padding:24px 26px;">
+            <p class="subhead gold" style="font-size:11px">The member calendar — driving engagement</p>
+            <p class="body muted" style="font-size:13px; margin-bottom:4px">Members who attend 4+ events/year outside track days show <strong style="color:#F0F2FF">91% retention</strong>. The calendar isn't a perk — it's a retention tool.</p>
+            <div class="rule rule-gold"></div>
+            <div class="col gap-8">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <span class="body" style="font-size:13px">Founding member dinner series</span>
+                <span class="tag tag-gold" style="font-size:10px">Monthly</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <span class="body" style="font-size:13px">Car reveal nights at the museum</span>
+                <span class="tag tag-blue" style="font-size:10px">Bi-Monthly</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <span class="body" style="font-size:13px">Bring-a-guest track days</span>
+                <span class="tag tag-blue" style="font-size:10px">Quarterly</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <span class="body" style="font-size:13px">Charity gala / automotive auction</span>
+                <span class="tag tag-warm" style="font-size:10px">Annual</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0;">
+                <span class="body" style="font-size:13px">Brand partner weekend takeovers</span>
+                <span class="tag tag-warm" style="font-size:10px">Seasonal</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-p2 col gap-6" style="padding:18px 22px;">
+            <p class="caption muted">Retention KPI</p>
+            <p class="stat-number-p2 gold" style="font-size:clamp(28px,3.2vw,46px)">91%</p>
+            <p class="body muted" style="font-size:13px">Renewal rate when hospitality programming keeps members actively engaged throughout the year</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 8: EVENTS & REVENUE -->
+  <section class="hosp-slide" id="hospitality-slide-8" data-slide="8">
+    <div class="slide-inner">
+      <div class="section-label-p2">Events &amp; Revenue</div>
+      <div class="col gap-16">
+        <div class="split-60-40" style="align-items:end; gap:32px;">
+          <div class="display-md">Events that <span class="gold">pay for themselves</span> — and then some.</div>
+          <p class="body muted">The programming calendar is a revenue engine. Every event category Bevpoint builds is designed to generate direct revenue, deepen member loyalty, or attract the press that fills the waitlist.</p>
+        </div>
+        <div class="split-4" style="margin-top:8px;">
+          <div class="card-p2 col gap-12" style="padding:20px 18px;">
+            <div class="num-circle">01</div>
+            <p class="body" style="font-weight:600; font-size:14px">Corporate Track Days</p>
+            <p class="body muted" style="font-size:13px">Sold to corporate clients as full-day buyouts. Track + catering + instructor package. $15K–$35K per event. CEO team-building gold.</p>
+            <span class="tag tag-gold" style="width:fit-content; font-size:10px">High Revenue</span>
+          </div>
+          <div class="card-p2 card-gold-p2 col gap-12" style="padding:20px 18px;">
+            <div class="num-circle">02</div>
+            <p class="body" style="font-weight:600; font-size:14px">Private Dining Events</p>
+            <p class="body muted" style="font-size:13px">Member buyouts of The Grid for private celebrations, client dinners, anniversaries. Premium F&amp;B + exclusive track access. $5K–$20K per booking.</p>
+            <span class="tag tag-gold" style="width:fit-content; font-size:10px">Premium Tier</span>
+          </div>
+          <div class="card-p2 col gap-12" style="padding:20px 18px;">
+            <div class="num-circle">03</div>
+            <p class="body" style="font-weight:600; font-size:14px">Brand Partner Weekends</p>
+            <p class="body muted" style="font-size:13px">Spirits, watch, luxury goods, exotic car brands. Weekend activations built around their product. They pay — members benefit. Win-win.</p>
+            <span class="tag tag-blue" style="width:fit-content; font-size:10px">Sponsorship</span>
+          </div>
+          <div class="card-p2 col gap-12" style="padding:20px 18px;">
+            <div class="num-circle">04</div>
+            <p class="body" style="font-weight:600; font-size:14px">Automotive Lifestyle Weekends</p>
+            <p class="body muted" style="font-size:13px">Drive-in concours, vintage racing weekends, manufacturer launch events. Media magnets that generate press and drive waitlist sign-ups.</p>
+            <span class="tag tag-blue" style="width:fit-content; font-size:10px">PR Amplifier</span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box gold-line col gap-4">
+            <span class="caption muted">Corporate events (12/yr)</span>
+            <span class="stat-number-p2 gold" style="font-size:clamp(24px,2.8vw,42px)">$300K+</span>
+            <span class="body muted" style="font-size:12px">Annual revenue at $25K avg per event</span>
+          </div>
+          <div class="stat-box col gap-4">
+            <span class="caption muted">Private dining (40/yr)</span>
+            <span class="stat-number-p2" style="color:#A0A4FF; font-size:clamp(24px,2.8vw,42px)">$320K+</span>
+            <span class="body muted" style="font-size:12px">At $8K average per private event</span>
+          </div>
+          <div class="stat-box col gap-4">
+            <span class="caption muted">Brand partnerships (6/yr)</span>
+            <span class="stat-number-p2" style="color:#F0F2FF; font-size:clamp(24px,2.8vw,42px)">$180K+</span>
+            <span class="body muted" style="font-size:12px">At $30K average sponsorship per weekend</span>
+          </div>
+          <div class="stat-box gold-line col gap-4">
+            <span class="caption muted">Combined events revenue</span>
+            <span class="stat-number-p2 gold" style="font-size:clamp(24px,2.8vw,42px)">$800K+</span>
+            <span class="body muted" style="font-size:12px">Annual revenue from programming alone — before F&amp;B attach</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 9: REVENUE ARCHITECTURE -->
+  <section class="hosp-slide" id="hospitality-slide-9" data-slide="9">
+    <div class="slide-inner">
+      <div class="section-label-p2">Revenue Architecture</div>
+      <div class="split-60-40" style="gap:40px; align-items:start;">
+        <div class="col gap-22">
+          <div class="col gap-10">
+            <div class="display-md">Hospitality doesn't cost money. <span class="gold">It prints it.</span></div>
+            <p class="body-lg muted">Done right, the restaurant, hotel, and event program generate enough revenue to fund themselves, create jobs, and return meaningful income to the club — while simultaneously making every founding membership worth more than the day it was purchased.</p>
+          </div>
+          <div class="rule rule-gold"></div>
+          <div class="col gap-12">
+            <p class="subhead" style="font-size:11px; color:rgba(240,242,255,0.55)">Annual revenue architecture — Year 2+ (stabilized)</p>
+            <div class="col gap-8">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.2); border-radius:8px;">
+                <div class="col gap-2">
+                  <span class="body" style="font-weight:600; font-size:14px">Founding Membership Dues (annualized)</span>
+                  <span class="body muted" style="font-size:12px">25 members × $40K–$80K avg annual component</span>
+                </div>
+                <span class="stat-number-p2 gold" style="font-size:clamp(18px,2vw,28px)">$1.25M+</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px;">
+                <div class="col gap-2">
+                  <span class="body" style="font-weight:600; font-size:14px">F&amp;B Revenue</span>
+                  <span class="body muted" style="font-size:12px">Restaurant + bar + member dining program</span>
+                </div>
+                <span class="stat-number-p2" style="color:#A0A4FF; font-size:clamp(18px,2vw,28px)">$1.2M+</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px;">
+                <div class="col gap-2">
+                  <span class="body" style="font-weight:600; font-size:14px">Lodging &amp; Guest Revenue</span>
+                  <span class="body muted" style="font-size:12px">Overnight stays + corporate packages</span>
+                </div>
+                <span class="stat-number-p2" style="color:#F0F2FF; font-size:clamp(18px,2vw,28px)">$600K+</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px;">
+                <div class="col gap-2">
+                  <span class="body" style="font-weight:600; font-size:14px">Events &amp; Programming</span>
+                  <span class="body muted" style="font-size:12px">Corporate days, private dining, brand partnerships</span>
+                </div>
+                <span class="stat-number-p2" style="color:#F0F2FF; font-size:clamp(18px,2vw,28px)">$800K+</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:18px 16px; background:linear-gradient(90deg,rgba(201,168,76,0.12),rgba(91,95,232,0.08)); border:1px solid rgba(201,168,76,0.3); border-radius:8px; margin-top:4px;">
+                <div class="col gap-2">
+                  <span class="body" style="font-weight:700; font-size:15px">Total Annual Revenue (stabilized)</span>
+                  <span class="body muted" style="font-size:12px">Before Phase Two membership expansion</span>
+                </div>
+                <span class="stat-number-p2 gold" style="font-size:clamp(22px,2.5vw,36px)">$3.85M+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col gap-16">
+          <div class="card-p2 card-gold-p2 col gap-14" style="padding:24px 26px;">
+            <p class="subhead gold" style="font-size:11px">What Bevpoint's Part II engagement costs</p>
+            <div class="col gap-8">
+              <div style="display:flex; justify-content:space-between;">
+                <span class="body muted">Setup + Strategy</span>
+                <span class="body" style="font-weight:600">$15K–$25K</span>
+              </div>
+              <div style="display:flex; justify-content:space-between;">
+                <span class="body muted">Monthly retainer</span>
+                <span class="body" style="font-weight:600">$6,500–$10,000</span>
+              </div>
+              <div style="display:flex; justify-content:space-between;">
+                <span class="body muted">Year 1 total (est.)</span>
+                <span class="body gold" style="font-weight:700">$93K–$145K</span>
+              </div>
+            </div>
+            <div class="rule rule-gold"></div>
+            <p class="body muted" style="font-size:13px">At $3.85M in stabilized annual revenue, the Bevpoint Part II engagement costs less than <strong style="color:#F0F2FF">3.8¢ per dollar of revenue designed</strong>.</p>
+          </div>
+          <div class="card-p2 col gap-10" style="padding:20px 24px;">
+            <p class="subhead" style="font-size:11px; color:rgba(240,242,255,0.55)">Part I + Part II combined</p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="body muted">Total Bevpoint Year 1</span>
+              <span class="body gold" style="font-weight:700; font-size:17px">~$268K–$320K</span>
+            </div>
+            <p class="body muted" style="font-size:12px">Full marketing, brand, hospitality, and ops consulting partnership</p>
+            <div class="rule"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="body muted">One founding membership close</span>
+              <span class="body" style="font-weight:600; font-size:17px">$800K–$1.2M</span>
+            </div>
+            <p class="body muted" style="font-size:12px">One close covers the entire Bevpoint engagement — 2.5×–4.5× return on Day 1</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 10: THE BLUEPRINT -->
+  <section class="hosp-slide" id="hospitality-slide-10" data-slide="10">
+    <div class="slide-inner">
+      <div class="section-label-p2">Hospitality Blueprint</div>
+      <div class="col gap-20">
+        <div class="split-60-40" style="align-items:end; gap:32px;">
+          <div class="display-md">From concept to <span class="gold">opening night</span> — and beyond.</div>
+          <p class="body muted">Four phases, each building on the last. Bevpoint runs the brand and consulting track in parallel with construction and operations buildout.</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; position:relative;">
+          <div class="card-p2 card-gold-p2 col gap-14" style="padding:22px 20px; position:relative;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div class="num-circle">01</div>
+              <span class="tag tag-gold" style="font-size:10px">Months 1–4</span>
+            </div>
+            <p class="body" style="font-weight:700; font-size:15px">Foundation</p>
+            <p class="caption gold" style="margin-bottom:4px">Concept + Brand</p>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Restaurant concept brief</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Lodging brand identity</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Member experience map</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Revenue model design</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Vendor selection criteria</li>
+            </ul>
+          </div>
+          <div class="card-p2 col gap-14" style="padding:22px 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div class="num-circle num-circle-blue">02</div>
+              <span class="tag tag-blue" style="font-size:10px">Months 4–8</span>
+            </div>
+            <p class="body" style="font-weight:700; font-size:15px">Build</p>
+            <p class="caption blue" style="margin-bottom:4px">Ops + Standards</p>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#A0A4FF">—</span> Service standards doc</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#A0A4FF">—</span> Staffing model brief</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#A0A4FF">—</span> F&amp;B program built</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#A0A4FF">—</span> Booking system strategy</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#A0A4FF">—</span> Pre-opening press strategy</li>
+            </ul>
+          </div>
+          <div class="card-p2 col gap-14" style="padding:22px 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div class="num-circle" style="background:rgba(232,123,59,0.12); border-color:rgba(232,123,59,0.3); color:#F0A070;">03</div>
+              <span class="tag tag-warm" style="font-size:10px">Month 8–12</span>
+            </div>
+            <p class="body" style="font-weight:700; font-size:15px">Launch</p>
+            <p class="caption warm" style="margin-bottom:4px">Opening + PR</p>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#F0A070">—</span> Founding member preview</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#F0A070">—</span> Restaurant opening night</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#F0A070">—</span> National press coverage</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#F0A070">—</span> First corporate events</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#F0A070">—</span> Brand partner lineup</li>
+            </ul>
+          </div>
+          <div class="card-p2 card-gold-p2 col gap-14" style="padding:22px 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div class="num-circle">04</div>
+              <span class="tag tag-gold" style="font-size:10px">Year 2+</span>
+            </div>
+            <p class="body" style="font-weight:700; font-size:15px">Scale</p>
+            <p class="caption gold" style="margin-bottom:4px">Optimize + Grow</p>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Revenue optimization</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Phase 2 membership push</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> National brand placement</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Events program expansion</li>
+              <li class="body muted" style="font-size:12px; display:flex; gap:6px;"><span style="color:#C9A84C">—</span> Annual performance audit</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-p2 card-blue-p2" style="padding:16px 22px; display:flex; align-items:center; gap:16px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" stroke="#A0A4FF" stroke-width="1.5"/>
+            <path d="M10 6v4l3 2" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <p class="body muted" style="font-size:13px"><strong style="color:#F0F2FF">Bevpoint is retained throughout all four phases.</strong> Not a project agency that hands off a PDF. We sit at the table — design, adjust, and execute alongside your operators and construction team from day one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSPITALITY SLIDE 11: CTA -->
+  <section class="hosp-slide" id="hospitality-slide-11" data-slide="11">
+    <div class="slide-inner center" style="gap:28px; max-width:900px; margin:0 auto;">
+      <div class="col gap-16 center">
+        <div class="section-label-p2" style="justify-content:center;">The Complete Partnership</div>
+        <div class="display-lg center" style="text-align:center;">
+          Part I + Part II.<br><span class="gold">The full picture.</span>
+        </div>
+        <p class="body-lg muted" style="max-width:680px; text-align:center;">
+          Roaring Pines has two engines: the track and the destination. Most firms can market one. Bevpoint was built to run both — motorsport marketing and hospitality brand + ops consulting, under one roof, one vision, one team.
+        </p>
+      </div>
+      <div class="cta-box" style="width:100%; text-align:left;">
+        <div class="split-50-50" style="gap:32px; align-items:start;">
+          <div class="col gap-12">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="tag tag-gold">Part I</span>
+              <span class="body" style="font-weight:600">Motorsport Marketing</span>
+            </div>
+            <ul class="tick-list">
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body muted">Brand architecture + identity system</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body muted">Founding membership sales strategy</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body muted">Digital marketing + content machine</span>
+              </li>
+              <li>
+                <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body muted">PR + media + national positioning</span>
+              </li>
+            </ul>
+          </div>
+          <div class="col gap-12">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="tag tag-blue">Part II</span>
+              <span class="body" style="font-weight:600">Hospitality Brand + Ops</span>
+            </div>
+            <ul class="tick-list">
+              <li>
+                <div class="tick" style="background:rgba(91,95,232,0.12); border-color:rgba(91,95,232,0.35);"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body muted">Restaurant concept + brand + marketing</span>
+              </li>
+              <li>
+                <div class="tick" style="background:rgba(91,95,232,0.12); border-color:rgba(91,95,232,0.35);"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body muted">Hotel + lodging brand + guest experience</span>
+              </li>
+              <li>
+                <div class="tick" style="background:rgba(91,95,232,0.12); border-color:rgba(91,95,232,0.35);"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body muted">Operations consulting + vendor standards</span>
+              </li>
+              <li>
+                <div class="tick" style="background:rgba(91,95,232,0.12); border-color:rgba(91,95,232,0.35);"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <span class="body muted">Events programming + revenue strategy</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="stat-row" style="gap:20px;">
+        <div class="stat-box gold-line col gap-4">
+          <span class="caption muted">Combined Year 1 investment</span>
+          <span class="stat-number-p2 gold" style="font-size:clamp(22px,2.5vw,36px)">$268K–$320K</span>
+          <span class="body muted" style="font-size:12px">Full Part I + Part II Bevpoint engagement</span>
+        </div>
+        <div class="stat-box col gap-4">
+          <span class="caption muted">One founding membership</span>
+          <span class="stat-number-p2" style="color:#F0F2FF; font-size:clamp(22px,2.5vw,36px)">$800K+</span>
+          <span class="body muted" style="font-size:12px">Covers the entire Bevpoint engagement 2.5× over</span>
+        </div>
+        <div class="stat-box gold-line col gap-4">
+          <span class="caption muted">Stabilized annual revenue</span>
+          <span class="stat-number-p2 gold" style="font-size:clamp(22px,2.5vw,36px)">$3.85M+</span>
+          <span class="body muted" style="font-size:12px">From dues + F&amp;B + lodging + events — Year 2+</span>
+        </div>
+      </div>
+      <p class="caption muted" style="text-align:center;">bevpointteam.com &nbsp;·&nbsp; hello@bevpointteam.com &nbsp;·&nbsp; Bevpoint Team</p>
+    </div>
+  </section>
+
+</div><!-- /slides-wrapper -->
+</div><!-- /hospitality-section -->
+
+<!-- ===== INVESTMENT SECTION (3 slides) ===== -->
+<div class="section-container" id="investment-section">
+<div class="slides-wrapper">
+
+  <!-- INVESTMENT SLIDE 1: THE ENGAGEMENT — Pricing Tiers -->
+  <div class="inv-slide active" id="investment-slide-1" data-slide="1">
+    <div class="grid-bg"></div>
+    <div class="full-content" style="position:relative;z-index:2;">
+      <div class="ai eyebrow">The Investment</div>
+      <div class="ai headline" style="margin-bottom:6px;">The Engagement — Three tiers. One right answer for Roaring Pines.</div>
+      <div class="ai" style="font-size:13px;color:rgba(255,255,255,0.38);margin-bottom:28px;">All tiers include Bevpoint professional service fees. Hard costs billed separately at cost + 15%.</div>
+      <div class="ai" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+
+        <!-- Launch -->
+        <div class="inv-card">
+          <div class="inv-tier-top"></div>
+          <div class="inv-tier-header">
+            <div class="inv-tier-name">Launch</div>
+            <div class="inv-tier-pitch">Part I only — Motorsport marketing, brand, and founding membership launch.</div>
+          </div>
+          <div class="inv-pricing">
+            <div class="inv-price-row">
+              <span class="inv-price-label">Strategy &amp; Setup</span>
+              <span class="inv-price-value">$30,000</span>
+            </div>
+            <div class="inv-price-row">
+              <span class="inv-price-label">Monthly Retainer</span>
+              <span class="inv-price-value">$15,000</span>
+            </div>
+            <div class="inv-price-total">
+              <span class="inv-price-total-label">Est. Fees — Year 1</span>
+              <span class="inv-price-total-value">~$210,000</span>
+            </div>
+          </div>
+          <div class="inv-includes">
+            <ul>
+              <li>Full brand identity &amp; messaging system</li>
+              <li>Membership launch funnel &amp; lead nurture</li>
+              <li>Digital campaigns (HNW targeting)</li>
+              <li>Sales enablement toolkit</li>
+              <li>Monthly content &amp; social program</li>
+              <li>PR strategy &amp; media coordination</li>
+              <li>Quarterly strategy sessions</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Full Engagement — Recommended -->
+        <div class="inv-card recommended">
+          <div class="inv-tier-top"></div>
+          <div class="inv-tier-header">
+            <div class="inv-tier-badge">Recommended for RPM</div>
+            <div class="inv-tier-name">Full Engagement</div>
+            <div class="inv-tier-pitch">Part I + Part II — Motorsport marketing and hospitality brand &amp; ops consulting.</div>
+          </div>
+          <div class="inv-pricing">
+            <div class="inv-price-row">
+              <span class="inv-price-label">Strategy &amp; Setup</span>
+              <span class="inv-price-value gold">$45,000</span>
+            </div>
+            <div class="inv-price-row">
+              <span class="inv-price-label">Monthly Retainer</span>
+              <span class="inv-price-value gold">$22,000</span>
+            </div>
+            <div class="inv-price-total">
+              <span class="inv-price-total-label">Est. Fees — Year 1</span>
+              <span class="inv-price-total-value">~$309,000</span>
+            </div>
+          </div>
+          <div class="inv-includes">
+            <ul>
+              <li>Everything in Launch</li>
+              <li>Restaurant concept &amp; brand development</li>
+              <li>Hotel &amp; lodging brand strategy</li>
+              <li>Member experience design + journey mapping</li>
+              <li>Events &amp; revenue programming calendar</li>
+              <li>Hospitality operations consulting</li>
+              <li>Profit Axis AI analytics integration</li>
+              <li>Monthly performance reporting to leadership</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Premier -->
+        <div class="inv-card">
+          <div class="inv-tier-top"></div>
+          <div class="inv-tier-header">
+            <div class="inv-tier-name">Premier</div>
+            <div class="inv-tier-pitch">Embedded partner. Maximum output. Dedicated team across every workstream.</div>
+          </div>
+          <div class="inv-pricing">
+            <div class="inv-price-row">
+              <span class="inv-price-label">Strategy &amp; Setup</span>
+              <span class="inv-price-value">$55,000</span>
+            </div>
+            <div class="inv-price-row">
+              <span class="inv-price-label">Monthly Retainer</span>
+              <span class="inv-price-value">$30,000</span>
+            </div>
+            <div class="inv-price-total">
+              <span class="inv-price-total-label">Est. Fees — Year 1</span>
+              <span class="inv-price-total-value">~$415,000</span>
+            </div>
+          </div>
+          <div class="inv-includes">
+            <ul>
+              <li>Everything in Full Engagement</li>
+              <li>On-site embedded team presence</li>
+              <li>Dedicated content production unit</li>
+              <li>Weekly leadership reporting</li>
+              <li>National media &amp; aviation press outreach</li>
+              <li>On-site support for all key events</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- INVESTMENT SLIDE 2: PERFORMANCE & HARD COSTS -->
+  <div class="inv-slide" id="investment-slide-2" data-slide="2">
+    <div class="grid-bg"></div>
+    <div class="full-content" style="position:relative;z-index:2;">
+      <div class="ai eyebrow">Fee Structure</div>
+      <div class="ai headline" style="margin-bottom:28px;">Performance &amp; Hard Costs — Full transparency on how we get paid.</div>
+      <div class="ai two-col" style="gap:32px;align-items:start;">
+        <div>
+          <div style="padding:28px 32px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.28);border-radius:12px;margin-bottom:20px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">Performance Fee — All Tiers</div>
+            <div style="font-size:26px;font-weight:900;color:#C9A84C;letter-spacing:-0.02em;margin-bottom:8px;">1.5% of Founding Member Sales</div>
+            <p style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.55;margin-bottom:16px;">Applied to founding membership revenue directly attributable to Bevpoint's marketing program. Aligns our incentive with your outcome — we win when you win.</p>
+            <div style="border-top:1px solid rgba(201,168,76,0.2);padding-top:14px;">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:6px;">Performance upside — 25 members × $1M avg</div>
+              <div style="font-size:28px;font-weight:900;color:#E8D08A;letter-spacing:-0.02em;">$375,000</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.38);margin-top:4px;">On a full founding membership close</div>
+            </div>
+          </div>
+          <div class="card-red">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#A0A4FF;margin-bottom:8px;">Why a performance fee?</div>
+            <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;">We believe in the opportunity enough to tie our compensation to your outcome. When we close founding memberships, we earn a small percentage. When you close 25 members at $1M average, the math is simply good for everyone — including us. No success for Roaring Pines means no performance fee earned.</p>
+          </div>
+        </div>
+        <div>
+          <div style="padding:28px 32px;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);border-radius:12px;margin-bottom:20px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:rgba(160,164,255,0.9);margin-bottom:12px;">Hard Cost Pass-Through</div>
+            <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.02em;margin-bottom:8px;">At Cost + 15%</div>
+            <p style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.55;margin-bottom:16px;">All third-party hard costs are passed through at cost with a 15% management markup. No cost is incurred without prior written budget approval from Roaring Pines leadership.</p>
+            <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:10px;">What falls under hard costs</div>
+              <ul class="check-list">
+                <li>Paid digital advertising (Meta, Google, programmatic)</li>
+                <li>PR placement fees and wire services</li>
+                <li>Content production (photo, video, print)</li>
+                <li>Event production and venue costs</li>
+                <li>Print collateral and physical deliverables</li>
+              </ul>
+            </div>
+          </div>
+          <div style="padding:18px 22px;background:rgba(91,95,232,0.07);border:1px solid rgba(91,95,232,0.18);border-radius:10px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#A0A4FF" stroke-width="1.2"/><path d="M8 5v3l2 1.5" stroke="#A0A4FF" stroke-width="1.2" stroke-linecap="round"/></svg>
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#A0A4FF;">Engagement Terms</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div><div style="font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Minimum</div><div style="font-size:14px;font-weight:700;color:#fff;">12 months</div></div>
+              <div><div style="font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Start</div><div style="font-size:14px;font-weight:700;color:#fff;">Week of agreement</div></div>
+              <div><div style="font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Billing</div><div style="font-size:14px;font-weight:700;color:#fff;">Monthly in advance</div></div>
+              <div><div style="font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Hard Costs</div><div style="font-size:14px;font-weight:700;color:#fff;">At cost + 15%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVESTMENT SLIDE 3: THE MATH -->
+  <div class="inv-slide" id="investment-slide-3" data-slide="3">
+    <div class="grid-bg"></div>
+    <div class="full-content" style="position:relative;z-index:2;text-align:center;">
+      <div class="ai eyebrow" style="text-align:center;">The Math</div>
+      <div class="ai display-md" style="margin-bottom:8px;text-align:center;">One close pays for everything.</div>
+      <div class="ai" style="font-size:15px;color:rgba(255,255,255,0.45);margin-bottom:36px;text-align:center;">The ROI calculation is not complicated.</div>
+
+      <div class="ai roi-block" style="margin-bottom:28px;">
+        <div class="roi-cell">
+          <div class="roi-label">Minimum Founding Membership</div>
+          <div class="roi-value">$800K</div>
+          <div class="roi-note">Level I pricing — initiation &amp; annualized dues, all-in</div>
+        </div>
+        <div class="roi-cell">
+          <div class="roi-label">Bevpoint Full Engagement — Year 1</div>
+          <div class="roi-value">$309K</div>
+          <div class="roi-note">Professional fees only (Part I + Part II). Hard costs billed separately at cost + 15%</div>
+        </div>
+        <div class="roi-cell">
+          <div class="roi-label">Break-Even Point</div>
+          <div class="roi-value gold">1 Close</div>
+          <div class="roi-note">One founding membership covers the full Year 1 engagement — 2.6× return on a single sale</div>
+        </div>
+      </div>
+
+      <div class="ai" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;text-align:left;">
+        <div style="padding:24px 28px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:12px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#C9A84C;margin-bottom:14px;">25 Founding Members Closed</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+            <span style="font-size:13px;color:rgba(255,255,255,0.55);">Revenue @ $1M avg</span>
+            <span style="font-size:20px;font-weight:900;color:#C9A84C;letter-spacing:-0.02em;">$25M</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+            <span style="font-size:13px;color:rgba(255,255,255,0.55);">Bevpoint Year 1 fees</span>
+            <span style="font-size:18px;font-weight:700;color:rgba(255,255,255,0.7);">$309K</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+            <span style="font-size:13px;color:rgba(255,255,255,0.55);">Performance fee (1.5%)</span>
+            <span style="font-size:18px;font-weight:700;color:rgba(255,255,255,0.7);">$375K</span>
+          </div>
+          <div style="border-top:1px solid rgba(201,168,76,0.2);margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline;">
+            <span style="font-size:13px;font-weight:700;color:#fff;">Total Bevpoint cost</span>
+            <span style="font-size:20px;font-weight:900;color:#C9A84C;letter-spacing:-0.02em;">$684K</span>
+          </div>
+          <div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,0.32);">2.7% of total founding membership revenue</div>
+        </div>
+        <div style="padding:24px 28px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(160,164,255,0.8);margin-bottom:14px;">What You Keep After Bevpoint</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+            <span style="font-size:13px;color:rgba(255,255,255,0.55);">Membership revenue</span>
+            <span style="font-size:18px;font-weight:700;color:rgba(255,255,255,0.7);">$25M</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+            <span style="font-size:13px;color:rgba(255,255,255,0.55);">Less Bevpoint total cost</span>
+            <span style="font-size:18px;font-weight:700;color:rgba(255,255,255,0.7);">−$684K</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+            <span style="font-size:13px;color:rgba(255,255,255,0.55);">Stabilized annual ops revenue</span>
+            <span style="font-size:18px;font-weight:700;color:rgba(255,255,255,0.7);">$3.85M+</span>
+          </div>
+          <div style="border-top:1px solid rgba(255,255,255,0.07);margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline;">
+            <span style="font-size:13px;font-weight:700;color:#fff;">Net return on Bevpoint</span>
+            <span style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.02em;">&gt;36×</span>
+          </div>
+          <div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,0.32);">Before hard costs — which produce trackable revenue</div>
+        </div>
+      </div>
+
+      <div class="ai" style="padding:18px 28px;background:rgba(91,95,232,0.06);border:1px solid rgba(91,95,232,0.18);border-radius:10px;text-align:center;">
+        <span style="font-size:14px;color:rgba(255,255,255,0.72);line-height:1.6;">The question isn't whether Bevpoint is worth the investment. The question is: <strong style="color:#fff;">can you afford not to have a unified marketing machine when the founding window is open?</strong></span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slides-wrapper -->
+</div><!-- /investment-section -->
+
+<!-- ===== CONTACT SECTION (1 slide) ===== -->
+<div class="section-container" id="contact-section">
+<div class="slides-wrapper">
+
+  <div class="contact-slide active" id="contact-slide-1" data-slide="1">
+    <div class="cover-accent"></div>
+    <div class="grid-bg"></div>
+    <div style="position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;gap:32px;">
+
+      <div class="ai">
+        <svg viewBox="0 0 520 95" height="52" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 16px;">
+          <defs>
+            <pattern id="contact-hatch" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="5" x2="5" y2="0" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linecap="square"/>
+            </pattern>
+          </defs>
+          <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+          <polygon points="40,13 57,57 40,57" fill="white"/>
+          <polygon points="40,13 23,57 40,57" fill="url(#contact-hatch)"/>
+          <rect x="37.5" y="57" width="5" height="28" fill="white"/>
+          <text x="105" y="67" font-family="'Barlow Condensed',Impact,sans-serif" font-weight="800" font-size="56" fill="white" letter-spacing="1">BEVPOINT</text>
+        </svg>
+      </div>
+
+      <div class="ai">
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;">Full-Service Marketing + Hospitality Consulting</div>
+        <div style="width:80px;height:2px;background:linear-gradient(90deg,#C9A84C,#5B5FE8);border-radius:2px;margin:0 auto;"></div>
+      </div>
+
+      <div class="ai" style="display:flex;gap:0;flex-wrap:wrap;justify-content:center;">
+        <div style="padding:0 48px;border-right:1px solid rgba(255,255,255,0.1);">
+          <div style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:10px;">Team</div>
+          <div style="font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.02em;">Bevpoint Team</div>
+        </div>
+        <div style="padding:0 48px;border-right:1px solid rgba(255,255,255,0.1);">
+          <div style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:10px;">Email</div>
+          <div style="font-size:22px;font-weight:700;color:#C9A84C;letter-spacing:-0.01em;">hello@bevpointteam.com</div>
+        </div>
+        <div style="padding:0 48px;">
+          <div style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:10px;">Web</div>
+          <div style="font-size:22px;font-weight:700;color:#A0A4FF;letter-spacing:-0.01em;">bevpointteam.com</div>
+        </div>
+      </div>
+
+      <div class="ai" style="max-width:520px;padding:24px 36px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.22);border-radius:12px;">
+        <div style="font-size:16px;font-weight:400;font-style:italic;color:rgba(255,255,255,0.72);line-height:1.6;">
+          "The track is ready. The window is open. We know the buyer, we know the gaps, and we're ready to build the machine — starting week one."
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;">Bevpoint</div>
+      </div>
+
+      <div class="ai" style="padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);width:100%;max-width:640px;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.18);letter-spacing:0.05em;">Confidential — Prepared exclusively for Roaring Pines Motor Club</div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /slides-wrapper -->
+</div><!-- /contact-section -->
+
+<!-- ===== NAV ARROWS ===== -->
+<div class="nav-arrows">
+  <button class="nav-btn" id="prevBtn">&#8592;</button>
+  <button class="nav-btn" id="nextBtn">&#8594;</button>
+</div>
+<div class="dots" id="dotsContainer"></div>
+
+<script>
+// ===== STATE =====
+const sections = ['marketing', 'hospitality', 'investment', 'contact'];
+const sectionTotals = { marketing: 11, hospitality: 11, investment: 3, contact: 1 };
+const sectionPositions = { marketing: 1, hospitality: 1, investment: 1, contact: 1 };
+let currentSection = 'marketing';
+let animating = false;
+
+// ===== HELPERS =====
+function pad(n) { return String(n).padStart(2,'0'); }
+
+function getSlide(section, n) {
+  return document.getElementById(section + '-slide-' + n);
+}
+
+function allSlidesIn(section) {
+  const total = sectionTotals[section];
+  const slides = [];
+  for (let i = 1; i <= total; i++) {
+    const el = document.getElementById(section + '-slide-' + i);
+    if (el) slides.push(el);
+  }
+  return slides;
+}
+
+// ===== DOTS =====
+function buildDots(section) {
+  const dc = document.getElementById('dotsContainer');
+  dc.innerHTML = '';
+  const total = sectionTotals[section];
+  const cur = sectionPositions[section];
+  for (let i = 1; i <= total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === cur ? ' active' : '');
+    d.addEventListener('click', (function(idx){ return function(){ goTo(idx); }; })(i));
+    dc.appendChild(d);
+  }
+}
+
+function updateDots(section, n) {
+  const dc = document.getElementById('dotsContainer');
+  const dots = dc.querySelectorAll('.dot');
+  dots.forEach((d, i) => d.classList.toggle('active', i + 1 === n));
+}
+
+// ===== COUNTER + PROGRESS =====
+function updateUI(section, n) {
+  const total = sectionTotals[section];
+  document.getElementById('cs').textContent = pad(n);
+  document.getElementById('ts').textContent = pad(total);
+  document.getElementById('pf').style.width = (n / total * 100) + '%';
+  document.getElementById('prevBtn').disabled = (n === 1);
+  document.getElementById('nextBtn').disabled = (n === total);
+  updateDots(section, n);
+}
+
+// ===== GOTO =====
+function goTo(n) {
+  const section = currentSection;
+  const total = sectionTotals[section];
+  const cur = sectionPositions[section];
+  if (n < 1 || n > total || n === cur || animating) return;
+  animating = true;
+
+  const prevEl = getSlide(section, cur);
+  prevEl.classList.remove('active');
+  prevEl.classList.add('exit');
+
+  sectionPositions[section] = n;
+
+  const nextEl = getSlide(section, n);
+  // Reset animations on .ai elements
+  nextEl.querySelectorAll('.ai').forEach(el => {
+    el.style.animation = 'none';
+    void el.offsetHeight;
+    el.style.animation = '';
+  });
+  nextEl.classList.add('active');
+
+  setTimeout(function() {
+    prevEl.classList.remove('exit');
+    animating = false;
+  }, 520);
+
+  updateUI(section, n);
+}
+
+// ===== SWITCH SECTION =====
+function switchSection(name) {
+  if (name === currentSection) return;
+
+  // Hide old section
+  document.getElementById(currentSection + '-section').classList.remove('active');
+
+  // Update tabs
+  document.querySelectorAll('.nav-tab').forEach(function(t) {
+    t.classList.toggle('active', t.dataset.section === name);
+  });
+
+  currentSection = name;
+
+  // Show new section
+  document.getElementById(name + '-section').classList.add('active');
+
+  // Rebuild dots for new section, update UI
+  buildDots(name);
+  updateUI(name, sectionPositions[name]);
+  animating = false;
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown', function(e) {
+  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); goTo(sectionPositions[currentSection] + 1); }
+  if (['ArrowLeft','ArrowUp'].includes(e.key)) { e.preventDefault(); goTo(sectionPositions[currentSection] - 1); }
+});
+
+// ===== TOUCH =====
+let touchStartX = null;
+document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', function(e) {
+  if (touchStartX === null) return;
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) goTo(sectionPositions[currentSection] + 1);
+    else goTo(sectionPositions[currentSection] - 1);
+  }
+  touchStartX = null;
+}, { passive: true });
+
+// ===== ARROW BUTTONS =====
+document.getElementById('prevBtn').addEventListener('click', function() { goTo(sectionPositions[currentSection] - 1); });
+document.getElementById('nextBtn').addEventListener('click', function() { goTo(sectionPositions[currentSection] + 1); });
+
+// ===== INIT =====
+buildDots('marketing');
+updateUI('marketing', 1);
+</script>
+</body>
+</html>

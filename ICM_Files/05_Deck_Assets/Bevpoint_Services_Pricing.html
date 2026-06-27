@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bevpoint — Services & Engagement | Roaring Pines Motor Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #06071A;
+  --blue:   #5B5FE8;
+  --blue-lt:#A0A4FF;
+  --gold:   #C9A84C;
+  --gold-lt:#E8C96B;
+  --white:  #FFFFFF;
+  --muted:  rgba(255,255,255,0.48);
+  --muted2: rgba(255,255,255,0.28);
+  --card:   rgba(255,255,255,0.035);
+  --border: rgba(255,255,255,0.08);
+  --blue-bg:rgba(91,95,232,0.08);
+  --blue-bd:rgba(91,95,232,0.22);
+  --gold-bg:rgba(201,168,76,0.08);
+  --gold-bd:rgba(201,168,76,0.3);
+}
+
+html { background: var(--navy); }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  padding: 0;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 52px 56px 48px;
+}
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.header-left { display: flex; flex-direction: column; gap: 10px; }
+.header-sub {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-lt);
+}
+.header-right { text-align: right; }
+.header-date {
+  font-size: 11px;
+  color: var(--muted2);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.header-for {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.header-for span { color: var(--white); }
+
+/* ── TAGLINE ── */
+.tagline {
+  margin-bottom: 36px;
+  padding: 20px 24px;
+  border-left: 3px solid var(--blue);
+  background: var(--blue-bg);
+  border-radius: 0 8px 8px 0;
+}
+.tagline p {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.88);
+  letter-spacing: -0.01em;
+}
+
+/* ── SECTION LABELS ── */
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--blue-lt);
+  margin-bottom: 16px;
+}
+
+/* ── SERVICES GRID ── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 40px;
+}
+.svc {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 14px 12px;
+  transition: border-color 0.2s;
+}
+.svc:hover { border-color: rgba(91,95,232,0.3); }
+.svc-num {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--blue-lt);
+  letter-spacing: 0.08em;
+  margin-bottom: 7px;
+  display: block;
+}
+.svc-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+.svc-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* ── ENGAGEMENT TIERS ── */
+.tiers {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.tier {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card);
+}
+.tier.recommended {
+  border-color: var(--gold-bd);
+  border-width: 1px;
+  background: var(--gold-bg);
+  position: relative;
+}
+.tier-top-bar {
+  height: 3px;
+  background: var(--border);
+}
+.tier.recommended .tier-top-bar { background: var(--gold); }
+.tier-header {
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.tier.recommended .tier-header { border-bottom-color: rgba(201,168,76,0.15); }
+.tier-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+.tier-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 3px;
+}
+.tier-pitch {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.tier-pricing {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.tier.recommended .tier-pricing { border-bottom-color: rgba(201,168,76,0.12); }
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.price-row:last-child { margin-bottom: 0; }
+.price-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.price-value {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+.price-value.gold { color: var(--gold); }
+.price-total-row {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.price-total-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.price-total-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+}
+.tier-includes {
+  padding: 14px 18px;
+}
+.tier-includes ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.tier-includes ul li {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.62);
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+.tier-includes ul li::before {
+  content: '→';
+  color: var(--blue-lt);
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.tier.recommended .tier-includes ul li::before { color: var(--gold); }
+
+/* ── ROI BLOCK ── */
+.roi-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-bd);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.roi-cell {
+  padding: 20px 22px;
+  border-right: 1px solid rgba(91,95,232,0.15);
+}
+.roi-cell:last-child { border-right: none; }
+.roi-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue-lt);
+  margin-bottom: 8px;
+}
+.roi-value {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.roi-value.gold { color: var(--gold); }
+.roi-note {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ── TERMS ── */
+.terms {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 36px;
+}
+.term-item {
+  padding: 14px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.term-name {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 5px;
+}
+.term-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-left p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.footer-cta {
+  text-align: right;
+}
+.cta-btn {
+  display: inline-block;
+  padding: 10px 22px;
+  background: var(--blue);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.footer-note {
+  font-size: 10px;
+  color: var(--muted2);
+  margin-top: 6px;
+  text-align: right;
+}
+
+/* ── DIVIDER ── */
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 28px 0;
+}
+
+/* ── PRINT ── */
+@media print {
+  :root {
+    --navy:   #ffffff;
+    --blue:   #2B2C7A;
+    --blue-lt:#4A4DB5;
+    --gold:   #9A7A1A;
+    --gold-lt:#B89A3A;
+    --white:  #0A0B1E;
+    --muted:  rgba(10,11,30,0.55);
+    --muted2: rgba(10,11,30,0.35);
+    --card:   rgba(10,11,30,0.03);
+    --border: rgba(10,11,30,0.1);
+    --blue-bg:rgba(43,44,122,0.05);
+    --blue-bd:rgba(43,44,122,0.2);
+    --gold-bg:rgba(154,122,26,0.05);
+    --gold-bd:rgba(154,122,26,0.25);
+  }
+  html, body { background: #fff !important; }
+  .page { padding: 24px 32px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ══ HEADER ══ -->
+  <div class="header">
+    <div class="header-left">
+      <!-- Bevpoint Logo -->
+      <div style="background:white;border-radius:6px;padding:5px 12px;display:inline-flex;align-items:center;">
+        <img src="../01_Brand/Logos/Unknown.png" alt="Bevpoint" style="height:30px;width:auto;display:block;">
+      </div>
+      <div class="header-sub">Services &amp; Engagement Overview</div>
+    </div>
+    <div class="header-right">
+      <div class="header-date">June 2026 &nbsp;·&nbsp; Confidential</div>
+      <div class="header-for">Prepared for <span>Roaring Pines Motor Club</span></div>
+    </div>
+  </div>
+
+  <!-- ══ TAGLINE ══ -->
+  <div class="tagline">
+    <p>Two-part engagement. One partner. Bevpoint leads the founding membership marketing campaign (Part I) and the restaurant, hotel, and hospitality brand &amp; ops program (Part II) — under one strategy, one team, one contract.</p>
+  </div>
+
+  <!-- ══ SERVICES ══ -->
+  <div class="section-label">What We Deliver</div>
+  <div class="services-grid">
+    <div class="svc">
+      <span class="svc-num">01</span>
+      <div class="svc-name">Brand Architecture</div>
+      <div class="svc-desc">Identity, voice, visual system — built around the track, not borrowed from a competitor</div>
+    </div>
+    <div class="svc">
+      <span class="svc-num">02</span>
+      <div class="svc-name">Digital Marketing</div>
+      <div class="svc-desc">Social, paid, SEO, email — precision-targeted at HNW car owners and private pilots</div>
+    </div>
+    <div class="svc">
+      <span class="svc-num">03</span>
+      <div class="svc-name">Content Production</div>
+      <div class="svc-desc">Photo, video, editorial — content that earns attention and converts desire into action</div>
+    </div>
+    <div class="svc">
+      <span class="svc-num">04</span>
+      <div class="svc-name">Membership Marketing</div>
+      <div class="svc-desc">Founding membership positioning, funnel, lead nurture — the full sales support system</div>
+    </div>
+    <div class="svc">
+      <span class="svc-num">05</span>
+      <div class="svc-name">Sales Enablement</div>
+      <div class="svc-desc">Decks, brochures, CRM strategy — arming Christie's and the team to close</div>
+    </div>
+    <div class="svc">
+      <span class="svc-num">06</span>
+      <div class="svc-name">Events &amp; Experiences</div>
+      <div class="svc-desc">Prospect track days, press events, launch — turning interest into founding commitments</div>
+    </div>
+    <div class="svc">
+      <span class="svc-num">07</span>
+      <div class="svc-name">PR Strategy</div>
+      <div class="svc-desc">Beyond racing trade press — lifestyle, aviation, and HNWI media that reach the buyer</div>
+    </div>
+    <div class="svc">
+      <span class="svc-num">08</span>
+      <div class="svc-name">AI Analytics</div>
+      <div class="svc-desc">Profit Axis AI — every channel measured, every dollar tracked to outcome</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══ ENGAGEMENT TIERS ══ -->
+  <div class="section-label">Engagement Options</div>
+  <div class="tiers">
+
+    <!-- LAUNCH — Part I Only -->
+    <div class="tier">
+      <div class="tier-top-bar"></div>
+      <div class="tier-header">
+        <div class="tier-name">Launch</div>
+        <div class="tier-pitch">Part I only — Motorsport marketing, brand, and founding membership launch.</div>
+      </div>
+      <div class="tier-pricing">
+        <div class="price-row">
+          <span class="price-label">Strategy &amp; Setup</span>
+          <span class="price-value">$30,000</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Monthly Retainer</span>
+          <span class="price-value">$15,000</span>
+        </div>
+        <div class="price-total-row">
+          <span class="price-total-label">Est. Fees — Year 1</span>
+          <span class="price-total-value">~$210,000</span>
+        </div>
+      </div>
+      <div class="tier-includes">
+        <ul>
+          <li>Full brand identity &amp; messaging system</li>
+          <li>Membership launch funnel &amp; lead nurture</li>
+          <li>Digital campaigns (HNW targeting)</li>
+          <li>Sales enablement toolkit</li>
+          <li>Monthly content &amp; social program</li>
+          <li>PR strategy &amp; media coordination</li>
+          <li>Quarterly strategy sessions</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FULL ENGAGEMENT — RECOMMENDED -->
+    <div class="tier recommended">
+      <div class="tier-top-bar"></div>
+      <div class="tier-header">
+        <div class="tier-badge">Recommended for RPM</div>
+        <div class="tier-name">Full Engagement</div>
+        <div class="tier-pitch">Part I + Part II — Motorsport marketing and hospitality brand &amp; ops consulting.</div>
+      </div>
+      <div class="tier-pricing">
+        <div class="price-row">
+          <span class="price-label">Strategy &amp; Setup</span>
+          <span class="price-value gold">$45,000</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Monthly Retainer</span>
+          <span class="price-value gold">$22,000</span>
+        </div>
+        <div class="price-total-row">
+          <span class="price-total-label">Est. Fees — Year 1</span>
+          <span class="price-total-value">~$309,000</span>
+        </div>
+      </div>
+      <div class="tier-includes">
+        <ul>
+          <li>Everything in Launch</li>
+          <li>Restaurant concept &amp; brand development</li>
+          <li>Hotel &amp; lodging brand strategy</li>
+          <li>Member experience design + journey mapping</li>
+          <li>Events &amp; revenue programming calendar</li>
+          <li>Hospitality operations consulting</li>
+          <li>Profit Axis AI analytics integration</li>
+          <li>Monthly performance reporting to leadership</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PREMIER — Embedded Partner -->
+    <div class="tier">
+      <div class="tier-top-bar"></div>
+      <div class="tier-header">
+        <div class="tier-name">Premier</div>
+        <div class="tier-pitch">Embedded partner. Maximum output. Dedicated team across every workstream.</div>
+      </div>
+      <div class="tier-pricing">
+        <div class="price-row">
+          <span class="price-label">Strategy &amp; Setup</span>
+          <span class="price-value">$55,000</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Monthly Retainer</span>
+          <span class="price-value">$30,000</span>
+        </div>
+        <div class="price-total-row">
+          <span class="price-total-label">Est. Fees — Year 1</span>
+          <span class="price-total-value">~$415,000</span>
+        </div>
+      </div>
+      <div class="tier-includes">
+        <ul>
+          <li>Everything in Full Engagement</li>
+          <li>On-site embedded team presence</li>
+          <li>Dedicated content production unit</li>
+          <li>Weekly leadership reporting</li>
+          <li>National media &amp; aviation press outreach</li>
+          <li>On-site support for all key events</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ PERFORMANCE FEE ══ -->
+  <div style="margin-bottom:28px; padding:20px 24px; background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.28); border-radius:10px;">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+      <div>
+        <div class="section-label" style="margin-bottom:10px; color:var(--gold);">Performance Fee — All Tiers</div>
+        <div style="font-size:22px; font-weight:900; color:var(--gold); letter-spacing:-0.02em; margin-bottom:6px;">1.5% of Founding Member Sales</div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.5; max-width:520px;">Applied to founding membership revenue directly attributable to Bevpoint's marketing program. Aligns our incentive with your outcome — we win when you win.</p>
+      </div>
+      <div style="text-align:right; flex-shrink:0;">
+        <div style="font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted2); margin-bottom:6px;">Performance upside (25 members × $1M avg)</div>
+        <div style="font-size:26px; font-weight:900; color:var(--gold-lt); letter-spacing:-0.02em;">$375,000</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:4px;">On a full founding membership close</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══ ROI MATH ══ -->
+  <div class="section-label">The Math</div>
+  <div class="roi-block">
+    <div class="roi-cell">
+      <div class="roi-label">Minimum Founding Membership</div>
+      <div class="roi-value">$800K</div>
+      <div class="roi-note">Level I pricing — initiation &amp; annualized dues, all-in</div>
+    </div>
+    <div class="roi-cell">
+      <div class="roi-label">Bevpoint Full Engagement — Year 1</div>
+      <div class="roi-value">$309K</div>
+      <div class="roi-note">Professional fees only (Part I + Part II). Hard costs billed separately at cost + 15%</div>
+    </div>
+    <div class="roi-cell">
+      <div class="roi-label">Break-Even Point</div>
+      <div class="roi-value gold">1 Close</div>
+      <div class="roi-note">One founding membership covers the full Year 1 engagement — 2.6× return on a single sale</div>
+    </div>
+  </div>
+
+  <!-- ══ HARD COST DISCLOSURE ══ -->
+  <div style="margin:28px 0 24px; padding:16px 20px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; display:flex; gap:12px; align-items:flex-start;">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0; margin-top:2px;"><circle cx="9" cy="9" r="8" stroke="rgba(160,164,255,0.6)" stroke-width="1.2"/><path d="M9 5.5v4l2 1.5" stroke="rgba(160,164,255,0.6)" stroke-width="1.2" stroke-linecap="round"/></svg>
+    <p style="font-size:12px; color:var(--muted); line-height:1.55;"><strong style="color:rgba(255,255,255,0.75);">Fees above are Bevpoint professional service fees only.</strong> All third-party hard costs — including paid digital advertising, PR placement fees, content production, event production, and print — are passed through at cost with a <strong style="color:rgba(255,255,255,0.75);">15% management markup.</strong> No cost is incurred without prior written budget approval from Roaring Pines leadership.</p>
+  </div>
+
+  <!-- ══ TERMS ══ -->
+  <div class="section-label">Engagement Terms</div>
+  <div class="terms" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="term-item">
+      <div class="term-name">Minimum Commitment</div>
+      <div class="term-value">12 months</div>
+    </div>
+    <div class="term-item">
+      <div class="term-name">Start Date</div>
+      <div class="term-value">Week of agreement</div>
+    </div>
+    <div class="term-item">
+      <div class="term-name">Billing</div>
+      <div class="term-value">Monthly in advance</div>
+    </div>
+    <div class="term-item">
+      <div class="term-name">Hard Costs</div>
+      <div class="term-value">At cost + 15%</div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <div class="footer">
+    <div class="footer-left">
+      <!-- Bevpoint Logo -->
+      <div style="background:white;border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;">
+        <img src="../01_Brand/Logos/Unknown.png" alt="Bevpoint" style="height:20px;width:auto;display:block;">
+      </div>
+      <p>Full-Service Marketing + Hospitality Consulting &nbsp;·&nbsp; Confidential — For Roaring Pines Motor Club Use Only</p>
+    </div>
+    <div class="footer-cta" style="text-align:right;">
+      <div style="font-size:13px; font-weight:600; color:rgba(255,255,255,0.75);">Bevpoint Team</div>
+      <div class="footer-note" style="font-size:11px; color:var(--muted2); margin-top:4px;">hello@bevpointteam.com &nbsp;·&nbsp; Ready to begin immediately</div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+</body>
+</html>

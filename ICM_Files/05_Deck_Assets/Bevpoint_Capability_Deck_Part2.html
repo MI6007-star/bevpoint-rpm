@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bevpoint — Part II: The Hospitality Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #06071A;
+  --surface:  #0D0F2E;
+  --border:   rgba(255,255,255,0.08);
+  --blue:     #5B5FE8;
+  --blue-lt:  #A0A4FF;
+  --gold:     #C9A84C;
+  --gold-lt:  #E8D08A;
+  --warm:     #E87B3B;
+  --text:     #F0F2FF;
+  --muted:    rgba(240,242,255,0.55);
+  --radius:   12px;
+}
+
+html, body {
+  height: 100%; width: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════
+   TYPE SCALE
+═══════════════════════════════════════ */
+.display-xl  { font-size: clamp(52px, 8vw, 108px);  font-weight: 700; line-height: 0.95; letter-spacing: -0.03em; }
+.display-lg  { font-size: clamp(38px, 6vw, 82px);   font-weight: 700; line-height: 1.0;  letter-spacing: -0.025em; }
+.display-md  { font-size: clamp(26px, 4vw, 56px);   font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; }
+.headline    { font-size: clamp(20px, 2.6vw, 34px); font-weight: 600; line-height: 1.2;  letter-spacing: -0.01em; }
+.subhead     { font-size: clamp(14px, 1.4vw, 18px); font-weight: 500; line-height: 1.45; letter-spacing: 0.04em; text-transform: uppercase; }
+.body-lg     { font-size: clamp(15px, 1.6vw, 19px); font-weight: 400; line-height: 1.6; }
+.body        { font-size: clamp(13px, 1.3vw, 16px); font-weight: 400; line-height: 1.65; }
+.caption     { font-size: clamp(11px, 1vw, 13px);   font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+.stat-number { font-size: clamp(36px, 5vw, 64px);   font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+.mono        { font-family: 'SF Mono', 'Fira Code', monospace; }
+
+.gold  { color: var(--gold); }
+.gold-lt { color: var(--gold-lt); }
+.blue  { color: var(--blue-lt); }
+.warm  { color: var(--warm); }
+.muted { color: var(--muted); }
+.condensed { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; letter-spacing: 0.05em; }
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px;
+  background: linear-gradient(to bottom, rgba(6,7,26,0.98) 0%, transparent 100%);
+}
+
+.brand-logo {
+  display: flex; align-items: center; gap: 9px;
+  cursor: default;
+}
+
+.part-tag {
+  font-family: 'Barlow Condensed', Impact, sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin-left: 6px;
+  text-transform: uppercase;
+}
+
+.nav-slide { color: var(--muted); font-size: 13px; font-weight: 500; }
+
+.progress-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 2px;
+  background: rgba(255,255,255,0.06); z-index: 100;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+  transition: width 0.45s cubic-bezier(.4,0,.2,1);
+}
+
+/* ═══════════════════════════════════════
+   DOTS
+═══════════════════════════════════════ */
+.dots {
+  position: fixed; right: 28px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 8px; z-index: 100;
+}
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); cursor: pointer;
+  transition: all 0.3s ease;
+}
+.dot.active { background: var(--gold); transform: scale(1.5); }
+.dot:hover  { background: rgba(255,255,255,0.5); }
+
+/* ═══════════════════════════════════════
+   SLIDE SYSTEM
+═══════════════════════════════════════ */
+.deck {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+}
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 60px 40px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  overflow: hidden;
+}
+.slide.active {
+  opacity: 1; transform: translateY(0); pointer-events: all;
+}
+
+/* ═══════════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════════ */
+.col   { display: flex; flex-direction: column; }
+.row   { display: flex; flex-direction: row; align-items: stretch; }
+.center { align-items: center; justify-content: center; text-align: center; }
+.gap-4  { gap: 4px; }
+.gap-8  { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.gap-20 { gap: 20px; }
+.gap-24 { gap: 24px; }
+.gap-32 { gap: 32px; }
+.gap-40 { gap: 40px; }
+.gap-48 { gap: 48px; }
+.full-w { width: 100%; }
+.half   { flex: 1; }
+.two-third { flex: 2; }
+.one-third { flex: 1; }
+
+.slide-inner {
+  width: 100%; max-width: 1280px;
+  display: flex; flex-direction: column;
+  gap: 32px;
+}
+
+/* ═══════════════════════════════════════
+   SECTION LABEL
+═══════════════════════════════════════ */
+.section-label {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Barlow Condensed', Impact, sans-serif;
+  font-weight: 700; font-size: 12px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold);
+}
+.section-label::before {
+  content: '';
+  display: block; width: 24px; height: 1.5px;
+  background: var(--gold);
+}
+
+/* ═══════════════════════════════════════
+   CARDS & SURFACES
+═══════════════════════════════════════ */
+.card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.card-gold {
+  background: rgba(201,168,76,0.07);
+  border-color: rgba(201,168,76,0.25);
+}
+.card-blue {
+  background: rgba(91,95,232,0.08);
+  border-color: rgba(91,95,232,0.22);
+}
+.card-warm {
+  background: rgba(232,123,59,0.07);
+  border-color: rgba(232,123,59,0.22);
+}
+.card-featured {
+  background: linear-gradient(135deg, rgba(201,168,76,0.1) 0%, rgba(91,95,232,0.08) 100%);
+  border: 1px solid rgba(201,168,76,0.3);
+  position: relative; overflow: hidden;
+}
+.card-featured::before {
+  content: 'RECOMMENDED';
+  position: absolute; top: 14px; right: 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 10px; letter-spacing: 0.14em;
+  color: var(--gold); opacity: 0.8;
+}
+
+/* ═══════════════════════════════════════
+   NUMBERED CIRCLES
+═══════════════════════════════════════ */
+.num-circle {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 14px; letter-spacing: 0.04em;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+}
+.num-circle-blue {
+  background: rgba(91,95,232,0.14);
+  border-color: rgba(91,95,232,0.3);
+  color: var(--blue-lt);
+}
+
+/* ═══════════════════════════════════════
+   DIVIDERS & ACCENTS
+═══════════════════════════════════════ */
+.rule { width: 100%; height: 1px; background: var(--border); }
+.rule-gold { background: rgba(201,168,76,0.25); }
+
+.accent-bar {
+  width: 40px; height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+}
+
+/* ═══════════════════════════════════════
+   ICON SVG WRAPPER
+═══════════════════════════════════════ */
+.icon-box {
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: rgba(201,168,76,0.10);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.icon-box-blue {
+  background: rgba(91,95,232,0.10);
+  border-color: rgba(91,95,232,0.25);
+}
+
+/* ═══════════════════════════════════════
+   PHASE TIMELINE
+═══════════════════════════════════════ */
+.phase-block {
+  flex: 1; padding: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  position: relative;
+}
+.phase-block:not(:last-child)::after {
+  content: '→';
+  position: absolute; right: -20px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold); font-size: 18px; z-index: 2;
+}
+
+/* ═══════════════════════════════════════
+   ARROWS DECORATIVE
+═══════════════════════════════════════ */
+.big-arrow-line {
+  display: flex; align-items: center; gap: 0;
+  color: var(--gold);
+}
+.arrow-shaft {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+/* ═══════════════════════════════════════
+   SLIDE 1 — COVER
+═══════════════════════════════════════ */
+#slide-1 {
+  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(91,95,232,0.10) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 80% at 20% 70%, rgba(201,168,76,0.07) 0%, transparent 60%),
+              var(--bg);
+}
+
+.cover-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  width: 100%; max-width: 1280px;
+  align-items: center;
+}
+
+.cover-part-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 100px;
+  padding: 6px 16px;
+  width: fit-content;
+}
+.cover-part-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+}
+
+.cover-subtext {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.cover-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 13px; letter-spacing: 0.1em;
+  color: var(--muted); text-transform: uppercase;
+}
+.cover-sep { color: var(--border); }
+
+.hero-metric-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.hero-metric {
+  padding: 20px 24px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.hero-metric.gold-border { border-color: rgba(201,168,76,0.3); }
+.metric-val {
+  font-size: clamp(26px, 3.5vw, 46px);
+  font-weight: 700; letter-spacing: -0.025em;
+  color: var(--gold); line-height: 1;
+}
+.metric-label {
+  font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════
+   CHECKLIST / TICK LIST
+═══════════════════════════════════════ */
+.tick-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.tick-list li { display: flex; align-items: flex-start; gap: 10px; }
+.tick {
+  flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+}
+.tick svg { width: 9px; height: 9px; }
+
+/* ═══════════════════════════════════════
+   LARGE QUOTE BLOCK
+═══════════════════════════════════════ */
+.quote-block {
+  padding: 28px 32px;
+  border-left: 3px solid var(--gold);
+  background: rgba(201,168,76,0.05);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.quote-text {
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 400; line-height: 1.55;
+  font-style: italic;
+  color: rgba(240,242,255,0.88);
+}
+
+/* ═══════════════════════════════════════
+   VENUE SECTION HEADER
+═══════════════════════════════════════ */
+.venue-header {
+  display: flex; align-items: center; gap: 14px;
+}
+.venue-icon {
+  width: 50px; height: 50px; border-radius: 12px; flex-shrink: 0;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ═══════════════════════════════════════
+   STAT ROW
+═══════════════════════════════════════ */
+.stat-row {
+  display: flex; gap: 24px; align-items: stretch;
+}
+.stat-box {
+  flex: 1; padding: 18px 22px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+}
+.stat-box.gold-line { border-color: rgba(201,168,76,0.25); }
+
+/* ═══════════════════════════════════════
+   2-COL SPLIT
+═══════════════════════════════════════ */
+.split-60-40 {
+  display: grid; grid-template-columns: 60fr 40fr; gap: 36px;
+}
+.split-50-50 {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+}
+.split-3 {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.split-4 {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+
+/* ═══════════════════════════════════════
+   CAPABILITY ROW
+═══════════════════════════════════════ */
+.cap-row {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cap-row:last-child { border-bottom: none; }
+
+/* ═══════════════════════════════════════
+   CTA SLIDE
+═══════════════════════════════════════ */
+#slide-11 {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 40%, rgba(201,168,76,0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 70% at 20% 80%, rgba(91,95,232,0.07) 0%, transparent 60%),
+    var(--bg);
+}
+
+.cta-proof-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.proof-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 13px; color: var(--muted);
+}
+.proof-chip-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+
+.cta-box {
+  padding: 36px 40px;
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 16px;
+}
+
+/* ═══════════════════════════════════════
+   ARROW NAV
+═══════════════════════════════════════ */
+.nav-arrows {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 12px; z-index: 100;
+}
+.nav-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; font-size: 16px;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.12); border-color: var(--gold); }
+.nav-btn:disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+.slide-counter {
+  font-size: 12px; color: var(--muted); letter-spacing: 0.08em;
+  min-width: 52px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════════════════════════════
+   GRID TAG
+═══════════════════════════════════════ */
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tag-gold { background: rgba(201,168,76,0.15); color: var(--gold); }
+.tag-blue { background: rgba(91,95,232,0.15); color: var(--blue-lt); }
+.tag-warm { background: rgba(232,123,59,0.15); color: #F0A070; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="brand-logo">
+    <div style="background:white;border-radius:6px;padding:5px 11px;display:flex;align-items:center;"><img src="../01_Brand/Logos/Unknown.png" alt="Bevpoint" style="height:28px;width:auto;display:block;"></div>
+    <span class="part-tag">Part II</span>
+  </div>
+  <span class="nav-slide" id="nav-counter">01 / 11</span>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-bar"><div class="progress-fill" id="progress" style="width:9.1%"></div></div>
+
+<!-- DOTS -->
+<div class="dots" id="dots"></div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 1 — COVER
+═══════════════════════════════════════ -->
+<div class="deck">
+
+<section class="slide active" id="slide-1">
+  <div class="cover-grid">
+    <div class="col gap-24">
+      <div class="cover-part-pill">
+        <span class="cover-part-dot"></span>
+        <span class="caption gold">Part II of II</span>
+      </div>
+      <div class="col gap-16">
+        <div class="display-xl condensed" style="line-height:0.92">
+          Life<br>
+          <span class="gold">Beyond</span><br>
+          the Track.
+        </div>
+        <div class="accent-bar"></div>
+        <p class="body-lg" style="color:var(--muted); max-width:480px; margin-top:4px;">
+          Roaring Pines is a destination. Bevpoint leads the brand strategy, concept development, and operations consulting that turns your restaurant, hotel, and hospitality program into the reason members come back — every week, not just on track days.
+        </p>
+      </div>
+      <div class="cover-subtext">
+        <span class="cover-tag">Restaurant</span>
+        <span class="cover-sep">·</span>
+        <span class="cover-tag">Hotel & Lodging</span>
+        <span class="cover-sep">·</span>
+        <span class="cover-tag">Member Experience</span>
+        <span class="cover-sep">·</span>
+        <span class="cover-tag">Events & Revenue</span>
+      </div>
+    </div>
+    <div class="col gap-20">
+      <div class="hero-metric-grid">
+        <div class="hero-metric gold-border">
+          <div class="metric-val">3×</div>
+          <div class="metric-label">More time on property when dining is exceptional</div>
+        </div>
+        <div class="hero-metric">
+          <div class="metric-val" style="color:var(--blue-lt)">40%</div>
+          <div class="metric-label">Of private club revenue comes from non-dues F&B & events</div>
+        </div>
+        <div class="hero-metric">
+          <div class="metric-val" style="color:var(--blue-lt)">$0</div>
+          <div class="metric-label">Generic "club dining" experiences worth remembering</div>
+        </div>
+        <div class="hero-metric gold-border">
+          <div class="metric-val">1</div>
+          <div class="metric-label">Chance to define the destination — make it count</div>
+        </div>
+      </div>
+      <div class="quote-block">
+        <p class="quote-text">"The track is the reason they join. The hospitality is the reason they stay."</p>
+        <p class="caption muted" style="margin-top:10px">— Bevpoint Strategic Thesis</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 2 — THE BIGGER PICTURE
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-2">
+  <div class="slide-inner">
+    <div class="section-label">The Opportunity</div>
+    <div class="split-60-40" style="align-items:start; gap:48px;">
+      <div class="col gap-24">
+        <div class="display-md">The track is the soul. <span class="gold">The hospitality is what keeps members living in it.</span></div>
+        <p class="body-lg muted">The members writing $800K–$1.2M checks aren't buying laps — they're buying a world built around the track. Race in the morning, host clients at lunch, entertain a spouse at dinner, wake up ready to do it again. The restaurant, hotel, and events don't compete with the track experience. They extend it.</p>
+        <div class="rule"></div>
+        <div class="col gap-16">
+          <p class="subhead gold" style="font-size:11px">What makes a motor club destination-grade</p>
+          <ul class="tick-list">
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">A restaurant worth a special trip — not just "the place you eat when you're at the track"</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">Lodging that completes the overnight experience — not just a place to sleep between sessions</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">An events calendar that gives members 52 reasons to come back — not just track day weekends</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">A brand so cohesive that the restaurant, the track, and the garage loft all feel like chapters in one story</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col gap-16">
+        <p class="subhead" style="color:var(--muted); font-size:11px">Revenue beyond founding memberships</p>
+        <div class="col gap-12">
+          <div class="card card-gold col gap-8">
+            <span class="caption gold">F&B Revenue</span>
+            <span class="body">Member dining, private events, guest visits. A flagship restaurant running 60 covers/night adds $1M–$2M+ annually at this tier.</span>
+          </div>
+          <div class="card card-blue col gap-8">
+            <span class="caption blue">Lodging Revenue</span>
+            <span class="body">Overnight guest fees, weekend packages, corporate buyouts. Drives average spend-per-visit up 3–5×.</span>
+          </div>
+          <div class="card col gap-8">
+            <span class="caption" style="color:var(--muted)">Events & Partnerships</span>
+            <span class="body">Brand partnerships, automotive lifestyle weekends, private club buyouts. Revenue that compounds with reputation.</span>
+          </div>
+          <div class="card col gap-8" style="border-color:rgba(201,168,76,0.2)">
+            <span class="caption gold">Retention Value</span>
+            <span class="body">Members who use the club 3+ times/month for non-track reasons have 94% renewal rates at comparable clubs.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 3 — OUR PHILOSOPHY
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-3">
+  <div class="slide-inner">
+    <div class="section-label">Our Philosophy</div>
+    <div class="col gap-28" style="max-width:960px; margin: 0 auto; text-align:center; align-items:center;">
+      <div class="display-lg">Paddock culture. <span class="gold">Not generic luxury.</span></div>
+      <p class="body-lg muted" style="max-width:720px">The biggest mistake a motor club makes is hiring a hotel company to design its restaurant and a corporate caterer to run its events. The result is exactly what you'd expect: forgettable. We don't let the hospitality contradict the brand.</p>
+    </div>
+    <div class="split-3" style="margin-top:8px;">
+      <div class="card col gap-14" style="align-items:center; text-align:center; padding:28px 24px;">
+        <div class="num-circle" style="width:44px;height:44px;font-size:18px;">01</div>
+        <p class="headline" style="font-size:clamp(16px,1.8vw,22px)">Authentic over aspirational</p>
+        <p class="body muted">Don't design a "luxury club restaurant." Design the place where drivers eat after a great session and invite their people. Grit + greatness, not white gloves.</p>
+      </div>
+      <div class="card card-gold col gap-14" style="align-items:center; text-align:center; padding:28px 24px;">
+        <div class="num-circle" style="width:44px;height:44px;font-size:18px;">02</div>
+        <p class="headline" style="font-size:clamp(16px,1.8vw,22px)">One brand, every touchpoint</p>
+        <p class="body muted">The menu, the room, the overnight experience, the morning coffee — they all have to feel like they came from the same hand. Inconsistency is the most expensive thing you can build.</p>
+      </div>
+      <div class="card col gap-14" style="align-items:center; text-align:center; padding:28px 24px;">
+        <div class="num-circle" style="width:44px;height:44px;font-size:18px;">03</div>
+        <p class="headline" style="font-size:clamp(16px,1.8vw,22px)">Revenue that earns its room</p>
+        <p class="body muted">Every hospitality decision should serve two masters: the member experience and the P&L. Beautiful concepts that don't generate returns aren't hospitality — they're overhead.</p>
+      </div>
+    </div>
+    <div class="quote-block" style="max-width:800px; margin:0 auto;">
+      <p class="quote-text">"The Thermal Club doesn't have a hotel. Monticello doesn't have a destination restaurant. That's the gap — and Roaring Pines fills it. One property where you land, race, eat, stay, and do it again. There's nothing like it in the Southeast."</p>
+      <p class="caption muted" style="margin-top:10px">— Bevpoint Strategic Positioning</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 4 — WHAT WE BRING
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-4">
+  <div class="slide-inner">
+    <div class="section-label">Capabilities</div>
+    <div class="split-60-40" style="align-items:start; gap:48px;">
+      <div class="col gap-8">
+        <div class="headline" style="margin-bottom:8px">What Bevpoint brings to hospitality</div>
+        <div class="cap-row">
+          <div class="num-circle num-circle-blue">01</div>
+          <div class="col gap-4">
+            <p class="body" style="font-weight:600">Restaurant Concept & Brand Development</p>
+            <p class="body muted">Name, concept brief, brand identity, interior design direction, menu philosophy, service model. From blank page to opening night narrative.</p>
+          </div>
+        </div>
+        <div class="cap-row">
+          <div class="num-circle num-circle-blue">02</div>
+          <div class="col gap-4">
+            <p class="body" style="font-weight:600">Hotel & Lodging Brand</p>
+            <p class="body muted">Property naming, guest journey mapping, room concept direction, check-in experience design, overnight brand standards from garage loft to guest suite.</p>
+          </div>
+        </div>
+        <div class="cap-row">
+          <div class="num-circle num-circle-blue">03</div>
+          <div class="col gap-4">
+            <p class="body" style="font-weight:600">Operations Consulting</p>
+            <p class="body muted">Service standards, staffing model recommendations, vendor selection criteria, operational KPIs, revenue management strategy. We sit at the table with your operators.</p>
+          </div>
+        </div>
+        <div class="cap-row">
+          <div class="num-circle num-circle-blue">04</div>
+          <div class="col gap-4">
+            <p class="body" style="font-weight:600">Member Experience Design</p>
+            <p class="body muted">End-to-end journey mapping — from first arrival to 100th visit. Every interaction point designed to earn loyalty and word-of-mouth.</p>
+          </div>
+        </div>
+        <div class="cap-row">
+          <div class="num-circle num-circle-blue">05</div>
+          <div class="col gap-4">
+            <p class="body" style="font-weight:600">Events & Programming Strategy</p>
+            <p class="body muted">Annual events calendar, revenue-producing program design, brand partnership development, launch event execution.</p>
+          </div>
+        </div>
+        <div class="cap-row">
+          <div class="num-circle num-circle-blue">06</div>
+          <div class="col gap-4">
+            <p class="body" style="font-weight:600">Hospitality Marketing</p>
+            <p class="body muted">Marketing the restaurant and hotel to members, non-member guests, regional press, and national automotive/lifestyle media.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col gap-20">
+        <div class="card card-gold col gap-12">
+          <p class="subhead gold" style="font-size:11px">Hospitality Partner — Carl Berry</p>
+          <p class="body muted">Carl leads Bevpoint's hospitality vertical. 20+ years Florida F&B — Training Director across all Duffy's Sports Grill locations, Co-Founder of Palm & Ivy, American Icon Brewery, and Kazu. He brought the RPM hospitality concept to Bevpoint. When we consult on your restaurant and hotel, the operator is in the room.</p>
+        </div>
+        <div class="card col gap-12">
+          <p class="subhead" style="font-size:11px; color:var(--muted)">We consult on, not just market:</p>
+          <ul class="tick-list">
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">Concept & positioning</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">Vendor & operator selection</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">Revenue model & pricing</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">Service standards & training brief</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body">Data & performance tracking</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 5 — THE RESTAURANT
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-5">
+  <div class="slide-inner">
+    <div class="section-label">The Restaurant</div>
+    <div class="split-60-40" style="gap:40px; align-items:start;">
+      <div class="col gap-24">
+        <div class="col gap-10">
+          <div class="tag tag-gold">Concept Development + Marketing</div>
+          <div class="display-md">Not a club restaurant. <span class="gold">A destination you'd drive two hours for.</span></div>
+          <p class="body-lg muted">The RPM dining experience should feel like the paddock club at a world-class circuit — but permanent, refined, and yours. Think precision cooking meets racing culture. A place where a serious car person feels completely at home AND wants to bring their most impressive client.</p>
+        </div>
+        <div class="rule rule-gold"></div>
+        <div class="col gap-14">
+          <p class="subhead" style="font-size:11px; color:var(--muted)">What we deliver</p>
+          <div class="split-50-50" style="gap:14px;">
+            <div class="card card-gold col gap-6" style="padding:16px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Concept Brief</span>
+              <span class="body muted" style="font-size:13px">Name, concept, cuisine direction, service model, atmosphere brief for design team</span>
+            </div>
+            <div class="card col gap-6" style="padding:16px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Brand Identity</span>
+              <span class="body muted" style="font-size:13px">Logo, menu design direction, signage, uniforms, digital presence</span>
+            </div>
+            <div class="card col gap-6" style="padding:16px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Menu Philosophy</span>
+              <span class="body muted" style="font-size:13px">Culinary positioning, dietary range, F&B program (bar, wine, spirits)</span>
+            </div>
+            <div class="card col gap-6" style="padding:16px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Revenue Model</span>
+              <span class="body muted" style="font-size:13px">Pricing strategy, private dining tiers, member perks, non-member access policy</span>
+            </div>
+            <div class="card col gap-6" style="padding:16px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Grand Opening</span>
+              <span class="body muted" style="font-size:13px">Launch strategy, press & media plan, founding member preview event</span>
+            </div>
+            <div class="card col gap-6" style="padding:16px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Ongoing Marketing</span>
+              <span class="body muted" style="font-size:13px">Monthly programming, seasonal menus, digital content, regional PR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col gap-16">
+        <div class="card card-gold col gap-14" style="padding:24px 26px;">
+          <p class="subhead gold" style="font-size:11px">The concept direction</p>
+          <p class="body" style="font-weight:600; font-size:clamp(15px,1.6vw,19px)">"The Grid"<br><span class="muted" style="font-weight:400; font-size:clamp(13px,1.2vw,15px)">— working concept name</span></p>
+          <p class="body muted">Named for the starting grid. Precision as philosophy — in cooking, in service, in hospitality. The same attention that goes into a perfectly tuned machine goes into every plate.</p>
+          <div class="rule rule-gold"></div>
+          <div class="col gap-8">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="body muted" style="font-size:13px">Atmosphere</span>
+              <span class="body" style="font-size:13px">Paddock-meets-refined industrial</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="body muted" style="font-size:13px">Cuisine</span>
+              <span class="body" style="font-size:13px">American precision, open-fire influence</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="body muted" style="font-size:13px">Bar</span>
+              <span class="body" style="font-size:13px">Curated spirits + proprietary cocktail list</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="body muted" style="font-size:13px">Private dining</span>
+              <span class="body" style="font-size:13px">Full track-view buyout capability</span>
+            </div>
+          </div>
+        </div>
+        <div class="card col gap-8" style="padding:18px 22px;">
+          <p class="caption muted">Revenue Benchmark</p>
+          <p class="stat-number gold" style="font-size:clamp(28px,3.2vw,46px)">$1.2M+</p>
+          <p class="body muted" style="font-size:13px">Annual F&B revenue potential at 55–65 covers/night, 4–5 nights/week at comparable private clubs in this tier</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 6 — HOTEL & LODGING
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-6">
+  <div class="slide-inner">
+    <div class="section-label">Hotel & Lodging</div>
+    <div class="split-60-40" style="gap:40px; align-items:start;">
+      <div class="col gap-22">
+        <div class="col gap-10">
+          <div class="tag tag-blue">Brand + Ops Consulting</div>
+          <div class="display-md">The only <span class="gold">motorsport-lifestyle</span> destination property in the Southeast.</div>
+          <p class="body-lg muted">Roaring Pines has something no competitor has attempted: an overnight experience purpose-built around the track lifestyle. Garage lofts that blend living quarters with vehicle storage. Guest suites for out-of-town driving partners. The experience doesn't end when the track does.</p>
+        </div>
+        <div class="rule"></div>
+        <div class="col gap-14">
+          <p class="subhead" style="font-size:11px; color:var(--muted)">Lodging brand scope</p>
+          <div class="col gap-10">
+            <div class="card card-blue col gap-6" style="padding:16px 20px;">
+              <span class="body" style="font-weight:600">Garage Loft Brand</span>
+              <span class="body muted">Naming, identity, lifestyle photography brief, owner experience standards, co-ownership/rental program marketing</span>
+            </div>
+            <div class="card col gap-6" style="padding:16px 20px;">
+              <span class="body" style="font-weight:600">Guest Suite Program</span>
+              <span class="body muted">Guest experience design from reservation to check-out. Amenity standards, in-room brand, turndown service concept, track-adjacent perks</span>
+            </div>
+            <div class="card col gap-6" style="padding:16px 20px;">
+              <span class="body" style="font-weight:600">Booking & Revenue Strategy</span>
+              <span class="body muted">Nightly vs. weekend vs. corporate package pricing, guest policies, non-member access tiers, ancillary revenue (transfers, concierge, track packages)</span>
+            </div>
+            <div class="card col gap-6" style="padding:16px 20px;">
+              <span class="body" style="font-weight:600">PR & Press Strategy</span>
+              <span class="body muted">National lifestyle + automotive media placement, Robb Report / duPont Registry / Hemmings positioning, travel editor program</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col gap-16">
+        <div class="card card-gold col gap-14" style="padding:24px 26px;">
+          <p class="subhead gold" style="font-size:11px">The guest journey</p>
+          <div class="col gap-12">
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <div class="num-circle" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">1</div>
+              <span class="body muted" style="font-size:13px">Land at Palatka Municipal. Handled pickup, transferred directly to the property.</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <div class="num-circle" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">2</div>
+              <span class="body muted" style="font-size:13px">Check in. Car is already in the garage. Keys waiting. Track briefing scheduled.</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <div class="num-circle" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">3</div>
+              <span class="body muted" style="font-size:13px">Morning sessions. Lunch at The Grid. Afternoon open laps. Post-track debrief at the bar.</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <div class="num-circle" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">4</div>
+              <span class="body muted" style="font-size:13px">Private dinner for clients. Garage night-cap. Sleep above your car. Do it again tomorrow.</span>
+            </div>
+          </div>
+        </div>
+        <div class="stat-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="stat-box gold-line col gap-4">
+            <span class="stat-number gold" style="font-size:clamp(22px,2.8vw,38px)">3–5×</span>
+            <span class="body muted" style="font-size:12px">Spend increase when members stay overnight vs. day visits</span>
+          </div>
+          <div class="stat-box col gap-4">
+            <span class="stat-number" style="color:var(--blue-lt); font-size:clamp(22px,2.8vw,38px)">$2K+</span>
+            <span class="body muted" style="font-size:12px">Revenue per overnight stay at comparable motorsport-lifestyle properties</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 7 — MEMBER EXPERIENCE DESIGN
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-7">
+  <div class="slide-inner">
+    <div class="section-label">Member Experience</div>
+    <div class="split-50-50" style="gap:40px; align-items:start;">
+      <div class="col gap-20">
+        <div class="col gap-10">
+          <div class="display-md">The <span class="gold">360° journey.</span> Designed at every touchpoint.</div>
+          <p class="body-lg muted">Every interaction a member has — from the first welcome email to their 50th track day — should feel intentional. Bevpoint maps and designs the full member lifecycle, not just the marketing layer.</p>
+        </div>
+        <div class="rule rule-gold"></div>
+        <div class="col gap-12">
+          <p class="subhead" style="font-size:11px; color:var(--muted)">Member lifecycle touchpoints we design</p>
+          <div class="col gap-10">
+            <div class="card card-gold col gap-6" style="padding:14px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Onboarding Program</span>
+              <span class="body muted" style="font-size:13px">Founding member welcome box, orientation experience, first-90-days communications cadence. First impressions define retention.</span>
+            </div>
+            <div class="card col gap-6" style="padding:14px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Concierge Standards</span>
+              <span class="body muted" style="font-size:13px">What members can ask for. How fast they get it. The voice and tone of every response. Built from your service model.</span>
+            </div>
+            <div class="card col gap-6" style="padding:14px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Member Communications</span>
+              <span class="body muted" style="font-size:13px">Monthly newsletter, track updates, event invites, restaurant specials. Always on-brand. Always useful. Never noise.</span>
+            </div>
+            <div class="card col gap-6" style="padding:14px 18px;">
+              <span class="body" style="font-weight:600; font-size:14px">Renewal Strategy</span>
+              <span class="body muted" style="font-size:13px">Annual milestone programming, appreciation events, upsell to higher tiers, member referral program design.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col gap-16">
+        <div class="card card-gold col gap-14" style="padding:24px 26px;">
+          <p class="subhead gold" style="font-size:11px">The member calendar — driving engagement</p>
+          <p class="body muted" style="font-size:13px; margin-bottom:4px">Members who attend 4+ events/year outside track days show <strong style="color:var(--text)">91% retention</strong>. The calendar isn't a perk — it's a retention tool.</p>
+          <div class="rule rule-gold"></div>
+          <div class="col gap-8">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border);">
+              <span class="body" style="font-size:13px">Founding member dinner series</span>
+              <span class="tag tag-gold" style="font-size:10px">Monthly</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border);">
+              <span class="body" style="font-size:13px">Car reveal nights at the museum</span>
+              <span class="tag tag-blue" style="font-size:10px">Bi-Monthly</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border);">
+              <span class="body" style="font-size:13px">Bring-a-guest track days</span>
+              <span class="tag tag-blue" style="font-size:10px">Quarterly</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border);">
+              <span class="body" style="font-size:13px">Charity gala / automotive auction</span>
+              <span class="tag tag-warm" style="font-size:10px">Annual</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0;">
+              <span class="body" style="font-size:13px">Brand partner weekend takeovers</span>
+              <span class="tag tag-warm" style="font-size:10px">Seasonal</span>
+            </div>
+          </div>
+        </div>
+        <div class="card col gap-6" style="padding:18px 22px;">
+          <p class="caption muted">Retention KPI</p>
+          <p class="stat-number gold" style="font-size:clamp(28px,3.2vw,46px)">91%</p>
+          <p class="body muted" style="font-size:13px">Renewal rate when hospitality programming keeps members actively engaged throughout the year</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 8 — EVENTS & REVENUE PROGRAMMING
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-8">
+  <div class="slide-inner">
+    <div class="section-label">Events & Revenue</div>
+    <div class="col gap-16">
+      <div class="split-60-40" style="align-items:end; gap:32px;">
+        <div class="display-md">Events that <span class="gold">pay for themselves</span> — and then some.</div>
+        <p class="body muted">The programming calendar is a revenue engine. Every event category Bevpoint builds is designed to generate direct revenue, deepen member loyalty, or attract the press that fills the waitlist.</p>
+      </div>
+      <div class="split-4" style="margin-top:8px;">
+        <div class="card col gap-12" style="padding:20px 18px;">
+          <div class="num-circle">01</div>
+          <p class="body" style="font-weight:600; font-size:14px">Corporate Track Days</p>
+          <p class="body muted" style="font-size:13px">Sold to corporate clients as full-day buyouts. Track + catering + instructor package. $15K–$35K per event. CEO team-building gold.</p>
+          <span class="tag tag-gold" style="width:fit-content; font-size:10px">High Revenue</span>
+        </div>
+        <div class="card card-gold col gap-12" style="padding:20px 18px;">
+          <div class="num-circle">02</div>
+          <p class="body" style="font-weight:600; font-size:14px">Private Dining Events</p>
+          <p class="body muted" style="font-size:13px">Member buyouts of The Grid for private celebrations, client dinners, anniversaries. Premium F&B + exclusive track access. $5K–$20K per booking.</p>
+          <span class="tag tag-gold" style="width:fit-content; font-size:10px">Premium Tier</span>
+        </div>
+        <div class="card col gap-12" style="padding:20px 18px;">
+          <div class="num-circle">03</div>
+          <p class="body" style="font-weight:600; font-size:14px">Brand Partner Weekends</p>
+          <p class="body muted" style="font-size:13px">Spirits, watch, luxury goods, exotic car brands. Weekend activations built around their product. They pay — members benefit. Win-win.</p>
+          <span class="tag tag-blue" style="width:fit-content; font-size:10px">Sponsorship</span>
+        </div>
+        <div class="card col gap-12" style="padding:20px 18px;">
+          <div class="num-circle">04</div>
+          <p class="body" style="font-weight:600; font-size:14px">Automotive Lifestyle Weekends</p>
+          <p class="body muted" style="font-size:13px">Drive-in concours, vintage racing weekends, manufacturer launch events. Media magnets that generate press and drive waitlist sign-ups.</p>
+          <span class="tag tag-blue" style="width:fit-content; font-size:10px">PR Amplifier</span>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-box gold-line col gap-4">
+          <span class="caption muted">Corporate events (12/yr)</span>
+          <span class="stat-number gold" style="font-size:clamp(24px,2.8vw,42px)">$300K+</span>
+          <span class="body muted" style="font-size:12px">Annual revenue at $25K avg per event</span>
+        </div>
+        <div class="stat-box col gap-4">
+          <span class="caption muted">Private dining (40/yr)</span>
+          <span class="stat-number" style="color:var(--blue-lt); font-size:clamp(24px,2.8vw,42px)">$320K+</span>
+          <span class="body muted" style="font-size:12px">At $8K average per private event</span>
+        </div>
+        <div class="stat-box col gap-4">
+          <span class="caption muted">Brand partnerships (6/yr)</span>
+          <span class="stat-number" style="color:var(--text); font-size:clamp(24px,2.8vw,42px)">$180K+</span>
+          <span class="body muted" style="font-size:12px">At $30K average sponsorship per weekend</span>
+        </div>
+        <div class="stat-box gold-line col gap-4">
+          <span class="caption muted">Combined events revenue</span>
+          <span class="stat-number gold" style="font-size:clamp(24px,2.8vw,42px)">$800K+</span>
+          <span class="body muted" style="font-size:12px">Annual revenue from programming alone — before F&B attach</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 9 — THE REVENUE ARCHITECTURE
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-9">
+  <div class="slide-inner">
+    <div class="section-label">Revenue Architecture</div>
+    <div class="split-60-40" style="gap:40px; align-items:start;">
+      <div class="col gap-22">
+        <div class="col gap-10">
+          <div class="display-md">Hospitality doesn't cost money. <span class="gold">It prints it.</span></div>
+          <p class="body-lg muted">Done right, the restaurant, hotel, and event program generate enough revenue to fund themselves, create jobs, and return meaningful income to the club — while simultaneously making every founding membership worth more than the day it was purchased.</p>
+        </div>
+        <div class="rule rule-gold"></div>
+        <div class="col gap-12">
+          <p class="subhead" style="font-size:11px; color:var(--muted)">Annual revenue architecture — Year 2+ (stabilized)</p>
+          <div class="col gap-8">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.2); border-radius:8px;">
+              <div class="col gap-2">
+                <span class="body" style="font-weight:600; font-size:14px">Founding Membership Dues (annualized)</span>
+                <span class="body muted" style="font-size:12px">25 members × $40K–$80K avg annual component</span>
+              </div>
+              <span class="stat-number gold" style="font-size:clamp(18px,2vw,28px)">$1.25M+</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px;">
+              <div class="col gap-2">
+                <span class="body" style="font-weight:600; font-size:14px">F&B Revenue</span>
+                <span class="body muted" style="font-size:12px">Restaurant + bar + member dining program</span>
+              </div>
+              <span class="stat-number" style="color:var(--blue-lt); font-size:clamp(18px,2vw,28px)">$1.2M+</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px;">
+              <div class="col gap-2">
+                <span class="body" style="font-weight:600; font-size:14px">Lodging & Guest Revenue</span>
+                <span class="body muted" style="font-size:12px">Overnight stays + corporate packages</span>
+              </div>
+              <span class="stat-number" style="color:var(--text); font-size:clamp(18px,2vw,28px)">$600K+</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px;">
+              <div class="col gap-2">
+                <span class="body" style="font-weight:600; font-size:14px">Events & Programming</span>
+                <span class="body muted" style="font-size:12px">Corporate days, private dining, brand partnerships</span>
+              </div>
+              <span class="stat-number" style="color:var(--text); font-size:clamp(18px,2vw,28px)">$800K+</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:18px 16px; background:linear-gradient(90deg,rgba(201,168,76,0.12),rgba(91,95,232,0.08)); border:1px solid rgba(201,168,76,0.3); border-radius:8px; margin-top:4px;">
+              <div class="col gap-2">
+                <span class="body" style="font-weight:700; font-size:15px">Total Annual Revenue (stabilized)</span>
+                <span class="body muted" style="font-size:12px">Before Phase Two membership expansion</span>
+              </div>
+              <span class="stat-number gold" style="font-size:clamp(22px,2.5vw,36px)">$3.85M+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col gap-16">
+        <div class="card card-gold col gap-14" style="padding:24px 26px;">
+          <p class="subhead gold" style="font-size:11px">What Bevpoint's Part II engagement costs</p>
+          <div class="col gap-8">
+            <div style="display:flex; justify-content:space-between;">
+              <span class="body muted">Setup + Strategy</span>
+              <span class="body" style="font-weight:600">$15K–$25K</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span class="body muted">Monthly retainer</span>
+              <span class="body" style="font-weight:600">$6,500–$10,000</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span class="body muted">Year 1 total (est.)</span>
+              <span class="body gold" style="font-weight:700">$93K–$145K</span>
+            </div>
+          </div>
+          <div class="rule rule-gold"></div>
+          <p class="body muted" style="font-size:13px">At $3.85M in stabilized annual revenue, the Bevpoint Part II engagement costs less than <strong style="color:var(--text)">3.8¢ per dollar of revenue designed</strong>.</p>
+        </div>
+        <div class="card col gap-10" style="padding:20px 24px;">
+          <p class="subhead" style="font-size:11px; color:var(--muted)">Part I + Part II combined</p>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="body muted">Total Bevpoint Year 1</span>
+            <span class="body gold" style="font-weight:700; font-size:17px">~$268K–$320K</span>
+          </div>
+          <p class="body muted" style="font-size:12px">Full marketing, brand, hospitality, and ops consulting partnership</p>
+          <div class="rule"></div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="body muted">One founding membership close</span>
+            <span class="body" style="font-weight:600; font-size:17px">$800K–$1.2M</span>
+          </div>
+          <p class="body muted" style="font-size:12px">One close covers the entire Bevpoint engagement — 2.5×–4.5× return on Day 1</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 10 — THE BLUEPRINT (4 PHASES)
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-10">
+  <div class="slide-inner">
+    <div class="section-label">Hospitality Blueprint</div>
+    <div class="col gap-20">
+      <div class="split-60-40" style="align-items:end; gap:32px;">
+        <div class="display-md">From concept to <span class="gold">opening night</span> — and beyond.</div>
+        <p class="body muted">Four phases, each building on the last. Bevpoint runs the brand and consulting track in parallel with construction and operations buildout.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; position:relative;">
+        <!-- Phase 1 -->
+        <div class="card card-gold col gap-14" style="padding:22px 20px; position:relative;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="num-circle">01</div>
+            <span class="tag tag-gold" style="font-size:10px">Months 1–4</span>
+          </div>
+          <p class="body" style="font-weight:700; font-size:15px">Foundation</p>
+          <p class="caption gold" style="margin-bottom:4px">Concept + Brand</p>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Restaurant concept brief
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Lodging brand identity
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Member experience map
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Revenue model design
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Vendor selection criteria
+            </li>
+          </ul>
+        </div>
+        <!-- Phase 2 -->
+        <div class="card col gap-14" style="padding:22px 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="num-circle num-circle-blue">02</div>
+            <span class="tag tag-blue" style="font-size:10px">Months 4–8</span>
+          </div>
+          <p class="body" style="font-weight:700; font-size:15px">Build</p>
+          <p class="caption blue" style="margin-bottom:4px">Ops + Standards</p>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--blue-lt)">—</span> Service standards doc
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--blue-lt)">—</span> Staffing model brief
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--blue-lt)">—</span> F&B program built
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--blue-lt)">—</span> Booking system strategy
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--blue-lt)">—</span> Pre-opening press strategy
+            </li>
+          </ul>
+        </div>
+        <!-- Phase 3 -->
+        <div class="card col gap-14" style="padding:22px 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="num-circle" style="background:rgba(232,123,59,0.12); border-color:rgba(232,123,59,0.3); color:#F0A070;">03</div>
+            <span class="tag tag-warm" style="font-size:10px">Month 8–12</span>
+          </div>
+          <p class="body" style="font-weight:700; font-size:15px">Launch</p>
+          <p class="caption warm" style="margin-bottom:4px">Opening + PR</p>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:#F0A070">—</span> Founding member preview
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:#F0A070">—</span> Restaurant opening night
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:#F0A070">—</span> National press coverage
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:#F0A070">—</span> First corporate events
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:#F0A070">—</span> Brand partner Lineup
+            </li>
+          </ul>
+        </div>
+        <!-- Phase 4 -->
+        <div class="card card-gold col gap-14" style="padding:22px 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="num-circle">04</div>
+            <span class="tag tag-gold" style="font-size:10px">Year 2+</span>
+          </div>
+          <p class="body" style="font-weight:700; font-size:15px">Scale</p>
+          <p class="caption gold" style="margin-bottom:4px">Optimize + Grow</p>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Revenue optimization
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Phase 2 membership push
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> National brand placement
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Events program expansion
+            </li>
+            <li class="body muted" style="font-size:12px; display:flex; gap:6px;">
+              <span style="color:var(--gold)">—</span> Annual performance audit
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card card-blue" style="padding:16px 22px; display:flex; align-items:center; gap:16px;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="9" stroke="#A0A4FF" stroke-width="1.5"/>
+          <path d="M10 6v4l3 2" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <p class="body muted" style="font-size:13px"><strong style="color:var(--text)">Bevpoint is retained throughout all four phases.</strong> Not a project agency that hands off a PDF. We sit at the table — design, adjust, and execute alongside your operators and construction team from day one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 11 — CTA / THE COMPLETE PARTNERSHIP
+═══════════════════════════════════════ -->
+<section class="slide" id="slide-11">
+  <div class="slide-inner center" style="gap:28px; max-width:900px; margin:0 auto;">
+    <div class="col gap-16 center">
+      <div class="section-label" style="justify-content:center;">The Complete Partnership</div>
+      <div class="display-lg center" style="text-align:center;">
+        Part I + Part II.<br><span class="gold">The full picture.</span>
+      </div>
+      <p class="body-lg muted" style="max-width:680px; text-align:center;">
+        Roaring Pines has two engines: the track and the destination. Most firms can market one. Bevpoint was built to run both — motorsport marketing and hospitality brand + ops consulting, under one roof, one vision, one team.
+      </p>
+    </div>
+
+    <div class="cta-box" style="width:100%; text-align:left;">
+      <div class="split-50-50" style="gap:32px; align-items:start;">
+        <div class="col gap-12">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="tag tag-gold">Part I</span>
+            <span class="body" style="font-weight:600">Motorsport Marketing</span>
+          </div>
+          <ul class="tick-list">
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body muted">Brand architecture + identity system</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body muted">Founding membership sales strategy</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body muted">Digital marketing + content machine</span>
+            </li>
+            <li>
+              <div class="tick"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body muted">PR + media + national positioning</span>
+            </li>
+          </ul>
+        </div>
+        <div class="col gap-12">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="tag tag-blue">Part II</span>
+            <span class="body" style="font-weight:600">Hospitality Brand + Ops</span>
+          </div>
+          <ul class="tick-list">
+            <li>
+              <div class="tick" style="background:rgba(91,95,232,0.12); border-color:rgba(91,95,232,0.35);"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body muted">Restaurant concept + brand + marketing</span>
+            </li>
+            <li>
+              <div class="tick" style="background:rgba(91,95,232,0.12); border-color:rgba(91,95,232,0.35);"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body muted">Hotel + lodging brand + guest experience</span>
+            </li>
+            <li>
+              <div class="tick" style="background:rgba(91,95,232,0.12); border-color:rgba(91,95,232,0.35);"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body muted">Operations consulting + vendor standards</span>
+            </li>
+            <li>
+              <div class="tick" style="background:rgba(91,95,232,0.12); border-color:rgba(91,95,232,0.35);"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#A0A4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="body muted">Events programming + revenue strategy</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-row" style="gap:20px;">
+      <div class="stat-box gold-line col gap-4">
+        <span class="caption muted">Combined Year 1 investment</span>
+        <span class="stat-number gold" style="font-size:clamp(22px,2.5vw,36px)">$268K–$320K</span>
+        <span class="body muted" style="font-size:12px">Full Part I + Part II Bevpoint engagement</span>
+      </div>
+      <div class="stat-box col gap-4">
+        <span class="caption muted">One founding membership</span>
+        <span class="stat-number" style="color:var(--text); font-size:clamp(22px,2.5vw,36px)">$800K+</span>
+        <span class="body muted" style="font-size:12px">Covers the entire Bevpoint engagement 2.5× over</span>
+      </div>
+      <div class="stat-box gold-line col gap-4">
+        <span class="caption muted">Stabilized annual revenue</span>
+        <span class="stat-number gold" style="font-size:clamp(22px,2.5vw,36px)">$3.85M+</span>
+        <span class="body muted" style="font-size:12px">From dues + F&B + lodging + events — Year 2+</span>
+      </div>
+    </div>
+
+    <p class="caption muted" style="text-align:center;">bevpointteam.com &nbsp;·&nbsp; hello@bevpointteam.com &nbsp;·&nbsp; Bevpoint Team</p>
+  </div>
+</section>
+
+</div><!-- end .deck -->
+
+<!-- NAV ARROWS -->
+<div class="nav-arrows">
+  <button class="nav-btn" id="prev-btn" disabled>&#8592;</button>
+  <span class="slide-counter" id="arrow-counter">1 / 11</span>
+  <button class="nav-btn" id="next-btn">&#8594;</button>
+</div>
+
+<script>
+const TOTAL = 11;
+let current = 1;
+
+function goTo(n) {
+  if (n < 1 || n > TOTAL) return;
+  document.querySelector('.slide.active').classList.remove('active');
+  current = n;
+  document.getElementById('slide-' + current).classList.add('active');
+  document.getElementById('progress').style.width = (current / TOTAL * 100) + '%';
+  document.getElementById('nav-counter').textContent = String(current).padStart(2,'0') + ' / ' + String(TOTAL).padStart(2,'0');
+  document.getElementById('arrow-counter').textContent = current + ' / ' + TOTAL;
+  document.getElementById('prev-btn').disabled = current === 1;
+  document.getElementById('next-btn').disabled = current === TOTAL;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === current));
+}
+
+// Build dots
+const dotsEl = document.getElementById('dots');
+for (let i = 1; i <= TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 1 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+}
+
+// Buttons
+document.getElementById('prev-btn').addEventListener('click', () => goTo(current - 1));
+document.getElementById('next-btn').addEventListener('click', () => goTo(current + 1));
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+});
+
+// Touch / swipe
+let touchX = 0;
+document.addEventListener('touchstart', e => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = touchX - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 40) goTo(dx > 0 ? current + 1 : current - 1);
+}, { passive: true });
+</script>
+</body>
+</html>

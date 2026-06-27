@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bevpoint × Roaring Pines — Capability Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: #06071A;
+  color: #fff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: rgba(255,255,255,0.07);
+  z-index: 100;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #5B5FE8, #8B8FF8);
+  transition: width 0.45s ease;
+}
+
+/* ===== TOP NAV ===== */
+.top-nav {
+  position: fixed;
+  top: 20px; left: 36px; right: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99;
+  pointer-events: none;
+}
+.brand-logo {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  color: #fff;
+  opacity: 0.85;
+  text-transform: uppercase;
+}
+.slide-counter {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em;
+}
+.slide-counter .current { color: #fff; font-weight: 700; }
+
+/* ===== SLIDES ===== */
+.slides-wrapper {
+  width: 100%; height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 80px 100px;
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.48s cubic-bezier(.4,0,.2,1), transform 0.48s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.slide.exit {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+/* ===== NAV ARROWS ===== */
+.nav-arrows {
+  position: fixed;
+  bottom: 36px; right: 36px;
+  display: flex;
+  gap: 10px;
+  z-index: 99;
+}
+.nav-btn {
+  width: 46px; height: 46px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  backdrop-filter: blur(12px);
+}
+.nav-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.25);
+}
+
+/* ===== DOTS ===== */
+.dots {
+  position: fixed;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 99;
+}
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.dot.active {
+  background: #5B5FE8;
+  width: 22px;
+  border-radius: 3px;
+}
+
+/* ===== BACKGROUNDS ===== */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+}
+.cover-accent {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cover-accent::before {
+  content: '';
+  position: absolute;
+  top: -40%; right: -8%;
+  width: 55%; height: 200%;
+  background: linear-gradient(175deg, rgba(91,95,232,0.07) 0%, transparent 55%);
+}
+.cover-accent::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(91,95,232,0.25) 50%, transparent 100%);
+}
+.cover-gauge {
+  position: absolute;
+  right: 6%; top: 50%;
+  transform: translateY(-50%);
+  width: 420px; height: 420px;
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #5B5FE8;
+  margin-bottom: 18px;
+}
+.display-xl {
+  font-size: clamp(56px, 8.5vw, 112px);
+  font-weight: 900;
+  line-height: 0.93;
+  letter-spacing: -0.03em;
+}
+.display-lg {
+  font-size: clamp(42px, 6.5vw, 86px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+}
+.display-md {
+  font-size: clamp(28px, 4.2vw, 58px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.headline {
+  font-size: clamp(22px, 2.8vw, 36px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+}
+.body-lg {
+  font-size: clamp(16px, 1.65vw, 20px);
+  font-weight: 400;
+  line-height: 1.72;
+  color: rgba(255,255,255,0.58);
+}
+.body-sm {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.48);
+}
+.accent-red { color: #5B5FE8; }
+.accent-gold { color: #C9A84C; }
+
+/* ===== LAYOUT ===== */
+.full-content {
+  width: 100%;
+  max-width: 1120px;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+.two-col-left {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: start;
+}
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.four-col  { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* ===== CARDS ===== */
+.card {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 24px;
+}
+.card-red {
+  background: rgba(91,95,232,0.07);
+  border: 1px solid rgba(91,95,232,0.18);
+  border-radius: 12px;
+  padding: 22px 24px;
+}
+.card-highlight {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-left: 3px solid #5B5FE8;
+  border-radius: 0 12px 12px 0;
+  padding: 20px 24px;
+}
+.stat-card {
+  text-align: center;
+  padding: 32px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+}
+.stat-number {
+  font-size: clamp(38px, 5.2vw, 66px);
+  font-weight: 900;
+  color: #5B5FE8;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.42);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+/* ===== TAGS ===== */
+.tag {
+  display: inline-block;
+  padding: 4px 11px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.tag-red   { background: rgba(91,95,232,0.13); color: #A0A4FF; border: 1px solid rgba(91,95,232,0.28); }
+.tag-white { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.1); }
+.tag-gold  { background: rgba(201,168,76,0.1); color: #C9A84C; border: 1px solid rgba(201,168,76,0.22); }
+
+/* ===== DIVIDER ===== */
+.divider { width: 44px; height: 3px; background: #5B5FE8; border-radius: 2px; margin: 20px 0; }
+
+/* ===== CHECK LIST ===== */
+.check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.check-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.55;
+}
+.check-list li::before { content: '→'; color: #5B5FE8; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* ===== SERVICES GRID ===== */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.service-item {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.065);
+  border-radius: 10px;
+  padding: 20px 16px;
+  transition: all 0.3s;
+}
+.service-item:hover {
+  border-color: rgba(91,95,232,0.28);
+  background: rgba(91,95,232,0.04);
+}
+.service-num {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(91,95,232,0.1);
+  border: 1px solid rgba(91,95,232,0.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #5B5FE8;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+.service-name {
+  font-size: 13px; font-weight: 700; color: #fff;
+  margin-bottom: 5px; letter-spacing: -0.005em;
+}
+.service-detail { font-size: 12.5px; color: rgba(255,255,255,0.42); line-height: 1.5; }
+
+/* ===== TIMELINE (90 DAYS) ===== */
+.timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.phase { border-top: 2px solid rgba(255,255,255,0.08); padding-top: 20px; }
+.phase.p1 { border-top-color: #5B5FE8; }
+.phase.p2 { border-top-color: rgba(91,95,232,0.45); }
+.phase.p3 { border-top-color: rgba(91,95,232,0.2); }
+.phase-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 6px;
+}
+.phase-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 14px; letter-spacing: -0.01em; }
+.phase ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.phase ul li {
+  font-size: 12px; color: rgba(255,255,255,0.5);
+  padding-left: 14px; position: relative; line-height: 1.45;
+}
+.phase ul li::before {
+  content: '·'; position: absolute; left: 0;
+  color: #5B5FE8; font-size: 16px; line-height: 1;
+}
+
+/* ===== VENDOR ORG ===== */
+.orchestrator {
+  border: 1px solid rgba(91,95,232,0.35);
+  border-top: 2px solid #5B5FE8;
+  background: rgba(91,95,232,0.06);
+  border-radius: 10px;
+  padding: 18px 24px;
+  text-align: center;
+  margin-bottom: 0;
+}
+.vendor-row { display: flex; justify-content: center; gap: 14px; }
+.vendor-box {
+  flex: 1; max-width: 200px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.025);
+  border-radius: 10px;
+  padding: 14px 14px;
+  text-align: center;
+}
+.vert-line {
+  width: 1px; height: 36px; background: rgba(91,95,232,0.35);
+  margin: 0 auto;
+}
+
+/* ===== WHY ITEMS ===== */
+.why-item {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+}
+.why-item:last-child { border-bottom: none; }
+.why-number {
+  font-size: 32px; font-weight: 900;
+  color: rgba(91,95,232,0.28); letter-spacing: -0.03em;
+  line-height: 1; min-width: 44px; flex-shrink: 0;
+}
+.why-content h4 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.why-content p  { font-size: 13px; color: rgba(255,255,255,0.52); line-height: 1.55; }
+
+/* ===== BLUEPRINT NODES ===== */
+.blueprint-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  position: relative;
+}
+.blueprint-row::after {
+  content: '';
+  position: absolute;
+  top: 28px; left: 12%; right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(91,95,232,0.4), rgba(255,255,255,0.08));
+  z-index: 0;
+}
+.bp-node { text-align: center; position: relative; z-index: 1; }
+.bp-circle {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  border: 1px solid rgba(91,95,232,0.35);
+  background: rgba(91,95,232,0.07);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 14px; font-weight: 800; color: #5B5FE8;
+  letter-spacing: 0.04em;
+}
+.bp-phase-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4px;
+}
+.bp-phase-title {
+  font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 8px; letter-spacing: -0.01em;
+}
+.bp-phase-detail { font-size: 11px; color: rgba(255,255,255,0.38); line-height: 1.5; padding: 0 4px; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.slide.active .ai { opacity: 0; animation: fadeUp 0.55s ease forwards; }
+.slide.active .ai:nth-child(1) { animation-delay: 0.05s; }
+.slide.active .ai:nth-child(2) { animation-delay: 0.15s; }
+.slide.active .ai:nth-child(3) { animation-delay: 0.25s; }
+.slide.active .ai:nth-child(4) { animation-delay: 0.35s; }
+.slide.active .ai:nth-child(5) { animation-delay: 0.42s; }
+.slide.active .ai:nth-child(6) { animation-delay: 0.48s; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+
+<div class="top-nav">
+  <!-- Bevpoint nav logo: icon mark + wordmark -->
+  <div class="brand-logo" style="display:flex;align-items:center;gap:9px;">
+    <div style="background:white;border-radius:6px;padding:5px 11px;display:flex;align-items:center;"><img src="../01_Brand/Logos/Unknown.png" alt="Bevpoint" style="height:28px;width:auto;display:block;"></div>
+  </div>
+  <div class="slide-counter"><span class="current" id="cs">01</span>&nbsp;/&nbsp;<span id="ts">11</span></div>
+</div>
+
+<div class="slides-wrapper">
+
+  <!-- ══ SLIDE 1: COVER ══ -->
+  <div class="slide active" data-slide="1">
+    <div class="cover-accent"></div>
+    <div class="grid-bg"></div>
+    <!-- Decorative gauge arc -->
+    <svg class="cover-gauge" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="210" cy="210" r="200" stroke="#5B5FE8" stroke-width="0.5"/>
+      <circle cx="210" cy="210" r="170" stroke="#ffffff" stroke-width="0.3"/>
+      <circle cx="210" cy="210" r="140" stroke="#5B5FE8" stroke-width="0.5" stroke-dasharray="4 8"/>
+      <!-- Tick marks -->
+      <line x1="210" y1="12" x2="210" y2="36" stroke="#5B5FE8" stroke-width="1"/>
+      <line x1="368" y1="87" x2="352" y2="101" stroke="#5B5FE8" stroke-width="1"/>
+      <line x1="408" y1="210" x2="384" y2="210" stroke="#5B5FE8" stroke-width="1"/>
+      <line x1="368" y1="333" x2="352" y2="319" stroke="#5B5FE8" stroke-width="0.5"/>
+      <line x1="52" y1="87" x2="68" y2="101" stroke="#5B5FE8" stroke-width="1"/>
+      <line x1="12" y1="210" x2="36" y2="210" stroke="#5B5FE8" stroke-width="0.5"/>
+    </svg>
+    <div class="full-content" style="position:relative;z-index:2;">
+      <div class="ai eyebrow">Confidential Presentation — Bevpoint × Roaring Pines Motor Club</div>
+      <div class="ai display-xl" style="margin-bottom:20px;">
+        The Marketing<br><span class="accent-red">Engine.</span>
+      </div>
+      <p class="ai body-lg" style="max-width:500px;margin-bottom:48px;">
+        A full-service partnership to launch, grow, and own the Roaring Pines brand — from founding membership through national market position.
+      </p>
+      <div class="ai" style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
+        <div style="width:1px;height:44px;background:rgba(255,255,255,0.12);"></div>
+        <div>
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:5px;">Prepared for</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Scott Lagasse &amp; The Roaring Pines Team</div>
+        </div>
+        <div style="width:1px;height:44px;background:rgba(255,255,255,0.12);"></div>
+        <div>
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Presented by</div>
+          <!-- Bevpoint logo — white version inline -->
+          <svg viewBox="0 0 520 95" height="32" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+            <defs>
+              <pattern id="cover-hatch" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="5" x2="5" y2="0" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linecap="square"/>
+              </pattern>
+            </defs>
+            <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+            <polygon points="40,13 57,57 40,57" fill="white"/>
+            <polygon points="40,13 23,57 40,57" fill="url(#cover-hatch)"/>
+            <rect x="37.5" y="57" width="5" height="28" fill="white"/>
+            <text x="105" y="67" font-family="'Barlow Condensed',Impact,sans-serif" font-weight="800" font-size="56" fill="white" letter-spacing="1">BEVPOINT</text>
+          </svg>
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:5px;letter-spacing:0.06em;">Full-Service Marketing</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 2: THE MOMENT ══ -->
+  <div class="slide" data-slide="2">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">The Opportunity</div>
+      <div class="ai display-md" style="margin-bottom:8px;">The window is open.<br>Florida has no competitor at this tier.</div>
+      <div class="ai divider"></div>
+      <div class="ai three-col" style="margin-top:32px;">
+        <div class="stat-card">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Private motor clubs at Roaring Pines' level currently operating in Florida</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">+38%</div>
+          <div class="stat-label">Growth in Florida private aviation activity since 2020 — the fly-in market is booming</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">#1</div>
+          <div class="stat-label">F1 is the fastest-growing sport in North America — motorsport culture is having its biggest moment ever</div>
+        </div>
+      </div>
+      <div class="ai card-highlight" style="margin-top:22px;">
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;">
+          Florida's accelerating HNWI migration, a year-round driving climate, and an exploding motorsport culture have created a perfect storm. Roaring Pines isn't arriving late — it's arriving exactly on time, with no true competitor in sight. The question isn't whether there's a market. It's whether you get to market <em style="color:#fff;">first</em>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 3: THE CHALLENGE ══ -->
+  <div class="slide" data-slide="3">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">The Current Landscape</div>
+      <div class="ai display-md" style="margin-bottom:8px;">Great specialists.<br>No unified vision.</div>
+      <div class="ai divider"></div>
+      <div class="ai three-col" style="margin-top:28px;">
+        <div class="card">
+          <div class="tag tag-white" style="margin-bottom:14px;">TruSpeed / PR</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Racing PR &amp; Media</div>
+          <div class="body-sm">Deep auto racing relationships and media credibility. Coordinating the Dupont Registry advertorials. Years of Team SLR history.</div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Gap</div>
+            <div style="font-size:12px;color:rgba(160,164,255,0.95);margin-top:4px;line-height:1.4;">No brand strategy, no digital infrastructure, no member journey owned end-to-end</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="tag tag-white" style="margin-bottom:14px;">DR Digital / Web</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Website &amp; SEO</div>
+          <div class="body-sm">Built the existing site from competitor analysis. Handles security and maintenance. Under contract.</div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Gap</div>
+            <div style="font-size:12px;color:rgba(160,164,255,0.95);margin-top:4px;line-height:1.4;">"Luxury" positioning borrowed from competitors — not authentic to who Roaring Pines actually is</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="tag tag-white" style="margin-bottom:14px;">Christie's / Julia</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Real Estate &amp; Sales</div>
+          <div class="body-sm">High-end RE experience. Will coordinate sales approach and process — garage condos and memberships. Agreement pending.</div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);">Gap</div>
+            <div style="font-size:12px;color:rgba(160,164,255,0.95);margin-top:4px;line-height:1.4;">RE-focused — not motorsport brand builders, not digital marketers, not membership storytellers</div>
+          </div>
+        </div>
+      </div>
+      <div class="ai card-red" style="margin-top:18px;">
+        <div style="font-size:14px;font-weight:700;color:#fff;">The missing piece: <span class="accent-red">Who owns the brand? Who owns the member journey? Who drives the revenue machine?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 4: OUR POV ══ -->
+  <div class="slide" data-slide="4">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="two-col" style="gap:64px;">
+        <div>
+          <div class="ai eyebrow">Our Strategic POV</div>
+          <div class="ai display-lg" style="margin-bottom:20px;">
+            Track First.<br>
+            <span style="color:rgba(255,255,255,0.22);text-decoration:line-through;font-size:65%;">"Luxury"</span> Last.
+          </div>
+          <p class="ai body-lg" style="margin-bottom:20px;">
+            Generic "luxury club" positioning is what every competitor uses. It's noise to a performance car owner who's driven their 911 GT3 on a public road and knows exactly what's missing.
+          </p>
+          <p class="ai body-lg">
+            High-net-worth car enthusiasts are a different buyer. They can smell inauthenticity instantly. What they want: a real FIA-rated track, credentials from real drivers, and a community of people who actually get it.
+          </p>
+        </div>
+        <div>
+          <div class="ai card" style="margin-bottom:14px;border-left:3px solid rgba(255,255,255,0.1);">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);margin-bottom:8px;">✗ &nbsp;What everyone else says</div>
+            <div style="font-size:15px;color:rgba(255,255,255,0.32);font-style:italic;line-height:1.4;">"Curated luxury. Exclusive amenities. Elevated lifestyle."</div>
+          </div>
+          <div class="ai card-red" style="margin-bottom:20px;">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#A0A4FF;margin-bottom:8px;">✓ &nbsp;What Roaring Pines says</div>
+            <div style="font-size:15px;color:#fff;font-weight:600;line-height:1.4;">"The track is real. The drivers are real. The community is real. Come drive."</div>
+          </div>
+          <ul class="ai check-list">
+            <li>Lead with the track — FIA-rated is a credential that means something to this buyer</li>
+            <li>Position garage condos as "your permanent pit lane"</li>
+            <li>Sell the community first, the amenities second</li>
+            <li>Let the Lagasse legacy carry the credibility</li>
+            <li>Fly-in access is a differentiator no competitor at this tier has</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 5: WHO WE ARE ══ -->
+  <div class="slide" data-slide="5">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="two-col" style="gap:64px;">
+        <div>
+          <div class="ai eyebrow">Who We Are</div>
+          <div class="ai display-md" style="margin-bottom:20px;">Bevpoint:<br>Full-Service.<br>Full Throttle.</div>
+          <p class="ai body-lg" style="margin-bottom:16px;">
+            We are a full-service marketing agency built for premium consumer brands — launching them from the ground up and repositioning them for breakthrough growth.
+          </p>
+          <p class="ai body-lg" style="margin-bottom:16px;">
+            We don't do one thing. We own the entire marketing picture and coordinate the specialist team around us. Brand identity, digital, content, analytics, sales enablement — one partner, one strategy.
+          </p>
+          <div class="ai card-red" style="margin-top:4px;">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#A0A4FF;margin-bottom:6px;">Track Record</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.72);line-height:1.6;">We have built and scaled premium consumer brands across THC/cannabis, spirits, lifestyle, and AI technology — each built from concept to market with full in-house execution.</div>
+          </div>
+        </div>
+        <div>
+          <div class="ai card" style="margin-bottom:14px;">
+            <div style="font-size:11px;font-weight:700;color:#5B5FE8;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">What "Full-Service" Means for Roaring Pines</div>
+            <ul class="check-list">
+              <li>One partner who owns the complete marketing vision</li>
+              <li>Brand identity built around the track — not borrowed from competitors</li>
+              <li>Digital marketing precision-targeted at HNW car owners</li>
+              <li>Content that earns attention and drives desire</li>
+              <li>Membership and garage condo sales enablement</li>
+              <li>AI-powered analytics optimizing every dollar spent</li>
+              <li>Coordination of TruSpeed, Christie's, and DR Digital under one unified strategy</li>
+            </ul>
+          </div>
+          <div class="ai" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+            <span class="tag tag-red">Brand</span>
+            <span class="tag tag-red">Digital</span>
+            <span class="tag tag-red">Content</span>
+            <span class="tag tag-red">AI Analytics</span>
+            <span class="tag tag-red">Sales Enablement</span>
+            <span class="tag tag-red">Events</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 6: SERVICES ══ -->
+  <div class="slide" data-slide="6">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">What We Bring to Roaring Pines</div>
+      <div class="ai headline" style="margin-bottom:28px;">Eight capabilities. One integrated strategy.</div>
+      <div class="ai service-grid">
+        <div class="service-item">
+          <div class="service-num">01</div>
+          <div class="service-name">Brand Architecture</div>
+          <div class="service-detail">Identity, voice, messaging hierarchy, visual system — the complete brand foundation built around the track, not borrowed from a competitor</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">02</div>
+          <div class="service-name">Digital Marketing</div>
+          <div class="service-detail">Social, paid, SEO, email — precision-targeted at HNW performance car owners in Florida and across the Southeast</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">03</div>
+          <div class="service-name">Content Production</div>
+          <div class="service-detail">Photo, video, editorial — content that earns attention, builds desire, and converts enthusiasts into members</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">04</div>
+          <div class="service-name">Membership Marketing</div>
+          <div class="service-detail">Positioning garage condos and founding memberships as irresistible to drivers — not just real estate or club buyers</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">05</div>
+          <div class="service-name">Sales Enablement</div>
+          <div class="service-detail">Decks, brochures, CRM strategy, lead nurture — arming Christie's and the sales team with the tools to close</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">06</div>
+          <div class="service-name">Events &amp; Experiences</div>
+          <div class="service-detail">Launch events, press days, prospect track experiences — turning curious prospects into committed founding members</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">07</div>
+          <div class="service-name">PR Strategy</div>
+          <div class="service-detail">Working alongside TruSpeed with a broader narrative — beyond auto racing trade press into lifestyle, aviation, and HNWI media</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">08</div>
+          <div class="service-name">AI Analytics</div>
+          <div class="service-detail">Powered by Profit Axis AI — data-driven optimization across every channel, every dollar tracked from impression to conversion</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 7: BLUEPRINT ══ -->
+  <div class="slide" data-slide="7">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">The Marketing Blueprint</div>
+      <div class="ai headline" style="margin-bottom:28px;">Four phases. One machine. Revenue at every stage.</div>
+      <div class="ai blueprint-row" style="margin-bottom:36px;">
+        <div class="bp-node">
+          <div class="bp-circle">01</div>
+          <div class="bp-phase-label">Phase 1</div>
+          <div class="bp-phase-title">Foundation</div>
+          <div class="bp-phase-detail">Brand identity · Messaging system · Digital infrastructure · Sales toolkit</div>
+        </div>
+        <div class="bp-node">
+          <div class="bp-circle">02</div>
+          <div class="bp-phase-label">Phase 2</div>
+          <div class="bp-phase-title">Awareness</div>
+          <div class="bp-phase-detail">Content launch · Dupont integration · Social organic + paid · Press push</div>
+        </div>
+        <div class="bp-node">
+          <div class="bp-circle">03</div>
+          <div class="bp-phase-label">Phase 3</div>
+          <div class="bp-phase-title">Conversion</div>
+          <div class="bp-phase-detail">Membership campaign · Garage condo sales · Lead nurture · Events</div>
+        </div>
+        <div class="bp-node">
+          <div class="bp-circle">04</div>
+          <div class="bp-phase-label">Phase 4</div>
+          <div class="bp-phase-title">Community</div>
+          <div class="bp-phase-detail">Member program · Referral engine · Culture content · National positioning</div>
+        </div>
+      </div>
+      <div class="ai two-col" style="gap:20px;">
+        <div class="card-highlight">
+          <div style="font-size:11px;font-weight:700;color:#5B5FE8;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Revenue Focus: The Economic Engine</div>
+          <ul class="check-list">
+            <li>Founding memberships — the critical first close, sets the price floor</li>
+            <li>Garage condo sales — highest ticket item, real estate credibility</li>
+            <li>Events and track rentals — community activation + cash flow</li>
+            <li>Hospitality — for members, guests, media, and corporate groups</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Audience Layers We Target</div>
+          <ul class="check-list">
+            <li>Performance car owners — the primary buyer (track + garage combo)</li>
+            <li>Private pilots — fly-in market, premium and dramatically underserved</li>
+            <li>Corporate groups — track days, team events, client entertainment</li>
+            <li>Motorsport media — credibility, earned press, national reach</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 8: HOW WE FIT ══ -->
+  <div class="slide" data-slide="8">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">The Ecosystem</div>
+      <div class="ai headline" style="margin-bottom:8px;">Bevpoint as marketing orchestrator — every partner plays their position.</div>
+      <div class="ai divider"></div>
+      <div style="margin-top:28px;max-width:720px;margin-left:auto;margin-right:auto;">
+        <div class="ai orchestrator">
+          <div style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#A0A4FF;margin-bottom:5px;">Marketing Lead · Strategy · Brand · Digital · Analytics</div>
+          <div style="font-size:24px;font-weight:900;color:#fff;letter-spacing:-0.02em;">BEVPOINT</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.42);margin-top:3px;">The unified strategy that makes every other partner more effective</div>
+        </div>
+        <div class="ai" style="display:flex;justify-content:space-around;padding:0 60px;">
+          <div class="vert-line"></div>
+          <div class="vert-line" style="background:rgba(91,95,232,0.2);"></div>
+          <div class="vert-line" style="background:rgba(91,95,232,0.2);"></div>
+          <div class="vert-line" style="background:rgba(91,95,232,0.2);"></div>
+        </div>
+        <div class="ai vendor-row">
+          <div class="vendor-box">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px;">Racing PR</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">TruSpeed</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">Auto racing media, trade press, advertorials</div>
+          </div>
+          <div class="vendor-box">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px;">RE Sales</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">Christie's / Julia</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">Exclusive sales, memberships, garage condos</div>
+          </div>
+          <div class="vendor-box">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px;">Web / SEO</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">DR Digital</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">Site maintenance, SEO, security</div>
+          </div>
+          <div class="vendor-box">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px;">Reach</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">Dupont Registry</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.4;">HNWI audience, HPC &amp; exotic car market</div>
+          </div>
+        </div>
+        <div class="ai card-red" style="margin-top:22px;">
+          <div style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.6;">No new egos. No power grabs. Every current partner stays in their lane — Bevpoint ensures every lane leads to the same destination: <strong style="color:#fff;">founding memberships sold and the brand built right.</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 9: FIRST 90 DAYS ══ -->
+  <div class="slide" data-slide="9">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="ai eyebrow">Immediate Action Plan</div>
+      <div class="ai headline" style="margin-bottom:28px;">First 90 Days — From fragmented to launch-ready.</div>
+      <div class="ai timeline">
+        <div class="phase p1">
+          <div class="phase-label">Days 1–30</div>
+          <div class="phase-title">Foundation</div>
+          <ul>
+            <li>Full brand audit — site, ads, all existing materials</li>
+            <li>Brand identity build — voice, messaging, visual direction</li>
+            <li>Target member persona deep-dive and profiling</li>
+            <li>Competitive audit: Thermal, Monticello, Spring Mountain</li>
+            <li>Align with Christie's on sales tools needed</li>
+            <li>Content strategy and editorial calendar</li>
+            <li>Website brief for DR Digital — messaging and UX improvements</li>
+            <li>AI analytics setup and performance baseline</li>
+          </ul>
+        </div>
+        <div class="phase p2">
+          <div class="phase-label">Days 31–60</div>
+          <div class="phase-title">Build &amp; Launch</div>
+          <ul>
+            <li>Launch new brand narrative across all channels</li>
+            <li>Dupont Registry strategy aligned with TruSpeed</li>
+            <li>Social media launch — organic content calendar live</li>
+            <li>Email list and CRM infrastructure built</li>
+            <li>Membership landing page and lead capture funnel</li>
+            <li>Sales collateral for Christie's — deck, one-pager, RE brochure</li>
+            <li>Track Day prospect event — concept and planning</li>
+            <li>Analytics dashboard live and reporting cadence set</li>
+          </ul>
+        </div>
+        <div class="phase p3">
+          <div class="phase-label">Days 61–90</div>
+          <div class="phase-title">Accelerate</div>
+          <ul>
+            <li>Paid digital campaign — HNW audiences in FL and Southeast</li>
+            <li>First prospect track experience or press day</li>
+            <li>PR push timed to Dupont Registry advertorial</li>
+            <li>Aviation community outreach — AOPA, private pilot networks</li>
+            <li>Performance review and channel optimization</li>
+            <li>Q4 campaign plan and budget recommendation</li>
+            <li>Membership goal tracking — first close target</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 10: WHY BEVPOINT ══ -->
+  <div class="slide" data-slide="10">
+    <div class="grid-bg"></div>
+    <div class="full-content">
+      <div class="two-col-left" style="gap:64px;align-items:start;">
+        <div>
+          <div class="ai eyebrow">The Case</div>
+          <div class="ai display-md" style="margin-bottom:22px;">Why Bevpoint.<br>Why Now.</div>
+          <p class="ai body-lg" style="margin-bottom:20px;">
+            The Dupont Registry ad is imminent. The Christie's agreement is close to signing. TruSpeed is seeding the narrative. The window to build the brand correctly — before the market sees it fully — is measured in weeks, not months.
+          </p>
+          <p class="ai body-lg">
+            Every day without a unified strategy is a day the message fragments. Bevpoint closes that gap immediately.
+          </p>
+        </div>
+        <div class="ai">
+          <div class="why-item">
+            <div class="why-number">01</div>
+            <div class="why-content">
+              <h4>We see what others missed</h4>
+              <p>Track first. Not luxury. Your buyer is a driver who can smell inauthenticity. We identified that positioning before you asked us to — because we understand who actually writes the check.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-number">02</div>
+            <div class="why-content">
+              <h4>We don't compete with your partners</h4>
+              <p>TruSpeed, Christie's, DR Digital — all stay in their lanes. Bevpoint gives every partner a unified brand and strategy to execute from. No new egos. No overlap. More effectiveness.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-number">03</div>
+            <div class="why-content">
+              <h4>We own the whole picture</h4>
+              <p>Not just PR. Not just web. Brand, digital, content, analytics, sales enablement — under one strategy, one team. Fragments don't win markets. Unified machines do.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-number">04</div>
+            <div class="why-content">
+              <h4>We build premium consumer brands</h4>
+              <p>THC/cannabis, spirits, lifestyle, AI technology — we've launched premium brands from concept to market. We know what it takes to build something people believe in.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-number">05</div>
+            <div class="why-content">
+              <h4>We're powered by AI</h4>
+              <p>Profit Axis AI gives Roaring Pines a marketing intelligence advantage from day one — every dollar tracked to conversion, every channel optimized with data, not gut.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 11: CTA ══ -->
+  <div class="slide" data-slide="11">
+    <div class="cover-accent"></div>
+    <div class="grid-bg"></div>
+    <div class="full-content" style="position:relative;z-index:2;text-align:center;">
+      <div class="ai eyebrow" style="text-align:center;">One Conversation. That's All We Need.</div>
+      <div class="ai display-xl" style="margin-bottom:22px;">
+        The track is ready.<br>
+        <span class="accent-red">Let's build the machine.</span>
+      </div>
+      <p class="ai body-lg" style="max-width:560px;margin:0 auto 18px;">
+        With the Dupont Registry window approaching and Christie's close to signing, foundation work starts in week one. There's no ramp-up period — we know the landscape, we know the gaps, and we know the buyer.
+      </p>
+      <p class="ai" style="max-width:480px;margin:0 auto 44px;font-size:13px;color:rgba(255,255,255,0.32);font-style:italic;line-height:1.6;">
+        This presentation was built by Bevpoint. The quality of what you're looking at right now is what we bring to every client, from day one.
+      </p>
+      <div class="ai" style="display:flex;justify-content:center;gap:0;flex-wrap:wrap;">
+        <div style="padding:0 44px;border-right:1px solid rgba(255,255,255,0.1);">
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Agency</div>
+          <svg viewBox="0 0 520 95" height="28" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+            <defs>
+              <pattern id="cta-hatch" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="5" x2="5" y2="0" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linecap="square"/>
+              </pattern>
+            </defs>
+            <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+            <polygon points="40,13 57,57 40,57" fill="white"/>
+            <polygon points="40,13 23,57 40,57" fill="url(#cta-hatch)"/>
+            <rect x="37.5" y="57" width="5" height="28" fill="white"/>
+            <text x="105" y="67" font-family="'Barlow Condensed',Impact,sans-serif" font-weight="800" font-size="56" fill="white" letter-spacing="1">BEVPOINT</text>
+          </svg>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:5px;">Full-Service Marketing</div>
+        </div>
+        <div style="padding:0 44px;border-right:1px solid rgba(255,255,255,0.1);">
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;">Contact</div>
+          <div style="font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.01em;">Bevpoint Team</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;">Ready when you are</div>
+        </div>
+        <div style="padding:0 44px;">
+          <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;">For</div>
+          <div style="font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.01em;">Roaring Pines Motor Club</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;">Palatka, Florida</div>
+        </div>
+      </div>
+      <div class="ai" style="margin-top:44px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.05em;">Use ← → arrow keys or click arrows to navigate · Swipe on touch devices</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slides-wrapper -->
+
+<!-- Nav -->
+<div class="nav-arrows">
+  <button class="nav-btn" id="prevBtn">&#8592;</button>
+  <button class="nav-btn" id="nextBtn">&#8594;</button>
+</div>
+<div class="dots" id="dotsContainer"></div>
+
+<script>
+const TOTAL = 11;
+let current = 1;
+let animating = false;
+
+// Build dots
+const dc = document.getElementById('dotsContainer');
+for (let i = 1; i <= TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 1 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dc.appendChild(d);
+}
+document.getElementById('ts').textContent = String(TOTAL).padStart(2,'0');
+
+function goTo(n) {
+  if (n < 1 || n > TOTAL || n === current || animating) return;
+  animating = true;
+
+  const prev = document.querySelector('.slide.active');
+  prev.classList.remove('active');
+  prev.classList.add('exit');
+
+  current = n;
+  const next = document.querySelector('.slide[data-slide="' + n + '"]');
+
+  // Reset animation
+  next.querySelectorAll('.ai').forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight; // reflow
+    el.style.animation = '';
+  });
+
+  next.classList.add('active');
+
+  setTimeout(() => {
+    prev.classList.remove('exit');
+    animating = false;
+  }, 500);
+
+  document.getElementById('cs').textContent = String(n).padStart(2,'0');
+  document.getElementById('pf').style.width = (n / TOTAL * 100) + '%';
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === n));
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+
+document.addEventListener('keydown', e => {
+  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); goTo(current + 1); }
+  if (['ArrowLeft','ArrowUp'].includes(e.key)) { e.preventDefault(); goTo(current - 1); }
+});
+
+let ts = null;
+document.addEventListener('touchstart', e => { ts = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  if (ts === null) return;
+  const diff = ts - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) diff > 0 ? goTo(current + 1) : goTo(current - 1);
+  ts = null;
+});
+
+// Init
+document.getElementById('pf').style.width = (1 / TOTAL * 100) + '%';
+</script>
+</body>
+</html>
