@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPM — Logo Design Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #FAFAF8;
+    color: #1A1A1C;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .page { page-break-after: always; }
+    body { background: #fff; }
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 72px 64px;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: #08080A;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 72px 64px;
+    max-width: 100%;
+  }
+  .cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .cover-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .cover-redline {
+    width: 48px; height: 3px;
+    background: #B8001F;
+    margin-top: 8px;
+  }
+  .cover-hero { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 80px 0; }
+  .cover-rpm {
+    font-size: clamp(120px, 18vw, 200px);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.88;
+    color: #fff;
+    margin-bottom: 32px;
+  }
+  .cover-title {
+    font-size: 22px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.01em;
+  }
+  .cover-title strong { color: #fff; font-weight: 600; }
+  .cover-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .cover-footer-left { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.6; }
+  .cover-footer-right {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #B8001F;
+  }
+
+  /* ── CONTENT PAGE ── */
+  .content-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 72px 64px;
+    border-bottom: 1px solid #EEEEE8;
+  }
+  .content-page:last-child { border-bottom: none; }
+
+  /* ── SECTION HEADERS ── */
+  .section-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #B8001F;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #08080A;
+    margin-bottom: 28px;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #08080A;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  p { color: #3A3A3E; margin-bottom: 16px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── DIVIDER ── */
+  .rule { width: 48px; height: 3px; background: #B8001F; border-radius: 2px; margin-bottom: 36px; }
+
+  /* ── TWO COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 32px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; margin-top: 32px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: #F2F2EE;
+    border-radius: 10px;
+    padding: 24px;
+  }
+  .card-dark {
+    background: #08080A;
+    color: #fff;
+    border-radius: 10px;
+    padding: 24px;
+  }
+  .card-dark h3 { color: #fff; }
+  .card-dark p  { color: rgba(255,255,255,0.55); margin-bottom: 0; }
+  .card-red {
+    background: #FFF5F5;
+    border: 1px solid rgba(184,0,31,0.12);
+    border-left: 3px solid #B8001F;
+    border-radius: 0 8px 8px 0;
+    padding: 20px 22px;
+  }
+  .card-red p { color: #3A3A3E; margin-bottom: 0; }
+
+  /* ── TERRITORY CARDS ── */
+  .territory {
+    border: 1px solid #E4E4DE;
+    border-radius: 10px;
+    padding: 24px;
+    position: relative;
+  }
+  .territory-num {
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 32px;
+    font-weight: 900;
+    color: rgba(184,0,31,0.12);
+    letter-spacing: -0.04em;
+  }
+  .territory h3 { margin-bottom: 6px; }
+  .territory .territory-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #B8001F;
+    background: rgba(184,0,31,0.08);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .territory p { color: #5A5A60; font-size: 14px; margin-bottom: 0; }
+
+  /* ── COLOR SWATCHES ── */
+  .swatches { display: flex; gap: 16px; margin-top: 28px; flex-wrap: wrap; }
+  .swatch { flex: 1; min-width: 120px; }
+  .swatch-box {
+    height: 80px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  .swatch-name { font-size: 12px; font-weight: 700; color: #1A1A1C; letter-spacing: 0.04em; text-transform: uppercase; }
+  .swatch-hex  { font-size: 12px; color: #888; font-family: monospace; margin-top: 2px; }
+  .swatch-role { font-size: 11px; color: #AAAAAA; margin-top: 2px; }
+
+  /* ── LIST ── */
+  ul.brief-list { list-style: none; padding: 0; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  ul.brief-list li {
+    padding-left: 20px;
+    position: relative;
+    font-size: 14px;
+    color: #3A3A3E;
+    line-height: 1.5;
+  }
+  ul.brief-list li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: #B8001F;
+    font-weight: 700;
+  }
+  ul.check-list { list-style: none; padding: 0; margin-top: 12px; display: flex; flex-direction: column; gap: 7px; }
+  ul.check-list li {
+    padding-left: 20px;
+    position: relative;
+    font-size: 14px;
+    color: #3A3A3E;
+    line-height: 1.5;
+  }
+  ul.check-list li::before { content: '✓'; position: absolute; left: 0; color: #B8001F; font-weight: 700; }
+
+  /* ── NO/YES TABLE ── */
+  .noyes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 28px; }
+  .no-col, .yes-col { padding: 22px; border-radius: 10px; }
+  .no-col  { background: #FFF5F5; border: 1px solid rgba(184,0,31,0.1); }
+  .yes-col { background: #F2FAF5; border: 1px solid rgba(0,140,60,0.1); }
+  .no-col  h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #CC3333; margin-bottom: 12px; }
+  .yes-col h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #00883A; margin-bottom: 12px; }
+  .noyes ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+  .noyes li { font-size: 13px; color: #3A3A3E; line-height: 1.45; padding-left: 16px; position: relative; }
+  .no-col  li::before { content: '✕'; position: absolute; left: 0; color: #CC3333; font-weight: 700; }
+  .yes-col li::before { content: '✓'; position: absolute; left: 0; color: #00883A; font-weight: 700; }
+
+  /* ── DELIVERABLES TABLE ── */
+  table.deliverables {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  table.deliverables thead th {
+    text-align: left;
+    padding: 10px 14px;
+    background: #08080A;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  table.deliverables tbody tr:nth-child(even) { background: #F4F4F0; }
+  table.deliverables tbody td {
+    padding: 11px 14px;
+    color: #3A3A3E;
+    border-bottom: 1px solid #EEEEE8;
+    vertical-align: top;
+  }
+  table.deliverables tbody td:first-child { font-weight: 600; color: #1A1A1C; }
+
+  /* ── FOOTER ── */
+  .brief-footer {
+    background: #08080A;
+    color: #fff;
+    padding: 40px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+  }
+  .brief-footer-left { font-size: 13px; color: rgba(255,255,255,0.35); }
+  .brief-footer-left strong { color: #fff; display: block; font-size: 15px; margin-bottom: 2px; }
+  .brief-footer-right { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #B8001F; font-weight: 700; }
+
+  /* ── MOOD REFS ── */
+  .ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 24px; }
+  .ref-item {
+    border: 1px solid #E4E4DE;
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .ref-item h4 { font-size: 14px; font-weight: 700; color: #1A1A1C; margin-bottom: 4px; }
+  .ref-item p  { font-size: 13px; color: #666; margin-bottom: 0; }
+  .ref-category { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #B8001F; margin-bottom: 6px; }
+
+  /* ── TAG ── */
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid #E0E0DA;
+    color: #666;
+    margin: 3px 3px 3px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ COVER PAGE ═══ -->
+<div class="cover">
+  <div class="cover-top">
+    <div>
+      <div class="cover-label">Logo Design Brief</div>
+      <div class="cover-redline"></div>
+    </div>
+    <div class="cover-label" style="text-align:right;">Confidential · June 2026</div>
+  </div>
+
+  <div class="cover-hero">
+    <div class="cover-rpm">RPM</div>
+    <div class="cover-title">
+      <strong>Roaring Pines Motor Club</strong><br>
+      Brand Mark — Design Brief &amp; Creative Direction
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <div class="cover-footer-left">
+      Prepared by Bevpoint<br>
+      jgiarrante@mjbevolution.com
+    </div>
+    <div class="cover-footer-right">Roaring Pines Motor Club · Palatka, FL</div>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 1: ABOUT THE BRAND ═══ -->
+<div class="content-page">
+  <div class="section-num">01 — About the Brand</div>
+  <h2>What is Roaring Pines Motor Club?</h2>
+  <div class="rule"></div>
+
+  <div class="two-col">
+    <div>
+      <h3>The Project</h3>
+      <p>Roaring Pines Motor Club (RPM) is a private, all-season motorsports destination in Northeast Florida — 480 acres built around a FIA-rated, multi-configurable road course with direct fly-in access via an adjacent airport.</p>
+      <p>The club is for performance car owners who want a real track — not a weekend autocross or a track-day rental. Permanent garage condos, a boutique hotel, clubhouse, restaurant, and motorsports museum make this a full lifestyle destination.</p>
+    </div>
+    <div>
+      <h3>The Team</h3>
+      <p>Founded by Scott Lagasse Sr. and Scott Lagasse Jr. — a father-son duo with decades of professional NASCAR and motorsport experience. The club is built by drivers, for drivers. That authenticity is central to the brand.</p>
+      <h3 style="margin-top:20px;">The Market Position</h3>
+      <p>There is no private motor club at this tier currently operating in Florida. Roaring Pines is building the category, not competing within it.</p>
+    </div>
+  </div>
+
+  <div class="card-red" style="margin-top:28px;">
+    <p><strong>One sentence:</strong> Roaring Pines is where serious performance car owners go when they're done pretending public roads are enough.</p>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 2: THE CONCEPT ═══ -->
+<div class="content-page">
+  <div class="section-num">02 — The Logo Concept</div>
+  <h2>RPM — The Double Meaning</h2>
+  <div class="rule"></div>
+
+  <p>The primary brand identifier is <strong>RPM</strong>. It works on two levels simultaneously — and both must feel intentional:</p>
+
+  <div class="two-col" style="margin-top:8px;">
+    <div class="card-dark">
+      <h3>R·P·M</h3>
+      <p style="margin-top:8px;font-size:22px;font-weight:900;color:#B8001F;letter-spacing:0.05em;">Roaring Pines<br>Motor Club</p>
+      <p style="margin-top:12px;">The initials. Clean, memorable, ownable. Works as a standalone mark without explanation.</p>
+    </div>
+    <div class="card-dark">
+      <h3>R·P·M</h3>
+      <p style="margin-top:8px;font-size:22px;font-weight:900;color:#B8001F;letter-spacing:0.05em;">Revolutions<br>Per Minute</p>
+      <p style="margin-top:12px;">The engine language. Instantly understood by anyone who drives. No translation needed.</p>
+    </div>
+  </div>
+
+  <p style="margin-top:28px;">The logo does not need to explain either meaning. Anyone who sees "RPM" at a motor club already knows both. The design should let the letters do the work.</p>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>The Core Brand Line</h3>
+    <p style="margin-top:8px;font-style:italic;font-size:16px;color:#1A1A1C;">"For Drivers. By Drivers."</p>
+    <p style="margin-top:8px;">This is the brand's north star. Every design decision should feel like it was made by someone who has driven a performance car on a real track — not by someone who looked up "luxury motor club" on Google Images.</p>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 3: DESIGN TERRITORIES ═══ -->
+<div class="content-page">
+  <div class="section-num">03 — Design Territories</div>
+  <h2>Three Directions to Explore</h2>
+  <div class="rule"></div>
+  <p>We are open to multiple interpretations. Below are three distinct territories. Designers are encouraged to explore one or more — but each direction must feel distinctly different from the others.</p>
+
+  <div class="three-col">
+    <div class="territory">
+      <div class="territory-num">A</div>
+      <div class="territory-tag">Typographic Power</div>
+      <h3>Pure Letterform</h3>
+      <p>The RPM letters are the entire mark. No icon, no emblem — just the three letters treated as pure visual architecture. Requires exceptional font choice and spacing execution. Think: the strength of a Porsche wordmark or Ferrari script — identity through type alone.</p>
+      <ul class="brief-list" style="margin-top:16px;">
+        <li>Custom or highly modified letterforms</li>
+        <li>Extreme weight, precision spacing</li>
+        <li>The letters themselves carry the brand's personality</li>
+        <li>Scales from 8px favicon to 10-foot wall sign</li>
+      </ul>
+    </div>
+    <div class="territory">
+      <div class="territory-num">B</div>
+      <div class="territory-tag">Badge / Emblem</div>
+      <h3>Motor Club Crest</h3>
+      <p>An enclosed badge or crest containing RPM — the traditional language of private motor clubs, racing teams, and exclusive institutions. Heritage and permanence. Think: FIA badges, Le Mans team crests, Laguna Seca marks — timeless, not retro.</p>
+      <ul class="brief-list" style="margin-top:16px;">
+        <li>Shield, oval, circle, or custom enclosure shape</li>
+        <li>RPM as the dominant interior element</li>
+        <li>"Roaring Pines Motor Club" on the badge perimeter</li>
+        <li>Must avoid looking dated or generic</li>
+      </ul>
+    </div>
+    <div class="territory">
+      <div class="territory-num">C</div>
+      <div class="territory-tag">Symbol + Wordmark</div>
+      <h3>Icon &amp; Letters</h3>
+      <p>A symbol or icon that pairs with the RPM wordmark. The symbol should reference motorsport or the specific Roaring Pines concept — without being literal or clichéd. Think: an abstracted track element, a tachometer needle, a motion-inspired form that reads as mark before it reads as meaning.</p>
+      <ul class="brief-list" style="margin-top:16px;">
+        <li>Icon must work independently of the wordmark</li>
+        <li>Avoid: steering wheels, checkered flags, tire marks</li>
+        <li>Geometric, minimal, precise</li>
+        <li>The concept should reward a second look</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 4: COLOR ═══ -->
+<div class="content-page">
+  <div class="section-num">04 — Colour Direction</div>
+  <h2>Palette</h2>
+  <div class="rule"></div>
+
+  <p>The primary palette is established. Designers should work within this system — but if a design direction demands a variation (different shade of red, warmer black, etc.), present it with rationale.</p>
+
+  <div class="swatches">
+    <div class="swatch">
+      <div class="swatch-box" style="background:#08080A; border:1px solid #222;"></div>
+      <div class="swatch-name">Engine Black</div>
+      <div class="swatch-hex">#08080A</div>
+      <div class="swatch-role">Primary background</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-box" style="background:#B8001F;"></div>
+      <div class="swatch-name">Redline Red</div>
+      <div class="swatch-hex">#B8001F</div>
+      <div class="swatch-role">Accent — use sparingly</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-box" style="background:#F8F8FC; border:1px solid #E0E0DA;"></div>
+      <div class="swatch-name">Signal White</div>
+      <div class="swatch-hex">#F8F8FC</div>
+      <div class="swatch-role">Primary text on dark</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-box" style="background:#828288;"></div>
+      <div class="swatch-name">Gauge Gray</div>
+      <div class="swatch-hex">#828288</div>
+      <div class="swatch-role">Secondary text</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-box" style="background:#C09B4D;"></div>
+      <div class="swatch-name">Gold (Optional)</div>
+      <div class="swatch-hex">#C09B4D</div>
+      <div class="swatch-role">Prestige accent if needed</div>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-top:32px;">
+    <div class="card">
+      <h3>Primary Usage</h3>
+      <p style="margin-top:8px;font-size:14px;">The logo must be designed in these two primary configurations:</p>
+      <ul class="check-list" style="margin-top:12px;">
+        <li>Dark version — white/light on black ground</li>
+        <li>Light version — black on white/cream ground</li>
+        <li>One-color version — pure black (for embossing, foil, etc.)</li>
+        <li>One-color white reverse (for dark substrates)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Colour Philosophy</h3>
+      <p style="margin-top:8px;font-size:14px;">Red is earned, not decorative. It appears once — as the accent that carries meaning, like a tachometer's redline sector. It should never dominate. Black and white carry the mark. Red punctuates it.</p>
+      <p style="margin-top:12px;font-size:14px;">If using gold: it replaces red as the prestige accent, not an addition to it.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 5: TYPOGRAPHY ═══ -->
+<div class="content-page">
+  <div class="section-num">05 — Typography Direction</div>
+  <h2>Type Character</h2>
+  <div class="rule"></div>
+
+  <p>The typeface choice is the single most important design decision for this mark. The letters RPM must feel like they were engineered, not decorated.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Character We're After</h3>
+      <ul class="brief-list">
+        <li>Confident and heavy without being crude</li>
+        <li>Precise — as if the letterforms were machined to tolerance</li>
+        <li>Timeless — will read the same in 30 years as today</li>
+        <li>Works at both massive scale (building signage) and small scale (embossed card)</li>
+        <li>Custom modifications or letterfit are welcome — this should not look like an off-the-shelf font application</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Secondary Text Treatment</h3>
+      <p style="font-size:14px;">"Roaring Pines Motor Club" appears as supporting text — never competing with RPM. It should be tight, precise, and technical in character. Wide letter-spacing preferred. Think instrument panel labels, not marketing headlines.</p>
+      <ul class="brief-list" style="margin-top:16px;">
+        <li>Light to regular weight only</li>
+        <li>Generous letter-spacing (tracking)</li>
+        <li>All caps or small caps preferred</li>
+        <li>Must recede visually behind RPM</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card-red" style="margin-top:28px;">
+    <p><strong>Typography test:</strong> Cover the subtext. The RPM mark alone should instantly communicate premium, performance, and precision — with zero supporting context.</p>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 6: MOOD & REFERENCES ═══ -->
+<div class="content-page">
+  <div class="section-num">06 — Mood &amp; References</div>
+  <h2>Look &amp; Feel</h2>
+  <div class="rule"></div>
+
+  <p>These are directional references — not targets to copy. They illustrate the emotional territory and standard of craft we're aiming for.</p>
+
+  <div class="ref-grid">
+    <div class="ref-item">
+      <div class="ref-category">Motor Racing Heritage</div>
+      <h4>FIA Crest &amp; Formula 1 Team Identities</h4>
+      <p>The precision and authority of motorsport's governing bodies. Scuderia Ferrari, Red Bull Racing, AMG. Official, serious, built on decades of credibility.</p>
+    </div>
+    <div class="ref-item">
+      <div class="ref-category">Private Clubs</div>
+      <h4>The Thermal Club / Augusta National</h4>
+      <p>Exclusive, understated, permanent. These brands don't shout — they simply exist with authority. Membership is implied, not advertised.</p>
+    </div>
+    <div class="ref-item">
+      <div class="ref-category">German Performance Marques</div>
+      <h4>Porsche / AMG Wordmarks</h4>
+      <p>Typography as identity. The wordmark IS the brand. Precise, engineered letterforms that feel purpose-built rather than designed.</p>
+    </div>
+    <div class="ref-item">
+      <div class="ref-category">Racing Circuits</div>
+      <h4>Nürburgring / Circuit de la Sarthe</h4>
+      <p>Track identities that carry weight and history. Bold, direct, built for permanence — not trend cycles.</p>
+    </div>
+  </div>
+
+  <div class="noyes">
+    <div class="no-col">
+      <h4>❌ Avoid</h4>
+      <ul>
+        <li>Generic "luxury" clichés (thin serifs, script fonts, ornamental filigree)</li>
+        <li>Checkered flags, steering wheels, tire marks</li>
+        <li>Speed lines or motion blur effects</li>
+        <li>Bright, saturated reds or flashy color combinations</li>
+        <li>Anything that looks like a car dealership logo</li>
+        <li>Gradients, drop shadows, lens flares</li>
+        <li>Cartoony or illustrative approaches</li>
+        <li>Logos that need color to communicate — must work in black first</li>
+      </ul>
+    </div>
+    <div class="yes-col">
+      <h4>✓ Pursue</h4>
+      <ul>
+        <li>Marks that feel engineered, not decorated</li>
+        <li>Geometry that rewards close inspection</li>
+        <li>Confident use of negative space</li>
+        <li>A single subtle reference to motorsport that only enthusiasts catch</li>
+        <li>Balance between heritage weight and modern precision</li>
+        <li>Marks that work equally well engraved on metal and displayed on a screen</li>
+        <li>Typography that feels custom, not off-the-shelf</li>
+        <li>Simplicity — if something can be removed, remove it</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 7: DELIVERABLES ═══ -->
+<div class="content-page">
+  <div class="section-num">07 — Deliverables</div>
+  <h2>What We Need Back</h2>
+  <div class="rule"></div>
+
+  <p>For each design direction submitted, provide the following. We expect 2–3 distinct directions, each fully developed.</p>
+
+  <table class="deliverables">
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Format</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Primary logo — dark version</td>
+        <td>AI, SVG, PNG 300dpi</td>
+        <td>White/light mark on black ground — the primary application</td>
+      </tr>
+      <tr>
+        <td>Primary logo — light version</td>
+        <td>AI, SVG, PNG 300dpi</td>
+        <td>Dark mark on white/cream — for print and document use</td>
+      </tr>
+      <tr>
+        <td>Horizontal lockup</td>
+        <td>AI, SVG, PNG 300dpi</td>
+        <td>"RPM" + "Roaring Pines Motor Club" side by side</td>
+      </tr>
+      <tr>
+        <td>Stacked/vertical lockup</td>
+        <td>AI, SVG, PNG 300dpi</td>
+        <td>RPM over "Roaring Pines Motor Club" — for square formats</td>
+      </tr>
+      <tr>
+        <td>Icon / standalone mark</td>
+        <td>AI, SVG, PNG 300dpi</td>
+        <td>For favicon, embossing, embroidery — works at 32×32px</td>
+      </tr>
+      <tr>
+        <td>One-color versions</td>
+        <td>AI, SVG, PNG 300dpi</td>
+        <td>Pure black and pure white — for foil, emboss, laser engraving</td>
+      </tr>
+      <tr>
+        <td>Presentation mockup</td>
+        <td>PDF or PNG</td>
+        <td>Show the mark in context — hat, vehicle, signage, garage door</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="two-col" style="margin-top:32px;">
+    <div class="card">
+      <h3>File Requirements</h3>
+      <ul class="check-list">
+        <li>All source files fully editable (AI or EPS, outlined and unoutlined)</li>
+        <li>SVG for web use</li>
+        <li>PNG at minimum 3000px wide, transparent background</li>
+        <li>Fonts embedded or packaged with source files</li>
+        <li>Color values specified in CMYK, RGB, and HEX</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Submission Format</h3>
+      <ul class="check-list">
+        <li>Present all directions in a single PDF overview document</li>
+        <li>Each direction labeled (Direction A, B, C)</li>
+        <li>Brief rationale for each (3–5 sentences max)</li>
+        <li>Show at least one real-world mockup per direction</li>
+        <li>No watermarks on deliverable files</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 8: CONTEXT & APPLICATIONS ═══ -->
+<div class="content-page">
+  <div class="section-num">08 — Applications Context</div>
+  <h2>Where This Logo Will Live</h2>
+  <div class="rule"></div>
+  <p>Design for these surfaces from the start. A mark that only works on a white screen is not the right mark.</p>
+
+  <div class="three-col">
+    <div class="card">
+      <h3>Digital</h3>
+      <ul class="brief-list" style="margin-top:10px;">
+        <li>Website header and favicon</li>
+        <li>Social media profile image</li>
+        <li>Email signature</li>
+        <li>Digital marketing assets</li>
+        <li>Presentation decks</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Physical / Signage</h3>
+      <ul class="brief-list" style="margin-top:10px;">
+        <li>Garage door + pit lane signage</li>
+        <li>Track entry monument sign</li>
+        <li>Clubhouse exterior lettering</li>
+        <li>Vehicle livery / decal</li>
+        <li>Member ID card / badge</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Merchandise &amp; Print</h3>
+      <ul class="brief-list" style="margin-top:10px;">
+        <li>Embroidered cap / apparel</li>
+        <li>Laser-engraved metal plate</li>
+        <li>Letterhead + stationery</li>
+        <li>Member welcome package</li>
+        <li>Dupont Registry advertisement</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card-red" style="margin-top:28px;">
+    <p><strong>Key test:</strong> If the logo works laser-engraved on a brushed aluminum garage plaque and also works as a social media avatar, it's the right logo. If it only works in one of those contexts, it needs more work.</p>
+  </div>
+</div>
+
+
+<!-- ═══ FOOTER ═══ -->
+<div class="brief-footer">
+  <div class="brief-footer-left">
+    <strong>Bevpoint</strong>
+    Marketing Partner — Roaring Pines Motor Club<br>
+    Contact: John Giarrante · jgiarrante@mjbevolution.com
+  </div>
+  <div class="brief-footer-right">RPM · Confidential · 2026</div>
+</div>
+
+</body>
+</html>

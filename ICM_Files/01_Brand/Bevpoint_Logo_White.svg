@@ -1,0 +1,43 @@
+<svg viewBox="0 0 520 95" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Diagonal hatch pattern for left half of arrow mark (white on transparent) -->
+    <pattern id="bp-hatch-w" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="5" x2="5" y2="0" stroke="white" stroke-width="1.6" stroke-linecap="square"/>
+    </pattern>
+  </defs>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║       ICON MARK              ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+
+  <!-- Circle ring — 330° arc, 30° gap at bottom for stem -->
+  <!-- Center (40,42), radius 31, gap from ~255° to ~285° (SVG convention 0°=right, 90°=down) -->
+  <!-- Start point at 105°: x=40+31*cos(105°)=40+31*(-.259)=31.9, y=42+31*sin(105°)=42+31*(.966)=72.0 -->
+  <!-- End point at 75°:  x=40+31*cos(75°) =40+31*(.259)=48.1,  y=42+31*sin(75°) =42+31*(.966)=72.0 -->
+  <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0"
+        stroke="white" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+
+  <!-- Arrow mark — right half: SOLID white -->
+  <polygon points="40,13 57,57 40,57" fill="white"/>
+
+  <!-- Arrow mark — left half: HATCHED (diagonal lines over transparent) -->
+  <polygon points="40,13 23,57 40,57" fill="url(#bp-hatch-w)"/>
+
+  <!-- Subtle center seam line -->
+  <line x1="40" y1="13" x2="40" y2="57"
+        stroke="rgba(0,0,0,0.18)" stroke-width="0.8"/>
+
+  <!-- Stem — extends below circle -->
+  <rect x="37.5" y="57" width="5" height="28" fill="white" rx="0.5"/>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║       WORDMARK               ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <text
+    x="105" y="67"
+    font-family="'Barlow Condensed', 'Oswald', 'Impact', 'Arial Narrow', sans-serif"
+    font-weight="800"
+    font-size="56"
+    fill="white"
+    letter-spacing="1">BEVPOINT</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg viewBox="0 0 520 95" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Diagonal hatch pattern — gray lines for left half of arrow mark -->
+    <pattern id="bp-hatch-n" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="5" x2="5" y2="0" stroke="#CCCCDD" stroke-width="1.6" stroke-linecap="square"/>
+    </pattern>
+  </defs>
+
+  <!-- Circle ring — 330° arc, 30° gap at bottom -->
+  <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0"
+        stroke="#2B2C7A" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+
+  <!-- Arrow mark — right half: solid navy -->
+  <polygon points="40,13 57,57 40,57" fill="#2B2C7A"/>
+
+  <!-- Arrow mark — left half: hatched gray lines on white background -->
+  <polygon points="40,13 23,57 40,57" fill="white"/>
+  <polygon points="40,13 23,57 40,57" fill="url(#bp-hatch-n)"/>
+
+  <!-- Subtle center seam -->
+  <line x1="40" y1="13" x2="40" y2="57"
+        stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+
+  <!-- Stem -->
+  <rect x="37.5" y="57" width="5" height="28" fill="#2B2C7A" rx="0.5"/>
+
+  <!-- Wordmark -->
+  <text
+    x="105" y="67"
+    font-family="'Barlow Condensed', 'Oswald', 'Impact', 'Arial Narrow', sans-serif"
+    font-weight="800"
+    font-size="56"
+    fill="#2B2C7A"
+    letter-spacing="1">BEVPOINT</text>
+</svg>
