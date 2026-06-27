@@ -825,6 +825,98 @@ html, body {
 .contact-slide.active .ai:nth-child(3) { animation-delay: 0.25s; }
 .contact-slide.active .ai:nth-child(4) { animation-delay: 0.38s; }
 
+/* ===== GLOBAL SECTION STYLES ===== */
+.global-slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 60px 60px;
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.48s cubic-bezier(.4,0,.2,1), transform 0.48s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  overflow: hidden;
+}
+.global-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.global-slide.exit {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+.global-slide.active .ai { opacity: 0; animation: fadeUp 0.55s ease forwards; }
+.global-slide.active .ai:nth-child(1) { animation-delay: 0.05s; }
+.global-slide.active .ai:nth-child(2) { animation-delay: 0.15s; }
+.global-slide.active .ai:nth-child(3) { animation-delay: 0.25s; }
+.global-slide.active .ai:nth-child(4) { animation-delay: 0.35s; }
+
+.global-mocks-row {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.global-mock-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.global-platform-label {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.7);
+  font-weight: 600;
+  font-family: 'Barlow Condensed', sans-serif;
+  margin-bottom: 8px;
+}
+
+.global-caption {
+  font-size: 11.5px;
+  color: rgba(240,242,255,0.45);
+  line-height: 1.5;
+  text-align: center;
+  margin-top: 6px;
+  max-width: 300px;
+  font-style: italic;
+}
+
+/* Scale container that shrinks phone/x-frame mocks to fit slide columns */
+.mock-phone-wrap {
+  transform: scale(0.50);
+  transform-origin: top center;
+  /* negative margin compensates for whitespace left by scaled element */
+  margin-bottom: -49%;
+}
+.mock-x-wrap {
+  transform: scale(0.56);
+  transform-origin: top center;
+  margin-bottom: -44%;
+}
+
+@media (max-width: 1400px) {
+  .global-slide { padding: 36px 40px 48px; }
+  .mock-phone-wrap { transform: scale(0.44); margin-bottom: -56%; }
+  .mock-x-wrap    { transform: scale(0.50); margin-bottom: -50%; }
+}
+@media (max-width: 1200px) {
+  .mock-phone-wrap { transform: scale(0.38); margin-bottom: -62%; }
+  .mock-x-wrap    { transform: scale(0.44); margin-bottom: -56%; }
+}
+
+/* ===== END GLOBAL SECTION STYLES ===== */
+
 /* ============================================================
    RESPONSIVE OVERRIDES
    Breakpoints: 1400px | 1200px | 900px
@@ -1156,6 +1248,7 @@ html, body {
     <button class="nav-tab" data-section="hospitality" onclick="switchSection('hospitality')">Hospitality</button>
     <button class="nav-tab" data-section="investment" onclick="switchSection('investment')">Investment</button>
     <button class="nav-tab" data-section="contact" onclick="switchSection('contact')">Contact</button>
+    <button class="nav-tab" data-section="global" onclick="switchSection('global')">Global</button>
   </div>
   <div class="slide-counter"><span class="current" id="cs">01</span>&nbsp;/&nbsp;<span id="ts">11</span></div>
 </div>
@@ -2776,6 +2869,707 @@ html, body {
 </div><!-- /slides-wrapper -->
 </div><!-- /contact-section -->
 
+<!-- ===== GLOBAL SECTION (9 slides: 1 cover + 7 countries) ===== -->
+<div class="section-container" id="global-section">
+<div class="slides-wrapper">
+
+  <!-- GLOBAL SLIDE 1: COVER -->
+  <div class="global-slide active" id="global-slide-1" data-slide="1">
+    <div class="cover-accent"></div>
+    <div class="grid-bg"></div>
+    <div style="position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:980px;">
+      <div class="ai" style="font-size:10px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:#C9A84C;">Global Market Reach</div>
+      <div class="ai" style="font-family:'Barlow Condensed',Impact,sans-serif;font-size:clamp(38px,6vw,80px);font-weight:800;line-height:0.95;letter-spacing:-0.02em;">
+        Built for the World's<br><span style="color:#C9A84C;">Fastest Audience</span>
+      </div>
+      <div class="ai" style="font-size:clamp(15px,1.6vw,19px);color:rgba(255,255,255,0.58);line-height:1.7;max-width:680px;">
+        827 million F1 fans globally. Roaring Pines is positioned to attract founding members from the top 7 F1 markets.
+      </div>
+
+      <!-- Flag row -->
+      <div class="ai" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:8px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <span style="font-size:32px;">&#127463;&#127479;</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Brazil</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <span style="font-size:32px;">&#127468;&#127463;</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">UK</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <span style="font-size:32px;">&#127465;&#127466;</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Germany</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <span style="font-size:32px;">&#127475;&#127473;</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Netherlands</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <span style="font-size:32px;">&#127470;&#127481;</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Italy</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <span style="font-size:32px;">&#127474;&#127485;</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Mexico</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <span style="font-size:32px;">&#127471;&#127477;</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Japan</span>
+        </div>
+      </div>
+
+      <!-- Gold stat bar -->
+      <div class="ai" style="padding:16px 36px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:clamp(14px,1.6vw,18px);font-weight:700;letter-spacing:0.1em;color:#C9A84C;text-transform:uppercase;">
+        827M Global Fans &nbsp;&middot;&nbsp; 7 Languages &nbsp;&middot;&nbsp; 1 Club
+      </div>
+
+      <p class="ai" style="font-size:12px;color:rgba(255,255,255,0.25);letter-spacing:0.04em;font-style:italic;">Click the arrow or use keyboard to explore each market &rarr;</p>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 2: BRAZIL ─── -->
+  <div class="global-slide" id="global-slide-2" data-slide="2">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:1360px;display:flex;flex-direction:column;gap:16px;">
+      <!-- Header -->
+      <div class="ai" style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.18);">
+        <span style="font-size:28px;">&#127463;&#127479;</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;">Brasil</div>
+          <div style="font-size:11px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;">#1 F1 Market &nbsp;&middot;&nbsp; Portugu&ecirc;s</div>
+        </div>
+      </div>
+      <!-- Three columns -->
+      <div class="ai" style="display:grid;grid-template-columns:2fr 2fr 1fr;gap:20px;align-items:start;">
+        <!-- Instagram mock -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">Instagram</div>
+          <div class="mock-phone-wrap">
+            <div style="width:330px;background:#0A0A0F;border-radius:40px;padding:12px;border:2px solid #1E1E2E;box-shadow:0 0 0 1px #0D0D18,0 24px 60px rgba(0,0,0,0.7);">
+              <div style="width:90px;height:24px;background:#0A0A0F;border-radius:0 0 14px 14px;margin:0 auto 8px;"></div>
+              <div style="display:flex;justify-content:space-between;padding:0 16px 8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);"><span>9:41</span><span>&#9646;&#9646;&#9646;</span></div>
+              <div style="background:#050508;border-radius:24px;overflow:hidden;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 8px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;">Instagram</span><span style="font-size:18px;color:rgba(255,255,255,0.75);">&#9993;</span></div>
+                <div style="display:flex;align-items:center;padding:8px 14px;gap:10px;">
+                  <div style="width:34px;height:34px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div><div style="font-size:12px;font-weight:700;color:#fff;">roaringpinesmc</div><div style="font-size:10px;color:rgba(255,255,255,0.45);">Florida, Estados Unidos</div></div>
+                </div>
+                <div style="width:100%;aspect-ratio:1;background:#111330;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:20px;">
+                  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 60%);"></div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:52px;letter-spacing:-2px;color:#C9A84C;line-height:0.9;text-shadow:0 0 40px rgba(201,168,76,0.3);">RPM</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(201,168,76,0.6);text-transform:uppercase;font-weight:600;">Roaring Pines Motor Club</div>
+                  </div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:#E2C47A;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;">25 membros fundadores</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">Uma pista.<br>Uma vida inteira<br>constru&iacute;da ao redor dela.</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;">Funda&ccedil;&atilde;o aberta &nbsp;&bull;&nbsp; Vagas limitadas</div>
+                  </div>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#A0A4FF,transparent);opacity:0.6;"></div>
+                </div>
+                <div style="padding:4px 14px 8px;font-size:11px;font-weight:700;color:#fff;background:#050508;">3.847 curtidas</div>
+                <div style="padding:2px 14px 8px;font-size:11px;color:rgba(255,255,255,0.75);background:#050508;line-height:1.5;"><strong>roaringpinesmc</strong> Funda&ccedil;&atilde;o exclusiva agora aberta. Apenas 25 membros. <span style="color:#A0A4FF;">#MotorClub #F1Brasil #RoaringPines</span></div>
+              </div>
+              <div style="width:100px;height:4px;background:rgba(255,255,255,0.25);border-radius:4px;margin:8px auto 4px;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- X/Twitter mock -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">X / Twitter</div>
+          <div class="mock-x-wrap">
+            <div style="width:500px;background:#0F0F14;border-radius:16px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:0.5px solid rgba(255,255,255,0.07);">
+                <span style="font-size:18px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;">&#120143;</span>
+                <div style="display:flex;gap:8px;"><span style="font-size:11px;color:#fff;padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);">Para voc&ecirc;</span><span style="font-size:11px;color:rgba(255,255,255,0.5);padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);">Seguindo</span></div>
+              </div>
+              <div style="padding:16px;">
+                <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+                  <div style="width:44px;height:44px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#fff;">Roaring Pines MC <span style="display:inline-flex;width:16px;height:16px;background:#1D9BF0;border-radius:50%;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:900;">&#10003;</span></div><div style="font-size:13px;color:rgba(255,255,255,0.45);">@RoaringPinesMC</div></div>
+                  <div style="font-size:12px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,0.35);padding:5px 14px;border-radius:20px;">Seguir</div>
+                </div>
+                <div style="font-size:15px;color:#E8E8F0;line-height:1.6;margin-bottom:14px;">A funda&ccedil;&atilde;o est&aacute; aberta. 25 vagas. Uma pista s&oacute; nossa. Um estilo de vida constru&iacute;do em volta dela. O Brasil tem Interlagos &mdash; agora h&aacute; um lar para quem vive pelo motor. <span style="color:#A0A4FF;">#RPMotorClub #MemberOnly #Florida</span></div>
+                <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <div style="height:100px;background:#111330;position:relative;padding:14px 18px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.1) 0%,transparent 60%);"></div>
+                    <div style="position:relative;z-index:1;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#C9A84C;letter-spacing:-1px;line-height:1;">RPM</span></div>
+                    <div style="position:relative;z-index:1;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.2;">25 Membros Fundadores. Uma Pista. Uma Vida.</div>
+                  </div>
+                  <div style="padding:8px 14px;font-size:12px;color:rgba(255,255,255,0.4);border-top:0.5px solid rgba(255,255,255,0.07);">roaringpinesmc.com</div>
+                </div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:10px;">4:23 PM &middot; <span style="color:rgba(255,255,255,0.5);">284K</span> visualiza&ccedil;&otilde;es</div>
+                <div style="display:flex;gap:20px;padding-bottom:10px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">1.847</strong> Reposts</span><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">9.203</strong> Curtidas</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- English translation panel -->
+        <div style="background:#111330;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:20px;height:fit-content;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">What it says in English:</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">Instagram:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;margin-bottom:14px;font-style:italic;">"One track. A whole life built around it. — Exclusive founding now open. Only 25 members. One club. One way of life. The track is yours."</div>
+          <div style="width:100%;height:1px;background:rgba(201,168,76,0.2);margin-bottom:14px;"></div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">X / Twitter:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;font-style:italic;">"The founding is open. 25 spots. One track only ours. A lifestyle built around it. Brazil has Interlagos — now there's a home for those who live for the engine."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 3: UK ─── -->
+  <div class="global-slide" id="global-slide-3" data-slide="3">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:1360px;display:flex;flex-direction:column;gap:16px;">
+      <div class="ai" style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.18);">
+        <span style="font-size:28px;">&#127468;&#127463;</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;">United Kingdom</div>
+          <div style="font-size:11px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;">#2 F1 Market &nbsp;&middot;&nbsp; English</div>
+        </div>
+      </div>
+      <div class="ai" style="display:grid;grid-template-columns:2fr 2fr 1fr;gap:20px;align-items:start;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">Instagram</div>
+          <div class="mock-phone-wrap">
+            <div style="width:330px;background:#0A0A0F;border-radius:40px;padding:12px;border:2px solid #1E1E2E;box-shadow:0 0 0 1px #0D0D18,0 24px 60px rgba(0,0,0,0.7);">
+              <div style="width:90px;height:24px;background:#0A0A0F;border-radius:0 0 14px 14px;margin:0 auto 8px;"></div>
+              <div style="display:flex;justify-content:space-between;padding:0 16px 8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);"><span>9:41</span><span>&#9646;&#9646;&#9646;</span></div>
+              <div style="background:#050508;border-radius:24px;overflow:hidden;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 8px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;">Instagram</span><span style="font-size:18px;color:rgba(255,255,255,0.75);">&#9993;</span></div>
+                <div style="display:flex;align-items:center;padding:8px 14px;gap:10px;">
+                  <div style="width:34px;height:34px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div><div style="font-size:12px;font-weight:700;color:#fff;">roaringpinesmc</div><div style="font-size:10px;color:rgba(255,255,255,0.45);">Florida, United States</div></div>
+                </div>
+                <div style="width:100%;aspect-ratio:1;background:#111330;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:20px;">
+                  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 60%);"></div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:52px;letter-spacing:-2px;color:#C9A84C;line-height:0.9;text-shadow:0 0 40px rgba(201,168,76,0.3);">RPM</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(201,168,76,0.6);text-transform:uppercase;font-weight:600;">Roaring Pines Motor Club</div>
+                  </div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:#E2C47A;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;">25 Founding Members</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">Not a venue.<br>Not a track day.<br>A private motor club.</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;">Founding membership open &nbsp;&bull;&nbsp; Florida</div>
+                  </div>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#A0A4FF,transparent);opacity:0.6;"></div>
+                </div>
+                <div style="padding:4px 14px 8px;font-size:11px;font-weight:700;color:#fff;background:#050508;">4,112 likes</div>
+                <div style="padding:2px 14px 8px;font-size:11px;color:rgba(255,255,255,0.75);background:#050508;line-height:1.5;"><strong>roaringpinesmc</strong> One track. 25 members. A lifestyle built entirely around it. <span style="color:#A0A4FF;">#MotorClub #PrivateMembers #F1 #RoaringPines</span></div>
+              </div>
+              <div style="width:100px;height:4px;background:rgba(255,255,255,0.25);border-radius:4px;margin:8px auto 4px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">X / Twitter</div>
+          <div class="mock-x-wrap">
+            <div style="width:500px;background:#0F0F14;border-radius:16px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:0.5px solid rgba(255,255,255,0.07);">
+                <span style="font-size:18px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;">&#120143;</span>
+                <div style="display:flex;gap:8px;"><span style="font-size:11px;color:#fff;padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);">For you</span><span style="font-size:11px;color:rgba(255,255,255,0.5);padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);">Following</span></div>
+              </div>
+              <div style="padding:16px;">
+                <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+                  <div style="width:44px;height:44px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#fff;">Roaring Pines MC <span style="display:inline-flex;width:16px;height:16px;background:#1D9BF0;border-radius:50%;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:900;">&#10003;</span></div><div style="font-size:13px;color:rgba(255,255,255,0.45);">@RoaringPinesMC</div></div>
+                  <div style="font-size:12px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,0.35);padding:5px 14px;border-radius:20px;">Follow</div>
+                </div>
+                <div style="font-size:15px;color:#E8E8F0;line-height:1.6;margin-bottom:14px;">Founding membership is open. 25 seats. One private track in Florida. A club built for people who consider the drive an essential part of life &mdash; not an afterthought. Britain gave the world Silverstone. We&rsquo;re giving serious drivers a home. <span style="color:#A0A4FF;">#RPMotorClub #PrivateMembers</span></div>
+                <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <div style="height:100px;background:#111330;position:relative;padding:14px 18px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.1) 0%,transparent 60%);"></div>
+                    <div style="position:relative;z-index:1;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#C9A84C;letter-spacing:-1px;line-height:1;">RPM</span></div>
+                    <div style="position:relative;z-index:1;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.2;">25 Founding Seats. One Track. One Club.</div>
+                  </div>
+                  <div style="padding:8px 14px;font-size:12px;color:rgba(255,255,255,0.4);border-top:0.5px solid rgba(255,255,255,0.07);">roaringpinesmc.com</div>
+                </div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:10px;">10:14 AM &middot; <span style="color:rgba(255,255,255,0.5);">319K</span> views</div>
+                <div style="display:flex;gap:20px;padding-bottom:10px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">2,103</strong> Reposts</span><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">11,440</strong> Likes</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#111330;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:20px;height:fit-content;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">What it says in English:</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">Instagram:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;margin-bottom:14px;font-style:italic;">"Not a venue. Not a track day. A private motor club. — One track. 25 members. A lifestyle built entirely around it. Founding membership is now open."</div>
+          <div style="width:100%;height:1px;background:rgba(201,168,76,0.2);margin-bottom:14px;"></div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">X / Twitter:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;font-style:italic;">"Founding membership is open. 25 seats. One private track in Florida. A club built for people who consider the drive an essential part of life — not an afterthought."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 4: GERMANY ─── -->
+  <div class="global-slide" id="global-slide-4" data-slide="4">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:1360px;display:flex;flex-direction:column;gap:16px;">
+      <div class="ai" style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.18);">
+        <span style="font-size:28px;">&#127465;&#127466;</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;">Deutschland</div>
+          <div style="font-size:11px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;">#3 F1 Market &nbsp;&middot;&nbsp; Deutsch</div>
+        </div>
+      </div>
+      <div class="ai" style="display:grid;grid-template-columns:2fr 2fr 1fr;gap:20px;align-items:start;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">Instagram</div>
+          <div class="mock-phone-wrap">
+            <div style="width:330px;background:#0A0A0F;border-radius:40px;padding:12px;border:2px solid #1E1E2E;box-shadow:0 0 0 1px #0D0D18,0 24px 60px rgba(0,0,0,0.7);">
+              <div style="width:90px;height:24px;background:#0A0A0F;border-radius:0 0 14px 14px;margin:0 auto 8px;"></div>
+              <div style="display:flex;justify-content:space-between;padding:0 16px 8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);"><span>9:41</span><span>&#9646;&#9646;&#9646;</span></div>
+              <div style="background:#050508;border-radius:24px;overflow:hidden;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 8px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;">Instagram</span><span style="font-size:18px;color:rgba(255,255,255,0.75);">&#9993;</span></div>
+                <div style="display:flex;align-items:center;padding:8px 14px;gap:10px;">
+                  <div style="width:34px;height:34px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div><div style="font-size:12px;font-weight:700;color:#fff;">roaringpinesmc</div><div style="font-size:10px;color:rgba(255,255,255,0.45);">Florida, Vereinigte Staaten</div></div>
+                </div>
+                <div style="width:100%;aspect-ratio:1;background:#111330;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:20px;">
+                  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 60%);"></div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:52px;letter-spacing:-2px;color:#C9A84C;line-height:0.9;text-shadow:0 0 40px rgba(201,168,76,0.3);">RPM</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(201,168,76,0.6);text-transform:uppercase;font-weight:600;">Roaring Pines Motor Club</div>
+                  </div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:#E2C47A;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;">25 Gr&uuml;ndungsmitglieder</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">Kein Eventgel&auml;nde.<br>Eine private Rennstrecke.<br>Ein Lebensstil.</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;">Gr&uuml;ndungsmitgliedschaft offen &nbsp;&bull;&nbsp; Florida</div>
+                  </div>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#A0A4FF,transparent);opacity:0.6;"></div>
+                </div>
+                <div style="padding:4px 14px 8px;font-size:11px;font-weight:700;color:#fff;background:#050508;">3.291 Gef&auml;llt-mir-Angaben</div>
+                <div style="padding:2px 14px 8px;font-size:11px;color:rgba(255,255,255,0.75);background:#050508;line-height:1.5;"><strong>roaringpinesmc</strong> Eine Strecke. 25 Mitglieder. Ein Leben rund um den Motor. <span style="color:#A0A4FF;">#MotorClub #Motorsport #RoaringPines</span></div>
+              </div>
+              <div style="width:100px;height:4px;background:rgba(255,255,255,0.25);border-radius:4px;margin:8px auto 4px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">X / Twitter</div>
+          <div class="mock-x-wrap">
+            <div style="width:500px;background:#0F0F14;border-radius:16px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:0.5px solid rgba(255,255,255,0.07);">
+                <span style="font-size:18px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;">&#120143;</span>
+                <div style="display:flex;gap:8px;"><span style="font-size:11px;color:#fff;padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);">F&uuml;r dich</span><span style="font-size:11px;color:rgba(255,255,255,0.5);padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);">Gefolgt</span></div>
+              </div>
+              <div style="padding:16px;">
+                <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+                  <div style="width:44px;height:44px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#fff;">Roaring Pines MC <span style="display:inline-flex;width:16px;height:16px;background:#1D9BF0;border-radius:50%;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:900;">&#10003;</span></div><div style="font-size:13px;color:rgba(255,255,255,0.45);">@RoaringPinesMC</div></div>
+                  <div style="font-size:12px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,0.35);padding:5px 14px;border-radius:20px;">Folgen</div>
+                </div>
+                <div style="font-size:15px;color:#E8E8F0;line-height:1.6;margin-bottom:14px;">Gr&uuml;ndungsmitgliedschaft offen. 25 Pl&auml;tze. Eine private Rennstrecke in Florida. Deutschland hat den N&uuml;rburgring &mdash; wir bieten etwas Exklusiveres: ein Club, der dir geh&ouml;rt. Roaring Pines Motor Club. <span style="color:#A0A4FF;">#RPMotorClub #Motorsport #Exklusiv</span></div>
+                <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <div style="height:100px;background:#111330;position:relative;padding:14px 18px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.1) 0%,transparent 60%);"></div>
+                    <div style="position:relative;z-index:1;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#C9A84C;letter-spacing:-1px;line-height:1;">RPM</span></div>
+                    <div style="position:relative;z-index:1;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.2;">25 Gr&uuml;ndungspl&auml;tze. Eine Strecke. Ein Club.</div>
+                  </div>
+                  <div style="padding:8px 14px;font-size:12px;color:rgba(255,255,255,0.4);border-top:0.5px solid rgba(255,255,255,0.07);">roaringpinesmc.com</div>
+                </div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:10px;">14:52 &middot; <span style="color:rgba(255,255,255,0.5);">241K</span> Aufrufe</div>
+                <div style="display:flex;gap:20px;padding-bottom:10px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">1.544</strong> Reposts</span><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">8.017</strong> Likes</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#111330;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:20px;height:fit-content;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">What it says in English:</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">Instagram:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;margin-bottom:14px;font-style:italic;">"Not an event venue. A private race track. A lifestyle. — One track. 25 members. A life built around the engine. Founding membership is now open."</div>
+          <div style="width:100%;height:1px;background:rgba(201,168,76,0.2);margin-bottom:14px;"></div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">X / Twitter:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;font-style:italic;">"Founding membership open. 25 spots. A private race track in Florida. Germany has the N&uuml;rburgring — we offer something more exclusive: a club that belongs to you."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 5: NETHERLANDS ─── -->
+  <div class="global-slide" id="global-slide-5" data-slide="5">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:1360px;display:flex;flex-direction:column;gap:16px;">
+      <div class="ai" style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.18);">
+        <span style="font-size:28px;">&#127475;&#127473;</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;">Nederland</div>
+          <div style="font-size:11px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;">#4 F1 Market &nbsp;&middot;&nbsp; Nederlands</div>
+        </div>
+      </div>
+      <div class="ai" style="display:grid;grid-template-columns:2fr 2fr 1fr;gap:20px;align-items:start;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">Instagram</div>
+          <div class="mock-phone-wrap">
+            <div style="width:330px;background:#0A0A0F;border-radius:40px;padding:12px;border:2px solid #1E1E2E;box-shadow:0 0 0 1px #0D0D18,0 24px 60px rgba(0,0,0,0.7);">
+              <div style="width:90px;height:24px;background:#0A0A0F;border-radius:0 0 14px 14px;margin:0 auto 8px;"></div>
+              <div style="display:flex;justify-content:space-between;padding:0 16px 8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);"><span>9:41</span><span>&#9646;&#9646;&#9646;</span></div>
+              <div style="background:#050508;border-radius:24px;overflow:hidden;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 8px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;">Instagram</span><span style="font-size:18px;color:rgba(255,255,255,0.75);">&#9993;</span></div>
+                <div style="display:flex;align-items:center;padding:8px 14px;gap:10px;">
+                  <div style="width:34px;height:34px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div><div style="font-size:12px;font-weight:700;color:#fff;">roaringpinesmc</div><div style="font-size:10px;color:rgba(255,255,255,0.45);">Florida, Verenigde Staten</div></div>
+                </div>
+                <div style="width:100%;aspect-ratio:1;background:#111330;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:20px;">
+                  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 60%);"></div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:52px;letter-spacing:-2px;color:#C9A84C;line-height:0.9;text-shadow:0 0 40px rgba(201,168,76,0.3);">RPM</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(201,168,76,0.6);text-transform:uppercase;font-weight:600;">Roaring Pines Motor Club</div>
+                  </div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:#E2C47A;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;">25 oprichtende leden</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">&Eacute;&eacute;n circuit.<br>Jouw club.<br>Een leven gebouwd eromheen.</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;">Oprichtingslidmaatschap open &nbsp;&bull;&nbsp; Florida</div>
+                  </div>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#A0A4FF,transparent);opacity:0.6;"></div>
+                </div>
+                <div style="padding:4px 14px 8px;font-size:11px;font-weight:700;color:#fff;background:#050508;">2.938 vind-ik-leuks</div>
+                <div style="padding:2px 14px 8px;font-size:11px;color:rgba(255,255,255,0.75);background:#050508;line-height:1.5;"><strong>roaringpinesmc</strong> Oprichtingslidmaatschap is open. 25 plekken. &Eacute;&eacute;n privacircuit in Florida. <span style="color:#A0A4FF;">#MotorClub #F1Nederland #RoaringPines</span></div>
+              </div>
+              <div style="width:100px;height:4px;background:rgba(255,255,255,0.25);border-radius:4px;margin:8px auto 4px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">X / Twitter</div>
+          <div class="mock-x-wrap">
+            <div style="width:500px;background:#0F0F14;border-radius:16px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:0.5px solid rgba(255,255,255,0.07);">
+                <span style="font-size:18px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;">&#120143;</span>
+                <div style="display:flex;gap:8px;"><span style="font-size:11px;color:#fff;padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);">Voor jou</span><span style="font-size:11px;color:rgba(255,255,255,0.5);padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);">Volgend</span></div>
+              </div>
+              <div style="padding:16px;">
+                <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+                  <div style="width:44px;height:44px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#fff;">Roaring Pines MC <span style="display:inline-flex;width:16px;height:16px;background:#1D9BF0;border-radius:50%;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:900;">&#10003;</span></div><div style="font-size:13px;color:rgba(255,255,255,0.45);">@RoaringPinesMC</div></div>
+                  <div style="font-size:12px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,0.35);padding:5px 14px;border-radius:20px;">Volgen</div>
+                </div>
+                <div style="font-size:15px;color:#E8E8F0;line-height:1.6;margin-bottom:14px;">Oprichtingslidmaatschap open. 25 plekken. &Eacute;&eacute;n privacircuit in Florida. Nederland weet wat motorsport betekent &mdash; Zandvoort, Max, de oranje golf. Nu is er een thuis voor serieuze coureurs. Roaring Pines Motor Club. <span style="color:#A0A4FF;">#RPMotorClub #F1 #Nederland</span></div>
+                <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <div style="height:100px;background:#111330;position:relative;padding:14px 18px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.1) 0%,transparent 60%);"></div>
+                    <div style="position:relative;z-index:1;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#C9A84C;letter-spacing:-1px;line-height:1;">RPM</span></div>
+                    <div style="position:relative;z-index:1;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.2;">25 Oprichtende Leden. &Eacute;&eacute;n Circuit. Jouw Club.</div>
+                  </div>
+                  <div style="padding:8px 14px;font-size:12px;color:rgba(255,255,255,0.4);border-top:0.5px solid rgba(255,255,255,0.07);">roaringpinesmc.com</div>
+                </div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:10px;">16:07 &middot; <span style="color:rgba(255,255,255,0.5);">198K</span> weergaven</div>
+                <div style="display:flex;gap:20px;padding-bottom:10px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">1.203</strong> Retweets</span><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">6.814</strong> Likes</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#111330;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:20px;height:fit-content;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">What it says in English:</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">Instagram:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;margin-bottom:14px;font-style:italic;">"One circuit. Your club. A life built around it. — Founding membership is open. 25 spots. One private circuit in Florida. A lifestyle built around the engine."</div>
+          <div style="width:100%;height:1px;background:rgba(201,168,76,0.2);margin-bottom:14px;"></div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">X / Twitter:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;font-style:italic;">"Founding membership open. 25 spots. One private circuit in Florida. The Netherlands knows motorsport — Zandvoort, Max, the orange wave. Now there's a home for serious drivers."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 6: ITALY ─── -->
+  <div class="global-slide" id="global-slide-6" data-slide="6">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:1360px;display:flex;flex-direction:column;gap:16px;">
+      <div class="ai" style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.18);">
+        <span style="font-size:28px;">&#127470;&#127481;</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;">Italia</div>
+          <div style="font-size:11px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;">#5 F1 Market &nbsp;&middot;&nbsp; Italiano</div>
+        </div>
+      </div>
+      <div class="ai" style="display:grid;grid-template-columns:2fr 2fr 1fr;gap:20px;align-items:start;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">Instagram</div>
+          <div class="mock-phone-wrap">
+            <div style="width:330px;background:#0A0A0F;border-radius:40px;padding:12px;border:2px solid #1E1E2E;box-shadow:0 0 0 1px #0D0D18,0 24px 60px rgba(0,0,0,0.7);">
+              <div style="width:90px;height:24px;background:#0A0A0F;border-radius:0 0 14px 14px;margin:0 auto 8px;"></div>
+              <div style="display:flex;justify-content:space-between;padding:0 16px 8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);"><span>9:41</span><span>&#9646;&#9646;&#9646;</span></div>
+              <div style="background:#050508;border-radius:24px;overflow:hidden;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 8px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;">Instagram</span><span style="font-size:18px;color:rgba(255,255,255,0.75);">&#9993;</span></div>
+                <div style="display:flex;align-items:center;padding:8px 14px;gap:10px;">
+                  <div style="width:34px;height:34px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div><div style="font-size:12px;font-weight:700;color:#fff;">roaringpinesmc</div><div style="font-size:10px;color:rgba(255,255,255,0.45);">Florida, Stati Uniti</div></div>
+                </div>
+                <div style="width:100%;aspect-ratio:1;background:#111330;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:20px;">
+                  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 60%);"></div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:52px;letter-spacing:-2px;color:#C9A84C;line-height:0.9;text-shadow:0 0 40px rgba(201,168,76,0.3);">RPM</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(201,168,76,0.6);text-transform:uppercase;font-weight:600;">Roaring Pines Motor Club</div>
+                  </div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:#E2C47A;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;">25 Soci Fondatori</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">Una pista privata.<br>Venticinque soci.<br>Una passione senza compromessi.</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;">Societ&agrave; fondatrice aperta &nbsp;&bull;&nbsp; Florida</div>
+                  </div>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#A0A4FF,transparent);opacity:0.6;"></div>
+                </div>
+                <div style="padding:4px 14px 8px;font-size:11px;font-weight:700;color:#fff;background:#050508;">3.574 Mi piace</div>
+                <div style="padding:2px 14px 8px;font-size:11px;color:rgba(255,255,255,0.75);background:#050508;line-height:1.5;"><strong>roaringpinesmc</strong> L&rsquo;iscrizione fondatrice &egrave; aperta. 25 posti. Una pista privata in Florida. <span style="color:#A0A4FF;">#MotorClub #Motorsport #F1Italia #RoaringPines</span></div>
+              </div>
+              <div style="width:100px;height:4px;background:rgba(255,255,255,0.25);border-radius:4px;margin:8px auto 4px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">X / Twitter</div>
+          <div class="mock-x-wrap">
+            <div style="width:500px;background:#0F0F14;border-radius:16px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:0.5px solid rgba(255,255,255,0.07);">
+                <span style="font-size:18px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;">&#120143;</span>
+                <div style="display:flex;gap:8px;"><span style="font-size:11px;color:#fff;padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);">Per te</span><span style="font-size:11px;color:rgba(255,255,255,0.5);padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);">Seguiti</span></div>
+              </div>
+              <div style="padding:16px;">
+                <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+                  <div style="width:44px;height:44px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#fff;">Roaring Pines MC <span style="display:inline-flex;width:16px;height:16px;background:#1D9BF0;border-radius:50%;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:900;">&#10003;</span></div><div style="font-size:13px;color:rgba(255,255,255,0.45);">@RoaringPinesMC</div></div>
+                  <div style="font-size:12px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,0.35);padding:5px 14px;border-radius:20px;">Segui</div>
+                </div>
+                <div style="font-size:15px;color:#E8E8F0;line-height:1.6;margin-bottom:14px;">L&rsquo;iscrizione fondatrice &egrave; aperta. 25 posti. Una pista privata in Florida. L&rsquo;Italia ha Monza, la passione rossa, il rombo del motore &mdash; noi offriamo uno spazio dove quella passione diventa stile di vita. Roaring Pines Motor Club. <span style="color:#A0A4FF;">#RPMotorClub #Motorsport</span></div>
+                <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <div style="height:100px;background:#111330;position:relative;padding:14px 18px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.1) 0%,transparent 60%);"></div>
+                    <div style="position:relative;z-index:1;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#C9A84C;letter-spacing:-1px;line-height:1;">RPM</span></div>
+                    <div style="position:relative;z-index:1;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.2;">25 Soci Fondatori. Una Pista. Una Passione.</div>
+                  </div>
+                  <div style="padding:8px 14px;font-size:12px;color:rgba(255,255,255,0.4);border-top:0.5px solid rgba(255,255,255,0.07);">roaringpinesmc.com</div>
+                </div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:10px;">17:30 &middot; <span style="color:rgba(255,255,255,0.5);">226K</span> visualizzazioni</div>
+                <div style="display:flex;gap:20px;padding-bottom:10px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">1.418</strong> Repost</span><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">7.552</strong> Mi piace</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#111330;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:20px;height:fit-content;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">What it says in English:</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">Instagram:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;margin-bottom:14px;font-style:italic;">"A private track. Twenty-five members. A passion without compromise. — Founding membership is open. 25 spots. A private track in Florida. A lifestyle built around the engine."</div>
+          <div style="width:100%;height:1px;background:rgba(201,168,76,0.2);margin-bottom:14px;"></div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">X / Twitter:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;font-style:italic;">"Founding membership is open. 25 spots. A private track in Florida. Italy has Monza, the red passion, the engine's roar — we offer a space where that passion becomes a lifestyle."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 7: MEXICO ─── -->
+  <div class="global-slide" id="global-slide-7" data-slide="7">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:1360px;display:flex;flex-direction:column;gap:16px;">
+      <div class="ai" style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.18);">
+        <span style="font-size:28px;">&#127474;&#127485;</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;">M&eacute;xico</div>
+          <div style="font-size:11px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;">#6 F1 Market &nbsp;&middot;&nbsp; Espa&ntilde;ol</div>
+        </div>
+      </div>
+      <div class="ai" style="display:grid;grid-template-columns:2fr 2fr 1fr;gap:20px;align-items:start;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">Instagram</div>
+          <div class="mock-phone-wrap">
+            <div style="width:330px;background:#0A0A0F;border-radius:40px;padding:12px;border:2px solid #1E1E2E;box-shadow:0 0 0 1px #0D0D18,0 24px 60px rgba(0,0,0,0.7);">
+              <div style="width:90px;height:24px;background:#0A0A0F;border-radius:0 0 14px 14px;margin:0 auto 8px;"></div>
+              <div style="display:flex;justify-content:space-between;padding:0 16px 8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);"><span>9:41</span><span>&#9646;&#9646;&#9646;</span></div>
+              <div style="background:#050508;border-radius:24px;overflow:hidden;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 8px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;">Instagram</span><span style="font-size:18px;color:rgba(255,255,255,0.75);">&#9993;</span></div>
+                <div style="display:flex;align-items:center;padding:8px 14px;gap:10px;">
+                  <div style="width:34px;height:34px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div><div style="font-size:12px;font-weight:700;color:#fff;">roaringpinesmc</div><div style="font-size:10px;color:rgba(255,255,255,0.45);">Florida, Estados Unidos</div></div>
+                </div>
+                <div style="width:100%;aspect-ratio:1;background:#111330;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:20px;">
+                  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 60%);"></div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:52px;letter-spacing:-2px;color:#C9A84C;line-height:0.9;text-shadow:0 0 40px rgba(201,168,76,0.3);">RPM</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(201,168,76,0.6);text-transform:uppercase;font-weight:600;">Roaring Pines Motor Club</div>
+                  </div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:#E2C47A;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;">25 Socios Fundadores</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">Una pista privada.<br>Veinticinco lugares.<br>Un estilo de vida sin l&iacute;mites.</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;">Membres&iacute;a fundadora abierta &nbsp;&bull;&nbsp; Florida</div>
+                  </div>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#A0A4FF,transparent);opacity:0.6;"></div>
+                </div>
+                <div style="padding:4px 14px 8px;font-size:11px;font-weight:700;color:#fff;background:#050508;">4.629 Me gusta</div>
+                <div style="padding:2px 14px 8px;font-size:11px;color:rgba(255,255,255,0.75);background:#050508;line-height:1.5;"><strong>roaringpinesmc</strong> La membres&iacute;a fundadora est&aacute; abierta. 25 lugares. Una pista privada en Florida. <span style="color:#A0A4FF;">#MotorClub #F1Mexico #RoaringPines</span></div>
+              </div>
+              <div style="width:100px;height:4px;background:rgba(255,255,255,0.25);border-radius:4px;margin:8px auto 4px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">X / Twitter</div>
+          <div class="mock-x-wrap">
+            <div style="width:500px;background:#0F0F14;border-radius:16px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:0.5px solid rgba(255,255,255,0.07);">
+                <span style="font-size:18px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;">&#120143;</span>
+                <div style="display:flex;gap:8px;"><span style="font-size:11px;color:#fff;padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);">Para ti</span><span style="font-size:11px;color:rgba(255,255,255,0.5);padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);">Siguiendo</span></div>
+              </div>
+              <div style="padding:16px;">
+                <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+                  <div style="width:44px;height:44px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#fff;">Roaring Pines MC <span style="display:inline-flex;width:16px;height:16px;background:#1D9BF0;border-radius:50%;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:900;">&#10003;</span></div><div style="font-size:13px;color:rgba(255,255,255,0.45);">@RoaringPinesMC</div></div>
+                  <div style="font-size:12px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,0.35);padding:5px 14px;border-radius:20px;">Seguir</div>
+                </div>
+                <div style="font-size:15px;color:#E8E8F0;line-height:1.6;margin-bottom:14px;">La membres&iacute;a fundadora est&aacute; abierta. 25 lugares. Una sola pista privada en Florida. M&eacute;xico vive la F1 como pocos &mdash; el Aut&oacute;dromo Hermanos Rodr&iacute;guez lo sabe. Ahora hay un club para los que viven el motor de verdad. Roaring Pines. <span style="color:#A0A4FF;">#RPMotorClub #F1Mexico</span></div>
+                <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <div style="height:100px;background:#111330;position:relative;padding:14px 18px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.1) 0%,transparent 60%);"></div>
+                    <div style="position:relative;z-index:1;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#C9A84C;letter-spacing:-1px;line-height:1;">RPM</span></div>
+                    <div style="position:relative;z-index:1;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.2;">25 Socios Fundadores. Una Pista. Sin L&iacute;mites.</div>
+                  </div>
+                  <div style="padding:8px 14px;font-size:12px;color:rgba(255,255,255,0.4);border-top:0.5px solid rgba(255,255,255,0.07);">roaringpinesmc.com</div>
+                </div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:10px;">11:18 AM &middot; <span style="color:rgba(255,255,255,0.5);">307K</span> vistas</div>
+                <div style="display:flex;gap:20px;padding-bottom:10px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">2.044</strong> Reposts</span><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">10.883</strong> Me gusta</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#111330;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:20px;height:fit-content;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">What it says in English:</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">Instagram:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;margin-bottom:14px;font-style:italic;">"A private track. Twenty-five spots. A lifestyle without limits. — Founding membership is open. 25 spots. A private track in Florida. A lifestyle built around the engine."</div>
+          <div style="width:100%;height:1px;background:rgba(201,168,76,0.2);margin-bottom:14px;"></div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">X / Twitter:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;font-style:italic;">"Founding membership is open. 25 spots. One private track in Florida. Mexico lives F1 like few others — the Hermanos Rodr&iacute;guez circuit knows it. Now there's a club for those who truly live for the engine."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 8: JAPAN ─── -->
+  <div class="global-slide" id="global-slide-8" data-slide="8">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:1360px;display:flex;flex-direction:column;gap:16px;">
+      <div class="ai" style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(201,168,76,0.18);">
+        <span style="font-size:28px;">&#127471;&#127477;</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;">&#26085;&#26412; (Japan)</div>
+          <div style="font-size:11px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;">#7 F1 Market &nbsp;&middot;&nbsp; &#26085;&#26412;&#35486;</div>
+        </div>
+      </div>
+      <div class="ai" style="display:grid;grid-template-columns:2fr 2fr 1fr;gap:20px;align-items:start;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">Instagram</div>
+          <div class="mock-phone-wrap">
+            <div style="width:330px;background:#0A0A0F;border-radius:40px;padding:12px;border:2px solid #1E1E2E;box-shadow:0 0 0 1px #0D0D18,0 24px 60px rgba(0,0,0,0.7);">
+              <div style="width:90px;height:24px;background:#0A0A0F;border-radius:0 0 14px 14px;margin:0 auto 8px;"></div>
+              <div style="display:flex;justify-content:space-between;padding:0 16px 8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);"><span>9:41</span><span>&#9646;&#9646;&#9646;</span></div>
+              <div style="background:#050508;border-radius:24px;overflow:hidden;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 8px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:#fff;">Instagram</span><span style="font-size:18px;color:rgba(255,255,255,0.75);">&#9993;</span></div>
+                <div style="display:flex;align-items:center;padding:8px 14px;gap:10px;">
+                  <div style="width:34px;height:34px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div><div style="font-size:12px;font-weight:700;color:#fff;">roaringpinesmc</div><div style="font-size:10px;color:rgba(255,255,255,0.45);">&#12501;&#12525;&#12522;&#12480;&#12289;&#12450;&#12513;&#12522;&#12459;</div></div>
+                </div>
+                <div style="width:100%;aspect-ratio:1;background:#111330;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:20px;">
+                  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(201,168,76,0.08) 0%,transparent 60%);"></div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:52px;letter-spacing:-2px;color:#C9A84C;line-height:0.9;text-shadow:0 0 40px rgba(201,168,76,0.3);">RPM</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(201,168,76,0.6);text-transform:uppercase;font-weight:600;">Roaring Pines Motor Club</div>
+                  </div>
+                  <div style="position:relative;z-index:1;">
+                    <div style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:#E2C47A;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border-radius:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;">25&#21517;&#12398;&#21019;&#35373;&#20250;&#21592;</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:8px;">&#12383;&#12387;&#12383;&#19968;&#12388;&#12398;&#12469;&#12540;&#12461;&#12483;&#12488;&#12290;<br>&#12383;&#12387;&#12383;25&#20154;&#12398;&#20250;&#21592;&#12290;<br>&#12381;&#12428;&#12364;&#12289;&#12521;&#12452;&#12501;&#12473;&#12479;&#12452;&#12523;&#12391;&#12377;&#12290;</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;">&#21019;&#35373;&#20250;&#21592;&#24052;&#38299;&#20013; &nbsp;&bull;&nbsp; Florida</div>
+                  </div>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#A0A4FF,transparent);opacity:0.6;"></div>
+                </div>
+                <div style="padding:4px 14px 8px;font-size:11px;font-weight:700;color:#fff;background:#050508;">3,108&#20491;&#12398;&#12356;&#12356;&#12397;</div>
+                <div style="padding:2px 14px 8px;font-size:11px;color:rgba(255,255,255,0.75);background:#050508;line-height:1.5;"><strong>roaringpinesmc</strong> &#21019;&#35373;&#20250;&#21592;&#12399;&#20170;&#12418;&#24052;&#38299;&#20013;&#12290;&#23450;&#21592;25&#21517;&#12290;&#12501;&#12525;&#12522;&#12480;&#12395;&#12354;&#12427;&#12503;&#12521;&#12452;&#12505;&#12540;&#12488;&#12469;&#12540;&#12461;&#12483;&#12488;&#12290; <span style="color:#A0A4FF;">#&#12514;&#12540;&#12479;&#12540;&#12463;&#12521;&#12502; #F1 #RoaringPines</span></div>
+              </div>
+              <div style="width:100px;height:4px;background:rgba(255,255,255,0.25);border-radius:4px;margin:8px auto 4px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-weight:600;font-family:'Barlow Condensed',sans-serif;">X / Twitter</div>
+          <div class="mock-x-wrap">
+            <div style="width:500px;background:#0F0F14;border-radius:16px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:0.5px solid rgba(255,255,255,0.07);">
+                <span style="font-size:18px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:-1px;">&#120143;</span>
+                <div style="display:flex;gap:8px;"><span style="font-size:11px;color:#fff;padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.06);">&#12362;&#12377;&#12377;&#12417;</span><span style="font-size:11px;color:rgba(255,255,255,0.5);padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);">&#12501;&#12457;&#12525;&#12540;&#20013;</span></div>
+              </div>
+              <div style="padding:16px;">
+                <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+                  <div style="width:44px;height:44px;border-radius:50%;background:#181A3A;border:1.5px solid #7A6030;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#C9A84C;flex-shrink:0;">RPM</div>
+                  <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#fff;">Roaring Pines MC <span style="display:inline-flex;width:16px;height:16px;background:#1D9BF0;border-radius:50%;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:900;">&#10003;</span></div><div style="font-size:13px;color:rgba(255,255,255,0.45);">@RoaringPinesMC</div></div>
+                  <div style="font-size:12px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,0.35);padding:5px 14px;border-radius:20px;">&#12501;&#12457;&#12525;&#12540;</div>
+                </div>
+                <div style="font-size:15px;color:#E8E8F0;line-height:1.6;margin-bottom:14px;">&#21019;&#35373;&#20250;&#21592;&#12434;&#52155;&#38598;&#20013;&#12290;&#23450;&#21592;25&#21517;&#12290;&#12501;&#12525;&#12522;&#12480;&#12395;&#12354;&#12427;&#12503;&#12521;&#12452;&#12505;&#12540;&#12488;&#12469;&#12540;&#12461;&#12483;&#12488;&#12290;&#26481;&#26481;&#12399;&#37389;&#30000;&#12364;&#12354;&#12427; &mdash; &#12381;&#12398;&#12469;&#12454;&#12531;&#12489;&#12392;&#25991;&#21270;&#12434;&#25345;&#12388;&#30495;&#12398;&#12489;&#12521;&#12452;&#12496;&#12540;&#12398;&#12383;&#12417;&#12398;&#12463;&#12521;&#12502;&#12290; Roaring Pines Motor Club. <span style="color:#A0A4FF;">#RPMotorClub #F1Japan #&#12514;&#12540;&#12479;&#12540;&#12473;&#12509;&#12540;&#12484;</span></div>
+                <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;margin-bottom:12px;">
+                  <div style="height:100px;background:#111330;position:relative;padding:14px 18px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.1) 0%,transparent 60%);"></div>
+                    <div style="position:relative;z-index:1;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#C9A84C;letter-spacing:-1px;line-height:1;">RPM</span></div>
+                    <div style="position:relative;z-index:1;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:#fff;line-height:1.2;">25&#21517;&#12398;&#21019;&#35373;&#20250;&#21592;&#12290;&#19968;&#12388;&#12398;&#12469;&#12540;&#12461;&#12483;&#12488;&#12290;&#19968;&#12388;&#12398;&#12463;&#12521;&#12502;&#12290;</div>
+                  </div>
+                  <div style="padding:8px 14px;font-size:12px;color:rgba(255,255,255,0.4);border-top:0.5px solid rgba(255,255,255,0.07);">roaringpinesmc.com</div>
+                </div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:10px;">&#21320;&#21069; 8:47 &middot; <span style="color:rgba(255,255,255,0.5);">173K</span> &#12452;&#12531;&#12503;&#12524;&#12483;&#12471;&#12519;&#12531;</div>
+                <div style="display:flex;gap:20px;padding-bottom:10px;border-bottom:0.5px solid rgba(255,255,255,0.07);"><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">891</strong> &#12522;&#12509;&#12473;&#12488;</span><span style="font-size:13px;color:rgba(255,255,255,0.5);"><strong style="color:#fff;">5.603</strong> &#12356;&#12356;&#12397;</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#111330;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:20px;height:fit-content;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">What it says in English:</div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">Instagram:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;margin-bottom:14px;font-style:italic;">"Just one circuit. Just 25 members. That is a lifestyle. — Founding membership now open. 25 spots. A private circuit in Florida. A way of life centered on motorsport."</div>
+          <div style="width:100%;height:1px;background:rgba(201,168,76,0.2);margin-bottom:14px;"></div>
+          <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:8px;">X / Twitter:</div>
+          <div style="font-size:12px;color:rgba(240,242,255,0.72);line-height:1.6;font-style:italic;">"Now recruiting founding members. 25 spots. A private circuit in Florida. Japan has Suzuka — a club for true drivers who carry that sound and culture. Roaring Pines Motor Club."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE 9: GLOBAL CLOSING ─── -->
+  <div class="global-slide" id="global-slide-9" data-slide="9">
+    <div class="cover-accent"></div>
+    <div class="grid-bg"></div>
+    <div style="position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:860px;">
+      <div class="ai" style="font-size:10px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:#C9A84C;">The Global Opportunity</div>
+      <div class="ai" style="font-family:'Barlow Condensed',Impact,sans-serif;font-size:clamp(38px,6vw,72px);font-weight:800;line-height:0.95;letter-spacing:-0.02em;">
+        7 Languages.<br><span style="color:#C9A84C;">One Club.</span>
+      </div>
+      <p class="ai" style="font-size:clamp(15px,1.6vw,19px);color:rgba(255,255,255,0.58);line-height:1.7;max-width:640px;">
+        These aren't translations of an English ad. Each post was written natively for its market — calibrated to the motorsport culture, local icons, and emotional language of each country. That's how Roaring Pines speaks to the world's fastest audience.
+      </p>
+      <div class="ai" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:100%;max-width:760px;">
+        <div style="padding:16px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#C9A84C;letter-spacing:-0.02em;line-height:1;">827M</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.42);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;">Global F1 Fans</div>
+        </div>
+        <div style="padding:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#fff;letter-spacing:-0.02em;line-height:1;">7</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.42);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;">Languages / Markets</div>
+        </div>
+        <div style="padding:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#fff;letter-spacing:-0.02em;line-height:1;">25</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.42);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;">Founding Seats</div>
+        </div>
+        <div style="padding:16px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#C9A84C;letter-spacing:-0.02em;line-height:1;">1</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.42);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;">Club in the World</div>
+        </div>
+      </div>
+      <p class="ai" style="font-size:12px;color:rgba(255,255,255,0.22);letter-spacing:0.04em;font-style:italic;margin-top:8px;">All social content is a Bevpoint original. Written natively per market — not translated.</p>
+    </div>
+  </div>
+
+</div><!-- /slides-wrapper -->
+</div><!-- /global-section -->
+
 <!-- ===== NAV ARROWS ===== -->
 <div class="nav-arrows">
   <button class="nav-btn" id="prevBtn">&#8592;</button>
@@ -2785,9 +3579,9 @@ html, body {
 
 <script>
 // ===== STATE =====
-const sections = ['marketing', 'hospitality', 'investment', 'contact'];
-const sectionTotals = { marketing: 11, hospitality: 11, investment: 3, contact: 1 };
-const sectionPositions = { marketing: 1, hospitality: 1, investment: 1, contact: 1 };
+const sections = ['marketing', 'hospitality', 'investment', 'contact', 'global'];
+const sectionTotals = { marketing: 11, hospitality: 11, investment: 3, contact: 1, global: 9 };
+const sectionPositions = { marketing: 1, hospitality: 1, investment: 1, contact: 1, global: 1 };
 let currentSection = 'marketing';
 let animating = false;
 
