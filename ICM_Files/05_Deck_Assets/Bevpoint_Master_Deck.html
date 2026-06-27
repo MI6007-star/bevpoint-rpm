@@ -824,6 +824,322 @@ html, body {
 .contact-slide.active .ai:nth-child(2) { animation-delay: 0.15s; }
 .contact-slide.active .ai:nth-child(3) { animation-delay: 0.25s; }
 .contact-slide.active .ai:nth-child(4) { animation-delay: 0.38s; }
+
+/* ============================================================
+   RESPONSIVE OVERRIDES
+   Breakpoints: 1400px | 1200px | 900px
+   Goal: prevent content from being "jumbled" or "covered up"
+   on 1280px laptop screens and below.
+   ============================================================ */
+
+/* ── 1400px: tighten padding, reduce large font minimums ── */
+@media (max-width: 1400px) {
+  .mktg-slide,
+  .inv-slide,
+  .contact-slide {
+    padding: 48px 60px 64px;
+  }
+  .hosp-slide {
+    padding: 48px 48px 48px;
+  }
+  .slide-inner {
+    gap: 22px;
+  }
+  .display-xl { font-size: clamp(40px, 6.5vw, 88px); }
+  .display-lg { font-size: clamp(30px, 5vw, 68px); }
+  .display-md { font-size: clamp(22px, 3.5vw, 48px); }
+  .stat-number { font-size: clamp(32px, 4.5vw, 58px); }
+  .stat-number-p2 { font-size: clamp(28px, 4vw, 54px); }
+  .cover-grid { gap: 40px; }
+  .two-col { gap: 48px; }
+  .two-col-left { gap: 48px; }
+  .gap-48 { gap: 36px; }
+  .gap-40 { gap: 28px; }
+}
+
+/* ── 1200px: collapse multi-column grids, shrink nav tabs ── */
+@media (max-width: 1200px) {
+  /* Slide padding */
+  .mktg-slide,
+  .inv-slide,
+  .contact-slide {
+    padding: 36px 44px 52px;
+  }
+  .hosp-slide {
+    padding: 36px 36px 36px;
+  }
+
+  /* slide-inner: let it breathe at full width */
+  .slide-inner {
+    max-width: 100%;
+    gap: 18px;
+  }
+
+  /* Typography */
+  .display-xl { font-size: clamp(34px, 5.5vw, 72px); }
+  .display-lg { font-size: clamp(26px, 4.2vw, 56px); }
+  .display-md { font-size: clamp(20px, 3vw, 42px); }
+  .headline   { font-size: clamp(17px, 2.2vw, 28px); }
+  .body-lg    { font-size: clamp(13px, 1.4vw, 17px); }
+  .stat-number    { font-size: clamp(28px, 4vw, 52px); }
+  .stat-number-p2 { font-size: clamp(24px, 3.5vw, 48px); }
+  .metric-val     { font-size: clamp(22px, 3vw, 38px); }
+
+  /* Part I grid layouts → single column */
+  .two-col,
+  .two-col-left {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .three-col {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .four-col {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .service-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .timeline {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .blueprint-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .blueprint-row::after { display: none; }
+
+  /* Part II grid layouts */
+  .split-60-40 {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .split-50-50 {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .split-3 {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .split-4 {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .cover-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .hero-metric-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .stat-row {
+    flex-wrap: wrap;
+  }
+  .stat-row .stat-box {
+    flex: 1 1 calc(50% - 12px);
+    min-width: 0;
+  }
+
+  /* ROI block → two columns */
+  .roi-block {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* ROI third cell spans both columns */
+  .roi-cell:nth-child(3) {
+    grid-column: 1 / -1;
+    border-right: none;
+    border-top: 1px solid rgba(91,95,232,0.15);
+  }
+
+  /* vendor row wraps */
+  .vendor-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Gap overrides */
+  .gap-48 { gap: 28px; }
+  .gap-40 { gap: 22px; }
+  .gap-32 { gap: 18px; }
+  .gap-28 { gap: 16px; }
+
+  /* Nav tabs: reduce tab padding and font so they don't collide with logo/counter */
+  .nav-tab {
+    padding: 6px 10px;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  /* phase-block arrow connector too wide at this size */
+  .phase-block:not(:last-child)::after {
+    display: none;
+  }
+}
+
+/* ── 900px: single-column everything, allow sections to scroll ── */
+@media (max-width: 900px) {
+  /* Allow section content to scroll vertically */
+  .section-container {
+    overflow-y: auto;
+  }
+  .slides-wrapper {
+    overflow-y: auto;
+  }
+  .mktg-slide,
+  .inv-slide,
+  .contact-slide {
+    position: relative;
+    min-height: 100%;
+    padding: 24px 20px 40px;
+    align-items: flex-start;
+  }
+  .hosp-slide {
+    position: relative;
+    min-height: 100%;
+    padding: 24px 20px 40px;
+    align-items: flex-start;
+  }
+  /* Keep active slides visible (exit/inactive still hidden) */
+  .mktg-slide:not(.active):not(.exit),
+  .hosp-slide:not(.active),
+  .inv-slide:not(.active):not(.exit),
+  .contact-slide:not(.active):not(.exit) {
+    display: none;
+  }
+
+  /* Typography — tighter minimums */
+  .display-xl { font-size: clamp(28px, 7vw, 52px); }
+  .display-lg { font-size: clamp(22px, 5.5vw, 40px); }
+  .display-md { font-size: clamp(18px, 4.5vw, 32px); }
+  .headline   { font-size: clamp(15px, 3.5vw, 22px); }
+  .body-lg    { font-size: clamp(13px, 2.2vw, 16px); }
+  .stat-number    { font-size: clamp(24px, 6vw, 44px); }
+  .stat-number-p2 { font-size: clamp(20px, 5vw, 38px); }
+  .metric-val     { font-size: clamp(18px, 5vw, 30px); }
+
+  /* All multi-column grids → single column */
+  .two-col,
+  .two-col-left,
+  .three-col,
+  .four-col,
+  .service-grid,
+  .timeline,
+  .blueprint-row,
+  .split-60-40,
+  .split-50-50,
+  .split-3,
+  .split-4,
+  .cover-grid,
+  .roi-block {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+
+  /* stat-row: single column stacked */
+  .stat-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .stat-row .stat-box {
+    flex: none;
+    width: 100%;
+  }
+
+  /* ROI third cell reset */
+  .roi-cell:nth-child(3) {
+    grid-column: auto;
+    border-top: 1px solid rgba(91,95,232,0.15);
+    border-right: none;
+  }
+  .roi-cell {
+    border-right: none;
+    border-bottom: 1px solid rgba(91,95,232,0.15);
+  }
+  .roi-cell:last-child { border-bottom: none; }
+
+  /* hero metric grid stays 2-col at 900 (small enough) */
+  .hero-metric-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* Gap overrides */
+  .gap-48 { gap: 18px; }
+  .gap-40 { gap: 14px; }
+  .gap-32 { gap: 12px; }
+  .gap-28 { gap: 10px; }
+  .gap-24 { gap: 10px; }
+
+  /* Nav tabs: stack or scroll */
+  .nav-tabs {
+    position: static;
+    transform: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+    flex: 1;
+    margin: 0 8px;
+    overflow: hidden;
+  }
+  .nav-tab {
+    padding: 4px 8px;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+  .top-nav {
+    height: auto;
+    min-height: 56px;
+    flex-wrap: nowrap;
+    padding: 6px 12px;
+    align-items: center;
+  }
+  .section-container {
+    top: 56px;
+  }
+
+  /* vendor/orchestrator */
+  .vendor-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  .vendor-box {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Phase block arrows off */
+  .phase-block:not(:last-child)::after {
+    display: none;
+  }
+
+  /* Decorative gauge — hide on small screens */
+  .cover-gauge {
+    display: none;
+  }
+
+  /* CTA box and cta-box inner split */
+  .cta-box .split-50-50 {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  /* slide-inner full width */
+  .slide-inner {
+    max-width: 100%;
+  }
+
+  /* full-content full width */
+  .full-content {
+    max-width: 100%;
+  }
+}
 </style>
 </head>
 <body>
