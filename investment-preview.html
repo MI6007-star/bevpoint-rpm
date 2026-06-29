@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Slide Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:#06071A; font-family:'Inter',sans-serif; color:#fff;
+    min-height:100vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; padding:32px 20px;
+  }
+  .slide { width:100%; max-width:1100px; display:flex; flex-direction:column; gap:14px; }
+  .header { text-align:center; }
+  .eyebrow { font-size:10px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:#C9A84C; margin-bottom:5px; }
+  .headline { font-family:'Barlow Condensed',sans-serif; font-size:clamp(28px,4.5vw,52px); font-weight:800; letter-spacing:-.02em; line-height:1; }
+  .subline { font-size:13px; color:rgba(255,255,255,.38); margin-top:5px; }
+
+  .video-wrap {
+    position:relative; width:100%; border-radius:12px;
+    overflow:hidden; border:1px solid rgba(201,168,76,.2);
+    background:#000; cursor:pointer;
+  }
+  .video-wrap video { width:100%; display:block; }
+
+  .overlay-svg {
+    position:absolute; top:0; left:0; width:100%; height:100%;
+    pointer-events:none;
+  }
+
+  /* Bevpoint icon mark — CSS div, positioned at nose cone tip */
+  #bp-icon {
+    position:absolute;
+    left:50%;
+    top:63%;
+    transform:translate(-50%, -50%) scale(0);
+    opacity:0;
+    width:6%;
+    pointer-events:none;
+    filter: drop-shadow(0 0 8px rgba(201,168,76,1)) drop-shadow(0 0 22px rgba(201,168,76,0.7));
+  }
+  #bp-icon svg { width:100%; display:block; }
+
+  /* Stage cards */
+  .stage-card {
+    position:absolute; opacity:0;
+    background:rgba(6,7,26,.90); backdrop-filter:blur(8px);
+    border-radius:10px; padding:11px 12px;
+    display:flex; flex-direction:column; gap:4px;
+    border:1px solid rgba(91,95,232,.5); width:20%;
+  }
+  .stage-card.gold { border-color:rgba(201,168,76,.6); }
+  #card-1 { top:5%; left:1%; }
+  #card-2 { bottom:5%; left:1%; }
+  #card-3 { top:5%; right:1%; }
+  #card-4 { bottom:5%; right:1%; }
+  .stage-num { font-size:8.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#A0A4FF; }
+  .stage-card.gold .stage-num { color:#E8D08A; }
+  .stage-icon { font-size:17px; line-height:1; margin:2px 0; }
+  .stage-title { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
+  .stage-desc { font-size:9px; color:rgba(255,255,255,.4); line-height:1.5; }
+  .stage-tag { padding-top:6px; border-top:1px solid rgba(91,95,232,.15); font-size:7.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:#A0A4FF; }
+  .stage-card.gold .stage-tag { border-top-color:rgba(201,168,76,.2); color:#C9A84C; }
+
+  #start-overlay {
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    background:rgba(6,7,26,.52); transition:background .3s; border-radius:12px;
+  }
+  #start-overlay:hover { background:rgba(6,7,26,.28); }
+  #start-overlay.hidden { display:none; }
+  #pause-indicator {
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none;
+  }
+  .play-btn {
+    width:68px; height:68px; border-radius:50%;
+    background:rgba(201,168,76,.14); border:2px solid rgba(201,168,76,.65);
+    display:flex; align-items:center; justify-content:center;
+    font-size:26px; color:#C9A84C; transition:all .2s; flex-shrink:0;
+  }
+  #start-overlay:hover .play-btn { background:rgba(201,168,76,.28); transform:scale(1.08); }
+
+  .controls { display:flex; align-items:center; gap:12px; }
+  .ctrl-btn {
+    width:32px; height:32px; border-radius:50%; flex-shrink:0;
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color:rgba(255,255,255,.6); font-size:12px; transition:all .18s;
+  }
+  .ctrl-btn:hover { background:rgba(201,168,76,.15); border-color:rgba(201,168,76,.4); color:#C9A84C; }
+  .progress-wrap { flex:1; cursor:pointer; padding:8px 0; }
+  .progress-bar { height:3px; background:rgba(255,255,255,.06); border-radius:2px; overflow:hidden; }
+  .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#5B5FE8,#C9A84C); border-radius:2px; }
+  .time-label { font-size:10px; color:rgba(255,255,255,.3); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .status-label { font-size:11px; color:rgba(255,255,255,.35); letter-spacing:.05em; white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div class="eyebrow">The Investment</div>
+    <div class="headline">Building the Machine</div>
+    <div class="subline">Every great car — and every great brand — is built in the right order.</div>
+  </div>
+
+  <div class="video-wrap" id="video-wrap" onclick="togglePlay()">
+    <video id="car-video" muted playsinline preload="auto"
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_3F4C2roGhIYBwLD0Rn9XxKj8UW6/hf_20260629_171814_490dac5f-4c2d-4b44-95da-d142ffcd6101.mp4">
+    </video>
+
+    <!-- SVG: lines + sparks -->
+    <svg class="overlay-svg" viewBox="0 0 1000 562" preserveAspectRatio="none">
+      <defs>
+        <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-gold" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Tracking lines -->
+      <line id="line-1" x1="200" y1="130" x2="50"  y2="405" stroke="#A0A4FF" stroke-width="1.3" stroke-dasharray="6 4" opacity="0"/>
+      <line id="line-2" x1="200" y1="435" x2="170" y2="380" stroke="#A0A4FF" stroke-width="1.3" stroke-dasharray="6 4" opacity="0"/>
+      <line id="line-3" x1="800" y1="130" x2="950" y2="405" stroke="#C9A84C" stroke-width="1.3" stroke-dasharray="6 4" opacity="0"/>
+      <line id="line-4" x1="800" y1="435" x2="690" y2="405" stroke="#C9A84C" stroke-width="1.6" opacity="0"/>
+
+      <!-- Tracking dots -->
+      <circle id="spark-1" cx="50"  cy="405" r="4" fill="#A0A4FF" filter="url(#glow-blue)"  opacity="0"/>
+      <circle id="spark-2" cx="170" cy="380" r="4" fill="#5B5FE8" filter="url(#glow-blue)"  opacity="0"/>
+      <circle id="spark-3" cx="950" cy="405" r="4" fill="#C9A84C" filter="url(#glow-gold)"  opacity="0"/>
+      <circle id="spark-4" cx="690" cy="405" r="0" fill="#C9A84C" filter="url(#glow-gold)"  opacity="0"/>
+
+      <!-- Collision rings -->
+      <circle id="ring-4a" cx="310" cy="405" r="5" fill="none" stroke="#A0A4FF" stroke-width="1.5" opacity="0"/>
+      <circle id="ring-4b" cx="690" cy="405" r="5" fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+      <circle id="ring-4c" cx="500" cy="395" r="5" fill="none" stroke="#C9A84C" stroke-width="2"   opacity="0"/>
+
+      <!-- Lock dots -->
+      <circle id="lock-1" cx="310" cy="405" r="4" fill="#A0A4FF" filter="url(#glow-blue)"  opacity="0"/>
+      <circle id="lock-2" cx="500" cy="375" r="4" fill="#5B5FE8" filter="url(#glow-blue)"  opacity="0"/>
+      <circle id="lock-3" cx="690" cy="405" r="4" fill="#C9A84C" filter="url(#glow-gold)"  opacity="0"/>
+
+      <!-- Gold pulse rings at nose cone tip (63% down, center) — triggered by revealIcon -->
+      <circle id="icon-ring"  cx="500" cy="354" r="5" fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+      <circle id="icon-ring2" cx="500" cy="354" r="5" fill="none" stroke="#C9A84C" stroke-width="1"   opacity="0"/>
+    </svg>
+
+    <!-- Stage cards -->
+    <div class="stage-card" id="card-1">
+      <div class="stage-num">01 — Blueprint</div>
+      <div class="stage-icon">✏</div>
+      <div class="stage-title">Brand Strategy</div>
+      <div class="stage-desc">Architecture · Identity · Messaging · Positioning</div>
+      <div class="stage-tag">Included — First 90 Days</div>
+    </div>
+    <div class="stage-card" id="card-2">
+      <div class="stage-num">02 — Framework</div>
+      <div class="stage-icon">🔧</div>
+      <div class="stage-title">Infrastructure & Toolkit</div>
+      <div class="stage-desc">CRM · Tech stack · Collateral · Playbook</div>
+      <div class="stage-tag">Included — First 90 Days</div>
+    </div>
+    <div class="stage-card" id="card-3">
+      <div class="stage-num">03 — Launch</div>
+      <div class="stage-icon">🎯</div>
+      <div class="stage-title">Campaigns & PR</div>
+      <div class="stage-desc">Paid campaigns · Content · Email · PR push</div>
+      <div class="stage-tag">Funded from Capital Raise</div>
+    </div>
+    <div class="stage-card gold" id="card-4">
+      <div class="stage-num">04 — Engine</div>
+      <div class="stage-icon">⚡</div>
+      <div class="stage-title">Media & Performance</div>
+      <div class="stage-desc">Paid media · Targeting · ROI · Scales with raise</div>
+      <div class="stage-tag">Variable — Performance-Based</div>
+    </div>
+
+    <!-- BEVPOINT ICON — CSS positioned div, GSAP scales via CSS transform -->
+    <div id="bp-icon">
+      <svg viewBox="0 0 80 95" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="icon-hatch" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="5" x2="5" y2="0" stroke="#C9A84C" stroke-width="1.6" stroke-linecap="square"/>
+          </pattern>
+        </defs>
+        <!-- Circle ring 330° -->
+        <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="#C9A84C" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+        <!-- Arrow right: solid gold -->
+        <polygon points="40,13 57,57 40,57" fill="#C9A84C"/>
+        <!-- Arrow left: hatched gold -->
+        <polygon points="40,13 23,57 40,57" fill="url(#icon-hatch)"/>
+        <!-- Seam -->
+        <line x1="40" y1="13" x2="40" y2="57" stroke="rgba(0,0,0,0.2)" stroke-width="0.8"/>
+        <!-- Stem -->
+        <rect x="37.5" y="57" width="5" height="22" fill="#C9A84C" rx="0.5"/>
+      </svg>
+    </div>
+
+    <div id="start-overlay">
+      <div class="play-btn">&#9654;</div>
+    </div>
+    <div id="pause-indicator">
+      <div class="play-btn" style="font-size:20px;">⏸</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-btn" id="play-pause-btn" onclick="togglePlay(); event.stopPropagation();">&#9654;</div>
+    <span class="time-label" id="time-label">0:00</span>
+    <div class="progress-wrap" onclick="seekVideo(event); event.stopPropagation();">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div class="status-label" id="status-label">Click play to start</div>
+  </div>
+</div>
+
+<script>
+var started = false;
+var triggered = [false,false,false,false,false];
+var TIMES = [0.4, 0.9, 1.4, 2.2, 4.0];
+var vid = document.getElementById('car-video');
+var pauseFlashTween = null;
+
+function fmtTime(s) {
+  var m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function togglePlay() {
+  if (!started) { startBuild(); return; }
+  if (vid.paused) {
+    vid.play();
+    document.getElementById('play-pause-btn').innerHTML = '⏸';
+  } else {
+    vid.pause();
+    document.getElementById('play-pause-btn').innerHTML = '&#9654;';
+    if (pauseFlashTween) pauseFlashTween.kill();
+    gsap.set('#pause-indicator', { opacity:0 });
+    pauseFlashTween = gsap.timeline()
+      .to('#pause-indicator', { opacity:1, duration:0.15 })
+      .to('#pause-indicator', { opacity:0, duration:0.4, delay:0.5 });
+  }
+}
+
+function seekVideo(e) {
+  if (!started) return;
+  var rect = e.currentTarget.getBoundingClientRect();
+  var pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  vid.currentTime = pct * vid.duration;
+}
+
+function startBuild() {
+  started = true;
+  document.getElementById('start-overlay').classList.add('hidden');
+  document.getElementById('play-pause-btn').innerHTML = '⏸';
+  vid.playbackRate = 0.5;
+  vid.play();
+  document.getElementById('status-label').textContent = 'Building...';
+}
+
+function revealIcon() {
+  if (triggered[4]) return;
+  triggered[4] = true;
+  document.getElementById('status-label').textContent = '🏁 Powered by Bevpoint';
+  gsap.to('#progress-fill', { width:'100%', duration:0.5 });
+
+  var tl = gsap.timeline();
+
+  // CSS div — scale from 0→1, translate stays put (set via CSS top/left)
+  tl.fromTo('#bp-icon',
+    { scale:0, opacity:0 },
+    { scale:1, opacity:1, duration:0.85, ease:'elastic.out(1, 0.45)',
+      transformOrigin:'50% 50%' }
+  );
+  // SVG pulse rings (at 63% height = 354/562 in SVG coords)
+  tl.fromTo('#icon-ring',
+    { attr:{ r:5 }, opacity:0.9 },
+    { attr:{ r:42 }, opacity:0, duration:0.75, ease:'power2.out' }, '<0.3'
+  );
+  tl.fromTo('#icon-ring2',
+    { attr:{ r:5 }, opacity:0.6 },
+    { attr:{ r:28 }, opacity:0, duration:1.0, ease:'power2.out' }, '<0.2'
+  );
+  // Gold glow pulse
+  tl.to('#bp-icon', {
+    filter:'drop-shadow(0 0 16px rgba(201,168,76,1)) drop-shadow(0 0 40px rgba(201,168,76,0.8))',
+    duration:0.3, ease:'power2.out'
+  }, '<0.4');
+  tl.to('#bp-icon', {
+    filter:'drop-shadow(0 0 8px rgba(201,168,76,0.8)) drop-shadow(0 0 20px rgba(201,168,76,0.5))',
+    duration:0.8, ease:'power2.inOut'
+  });
+}
+
+function revealStage(i) {
+  if (triggered[i]) return;
+  triggered[i] = true;
+  var tl = gsap.timeline();
+  if (i === 0) {
+    tl.fromTo('#card-1', { x:-70, opacity:0 }, { x:0, opacity:1, duration:0.6, ease:'elastic.out(1,0.55)' });
+    tl.to('#line-1',  { opacity:0.75, duration:0.3 }, '<0.1');
+    tl.to('#spark-1', { opacity:1, duration:0.3 }, '<');
+    tl.to('#spark-1', { attr:{ cx:310 }, duration:1.6, ease:'power1.inOut' }, '<0.2');
+    tl.to('#line-1',  { attr:{ x2:310 }, duration:1.6, ease:'power1.inOut' }, '<');
+    tl.set('#line-1', { attr:{ strokeDasharray:'none' } });
+    tl.to('#spark-1', { opacity:0, duration:0.2 });
+    tl.to('#lock-1',  { opacity:1, duration:0.3 }, '<');
+    gsap.to('#progress-fill', { width:'15%', duration:0.5 });
+    document.getElementById('status-label').textContent = 'Left wheel locked';
+  } else if (i === 1) {
+    tl.fromTo('#card-2', { x:-70, opacity:0 }, { x:0, opacity:1, duration:0.6, ease:'elastic.out(1,0.55)' });
+    tl.to('#line-2',  { opacity:0.75, duration:0.3 }, '<0.1');
+    tl.to('#spark-2', { opacity:1, duration:0.3 }, '<');
+    tl.to('#spark-2', { attr:{ cx:500, cy:375 }, duration:1.2, ease:'power1.inOut' }, '<0.2');
+    tl.to('#line-2',  { attr:{ x2:500, y2:375 }, duration:1.2, ease:'power1.inOut' }, '<');
+    tl.set('#line-2', { attr:{ strokeDasharray:'none' } });
+    tl.to('#spark-2', { opacity:0, duration:0.2 });
+    tl.to('#lock-2',  { opacity:1, duration:0.3 }, '<');
+    gsap.to('#progress-fill', { width:'35%', duration:0.5 });
+    document.getElementById('status-label').textContent = 'Chassis locked';
+  } else if (i === 2) {
+    tl.fromTo('#card-3', { x:70, opacity:0 }, { x:0, opacity:1, duration:0.6, ease:'elastic.out(1,0.55)' });
+    tl.to('#line-3',  { opacity:0.75, duration:0.3 }, '<0.1');
+    tl.to('#spark-3', { opacity:1, duration:0.3 }, '<');
+    tl.to('#spark-3', { attr:{ cx:690 }, duration:1.2, ease:'power1.inOut' }, '<0.2');
+    tl.to('#line-3',  { attr:{ x2:690 }, duration:1.2, ease:'power1.inOut' }, '<');
+    tl.set('#line-3', { attr:{ strokeDasharray:'none' } });
+    tl.to('#spark-3', { opacity:0, duration:0.2 });
+    tl.to('#lock-3',  { opacity:1, duration:0.3 }, '<');
+    gsap.to('#progress-fill', { width:'60%', duration:0.5 });
+    document.getElementById('status-label').textContent = 'Right wheel locked';
+  } else if (i === 3) {
+    tl.fromTo('#card-4', { y:-60, opacity:0 }, { y:0, opacity:1, duration:0.75, ease:'bounce.out' });
+    tl.to('#line-4', { opacity:0.85, duration:0.25 }, '<0.1');
+    tl.fromTo('#spark-4', { attr:{ r:0, cx:500, cy:395 }, opacity:0 },
+                          { attr:{ r:18 }, opacity:1, duration:0.15, ease:'power3.out' }, '<0.15');
+    tl.to('#spark-4', { attr:{ r:0 }, opacity:0, duration:0.4, ease:'power2.in' });
+    tl.fromTo('#ring-4a', { attr:{ r:5 }, opacity:0.9 }, { attr:{ r:28 }, opacity:0, duration:0.7, ease:'power2.out' }, '<-0.2');
+    tl.fromTo('#ring-4b', { attr:{ r:5 }, opacity:0.9 }, { attr:{ r:28 }, opacity:0, duration:0.7, ease:'power2.out' }, '<0.05');
+    tl.fromTo('#ring-4c', { attr:{ r:5 }, opacity:1   }, { attr:{ r:40 }, opacity:0, duration:0.9, ease:'power2.out' }, '<0.1');
+    tl.fromTo('#ring-4b', { attr:{ r:5 }, opacity:0.6 }, { attr:{ r:22 }, opacity:0, duration:1.1, ease:'power1.out' }, '<0.3');
+    gsap.to('#progress-fill', { width:'80%', duration:0.5 });
+    document.getElementById('status-label').textContent = '⚡ Machine assembled';
+  }
+}
+
+vid.addEventListener('timeupdate', function() {
+  var t = vid.currentTime, d = vid.duration || 1;
+  document.getElementById('progress-fill').style.width = (t/d*100) + '%';
+  document.getElementById('time-label').textContent = fmtTime(t * 2);
+  for (var i = 0; i < 4; i++) {
+    if (t >= TIMES[i] && !triggered[i]) revealStage(i);
+  }
+  if (t >= TIMES[4] && !triggered[4]) revealIcon();
+});
+
+vid.addEventListener('ended', function() {
+  document.getElementById('play-pause-btn').innerHTML = '&#9654;';
+});
+</script>
+</body>
+</html>
