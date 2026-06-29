@@ -2904,7 +2904,6 @@ function startBuild() {
 
 function rvStage1() {
   if (rvTriggered[0]) return; rvTriggered[0]=true;
-  sndEngineRev(0); sndMetal(0.9);
   document.getElementById('status-lbl').textContent = 'Chassis rolling in...';
   var dur=1.1, tl=gsap.timeline();
   tl.fromTo('#card-1',{x:-360,opacity:0},{x:0,opacity:1,duration:dur,ease:'power2.out'});
@@ -2917,7 +2916,6 @@ function rvStage1() {
 
 function rvStage2() {
   if (rvTriggered[1]) return; rvTriggered[1]=true;
-  sndSkid(0); sndMetal(0.75);
   document.getElementById('status-lbl').textContent = 'Body locking on...';
   var dur=1.0, tl=gsap.timeline();
   tl.fromTo('#card-3',{x:360,opacity:0},{x:0,opacity:1,duration:dur,ease:'power2.out'});
@@ -2931,7 +2929,6 @@ function rvStage2() {
 
 function rvStage3() {
   if (rvTriggered[2]) return; rvTriggered[2]=true;
-  sndSkid(0); sndSpark(0.5);
   document.getElementById('status-lbl').textContent = 'Wheels locking in...';
   var dur=0.9, tl=gsap.timeline();
   tl.fromTo('#card-2',{y:280,opacity:0},{y:0,opacity:1,duration:dur,ease:'power2.out'});
@@ -2947,7 +2944,6 @@ function rvStage3() {
 
 function rvStage4() {
   if (rvTriggered[3]) return; rvTriggered[3]=true;
-  sndEngineRev(0); sndSpark(0.5); sndSpark(0.7);
   document.getElementById('status-lbl').textContent = 'Engine igniting...';
   var dur=1.0, tl=gsap.timeline();
   tl.fromTo('#card-4',{y:-380,opacity:0},{y:0,opacity:1,duration:dur,ease:'power2.out'});
@@ -2966,7 +2962,6 @@ function rvStage4() {
 
 function rvRevealLogo() {
   if (rvTriggered[4]) return; rvTriggered[4]=true;
-  sndComplete();
   document.getElementById('status-lbl').textContent = '🏁 Machine complete';
   var tl=gsap.timeline();
   tl.fromTo('#bp-icon',{scale:0,opacity:0},{scale:1,opacity:1,duration:.85,ease:'elastic.out(1,.45)'});
@@ -2974,94 +2969,6 @@ function rvRevealLogo() {
   tl.fromTo('#icon-ring2',{attr:{r:5},opacity:.6},{attr:{r:28},opacity:0,duration:1.0,ease:'power2.out'},'<0.2');
   tl.to('#bp-icon',{filter:'drop-shadow(0 0 16px rgba(201,168,76,1)) drop-shadow(0 0 40px rgba(201,168,76,.8))',duration:.3},'<0.4');
   tl.to('#bp-icon',{filter:'drop-shadow(0 0 8px rgba(201,168,76,.8)) drop-shadow(0 0 20px rgba(201,168,76,.5))',duration:.8});
-}
-
-/* ── SOUND ENGINE ── */
-var rvAudioCtx = null;
-function getAudioCtx() {
-  if (!rvAudioCtx) rvAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return rvAudioCtx;
-}
-
-function sndMetal(time) {
-  var ctx = getAudioCtx(), t = ctx.currentTime + (time||0);
-  var buf = ctx.createBuffer(1, ctx.sampleRate * 0.18, ctx.sampleRate);
-  var d = buf.getChannelData(0);
-  for (var i=0; i<d.length; i++) d[i] = (Math.random()*2-1) * Math.pow(1-(i/d.length),2.5);
-  var src = ctx.createBufferSource();
-  src.buffer = buf;
-  var f = ctx.createBiquadFilter();
-  f.type = 'bandpass'; f.frequency.value = 900; f.Q.value = 3;
-  var g = ctx.createGain();
-  g.gain.setValueAtTime(0.55, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
-  src.connect(f); f.connect(g); g.connect(ctx.destination);
-  src.start(t);
-}
-
-function sndSkid(time) {
-  var ctx = getAudioCtx(), t = ctx.currentTime + (time||0);
-  var dur = 0.55;
-  var buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
-  var d = buf.getChannelData(0);
-  for (var i=0; i<d.length; i++) d[i] = (Math.random()*2-1) * Math.pow(1-(i/(d.length)),1.4) * (i < d.length*0.1 ? i/(d.length*0.1) : 1);
-  var src = ctx.createBufferSource();
-  src.buffer = buf;
-  var f = ctx.createBiquadFilter();
-  f.type = 'highshelf'; f.frequency.value = 3000; f.gain.value = 8;
-  var g = ctx.createGain();
-  g.gain.setValueAtTime(0.45, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-  src.connect(f); f.connect(g); g.connect(ctx.destination);
-  src.start(t);
-}
-
-function sndEngineRev(time) {
-  var ctx = getAudioCtx(), t = ctx.currentTime + (time||0);
-  var osc = ctx.createOscillator();
-  osc.type = 'sawtooth';
-  osc.frequency.setValueAtTime(80, t);
-  osc.frequency.exponentialRampToValueAtTime(280, t + 0.6);
-  osc.frequency.exponentialRampToValueAtTime(160, t + 1.1);
-  var dist = ctx.createWaveShaper();
-  var curve = new Float32Array(256);
-  for (var i=0; i<256; i++) { var x=(i*2/256)-1; curve[i]=x*(Math.abs(x)+0.3)/(Math.abs(x)*1.6+0.3); }
-  dist.curve = curve;
-  var g = ctx.createGain();
-  g.gain.setValueAtTime(0.18, t);
-  g.gain.linearRampToValueAtTime(0.28, t + 0.25);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 1.2);
-  osc.connect(dist); dist.connect(g); g.connect(ctx.destination);
-  osc.start(t); osc.stop(t + 1.3);
-}
-
-function sndSpark(time) {
-  var ctx = getAudioCtx(), t = ctx.currentTime + (time||0);
-  for (var s=0; s<3; s++) {
-    (function(st) {
-      var buf = ctx.createBuffer(1, ctx.sampleRate*0.08, ctx.sampleRate);
-      var d = buf.getChannelData(0);
-      for (var i=0; i<d.length; i++) d[i] = (Math.random()*2-1)*Math.pow(1-(i/d.length),3);
-      var src = ctx.createBufferSource(); src.buffer = buf;
-      var f = ctx.createBiquadFilter(); f.type='highpass'; f.frequency.value=4000;
-      var g = ctx.createGain(); g.gain.setValueAtTime(0.3, st); g.gain.exponentialRampToValueAtTime(0.001, st+0.08);
-      src.connect(f); f.connect(g); g.connect(ctx.destination); src.start(st);
-    })(t + s*0.06);
-  }
-}
-
-function sndComplete() {
-  var ctx = getAudioCtx(), t = ctx.currentTime;
-  [523, 659, 784, 1047].forEach(function(freq, i) {
-    var osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = freq;
-    var g = ctx.createGain();
-    var st = t + i * 0.12;
-    g.gain.setValueAtTime(0, st);
-    g.gain.linearRampToValueAtTime(0.15, st + 0.05);
-    g.gain.exponentialRampToValueAtTime(0.001, st + 0.45);
-    osc.connect(g); g.connect(ctx.destination);
-    osc.start(st); osc.stop(st + 0.5);
-  });
 }
 
 if (vid) {
