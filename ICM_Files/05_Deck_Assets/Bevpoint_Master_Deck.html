@@ -1273,6 +1273,7 @@ html, body {
   }
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
 
@@ -2851,23 +2852,62 @@ html, body {
 </div><!-- /investment-section -->
 <script>
 var _carStage = 0, _carTotal = 5;
+
+// ── init car layer starting positions on load ──────────────────────────────
+window.addEventListener('DOMContentLoaded', function() {
+  gsap.set('#car-layer-1', { x: -70, opacity: 0 });
+  gsap.set('#car-layer-2', { y: 38, opacity: 0, scale: 0.88, transformOrigin: '320px 100px' });
+  gsap.set('#car-layer-3', { x: 60, opacity: 0 });
+  gsap.set('#car-layer-4', { y: -32, opacity: 0 });
+  gsap.set('#car-layer-5', { opacity: 0, scale: 0.92, transformOrigin: '380px 100px' });
+});
+
 function buildNextStage() {
   if (_carStage >= _carTotal) return;
   _carStage++;
-  var el = document.getElementById('car-layer-' + _carStage);
-  if (el) el.style.opacity = '1';
-  var cd = document.getElementById('stage-card-' + _carStage);
-  if (cd) { cd.style.opacity='1'; cd.style.transform='translateY(0)'; }
-  var pg = document.getElementById('car-progress');
-  if (pg) pg.style.width = (_carStage/_carTotal*100)+'%';
-  if (_carStage===5) {
-    var pb = document.getElementById('pwr-bar');
-    if (pb) pb.style.width = '68px';
+  var tl = gsap.timeline();
+
+  switch(_carStage) {
+    case 1: // Blueprint slides in from left
+      tl.to('#car-layer-1', { x: 0, opacity: 1, duration: 1.0, ease: 'elastic.out(1, 0.45)' });
+      break;
+    case 2: // Chassis rises and snaps into place
+      tl.to('#car-layer-2', { y: 0, opacity: 1, scale: 1, duration: 0.85, ease: 'back.out(2.2)' });
+      break;
+    case 3: // Framework locks in from right
+      tl.to('#car-layer-3', { x: 0, opacity: 1, duration: 1.0, ease: 'elastic.out(1, 0.4)' });
+      break;
+    case 4: // Bodywork panels drop from above
+      tl.to('#car-layer-4', { y: 0, opacity: 1, duration: 0.75, ease: 'bounce.out' });
+      break;
+    case 5: // Engine fires — power bar fills + exhaust glow pulses
+      tl.to('#car-layer-5', { opacity: 1, scale: 1, duration: 0.65, ease: 'power3.out' })
+        .to('#pwr-bar', { attr: { width: 68 }, duration: 1.5, ease: 'power2.out' }, '<0.25')
+        .fromTo('#investment-slide-1',
+          { boxShadow: '0 0 0px rgba(201,168,76,0)' },
+          { boxShadow: '0 0 80px rgba(201,168,76,0.18)', duration: 0.7, yoyo: true, repeat: 1, ease: 'power2.inOut' }, '<0.3');
+      break;
   }
+
+  // Stage card pops in with back-ease overshoot
+  gsap.fromTo('#stage-card-' + _carStage,
+    { y: 24, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.55, ease: 'back.out(2)', delay: 0.18 }
+  );
+
+  // Progress bar smooth fill
+  gsap.to('#car-progress', { width: (_carStage / _carTotal * 100) + '%', duration: 0.5, ease: 'power2.out' });
+
+  // Update button
   var btn = document.getElementById('build-btn');
   if (!btn) return;
-  if (_carStage >= _carTotal) { btn.textContent='\uD83C\uDFC1 Machine Complete'; btn.disabled=true; btn.style.opacity='0.5'; }
-  else { btn.textContent='Next Stage \u2192'; }
+  if (_carStage >= _carTotal) {
+    btn.innerHTML = '&#127937; Machine Complete';
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+  } else {
+    btn.innerHTML = 'Next Stage &rarr;';
+  }
 }
 </script>
 
