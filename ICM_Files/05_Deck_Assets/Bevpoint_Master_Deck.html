@@ -2851,63 +2851,136 @@ html, body {
 </div><!-- /slides-wrapper -->
 </div><!-- /investment-section -->
 <script>
-var _carStage = 0, _carTotal = 5;
+/* ── INVESTMENT SLIDE 1: VIDEO ANIMATION ─────────────────────────────── */
+var rvStarted = false;
+var rvTriggered = [false,false,false,false,false];
+var TIMES = [0.05, 0.85, 1.85, 2.85, 4.2];
+var vid = document.getElementById('car-video');
+var rvPauseFlash = null;
 
-// ── init car layer starting positions on load ──────────────────────────────
-window.addEventListener('DOMContentLoaded', function() {
-  gsap.set('#car-layer-1', { x: -70, opacity: 0 });
-  gsap.set('#car-layer-2', { y: 38, opacity: 0, scale: 0.88, transformOrigin: '320px 100px' });
-  gsap.set('#car-layer-3', { x: 60, opacity: 0 });
-  gsap.set('#car-layer-4', { y: -32, opacity: 0 });
-  gsap.set('#car-layer-5', { opacity: 0, scale: 0.92, transformOrigin: '380px 100px' });
-});
+function fmtTime(s) {
+  var m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m + ':' + (sec<10?'0':'') + sec;
+}
 
-function buildNextStage() {
-  if (_carStage >= _carTotal) return;
-  _carStage++;
-  var tl = gsap.timeline();
-
-  switch(_carStage) {
-    case 1: // Blueprint slides in from left
-      tl.to('#car-layer-1', { x: 0, opacity: 1, duration: 1.0, ease: 'elastic.out(1, 0.45)' });
-      break;
-    case 2: // Chassis rises and snaps into place
-      tl.to('#car-layer-2', { y: 0, opacity: 1, scale: 1, duration: 0.85, ease: 'back.out(2.2)' });
-      break;
-    case 3: // Framework locks in from right
-      tl.to('#car-layer-3', { x: 0, opacity: 1, duration: 1.0, ease: 'elastic.out(1, 0.4)' });
-      break;
-    case 4: // Bodywork panels drop from above
-      tl.to('#car-layer-4', { y: 0, opacity: 1, duration: 0.75, ease: 'bounce.out' });
-      break;
-    case 5: // Engine fires — power bar fills + exhaust glow pulses
-      tl.to('#car-layer-5', { opacity: 1, scale: 1, duration: 0.65, ease: 'power3.out' })
-        .to('#pwr-bar', { attr: { width: 68 }, duration: 1.5, ease: 'power2.out' }, '<0.25')
-        .fromTo('#investment-slide-1',
-          { boxShadow: '0 0 0px rgba(201,168,76,0)' },
-          { boxShadow: '0 0 80px rgba(201,168,76,0.18)', duration: 0.7, yoyo: true, repeat: 1, ease: 'power2.inOut' }, '<0.3');
-      break;
-  }
-
-  // Stage card pops in with back-ease overshoot
-  gsap.fromTo('#stage-card-' + _carStage,
-    { y: 24, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.55, ease: 'back.out(2)', delay: 0.18 }
-  );
-
-  // Progress bar smooth fill
-  gsap.to('#car-progress', { width: (_carStage / _carTotal * 100) + '%', duration: 0.5, ease: 'power2.out' });
-
-  // Update button
-  var btn = document.getElementById('build-btn');
-  if (!btn) return;
-  if (_carStage >= _carTotal) {
-    btn.innerHTML = '&#127937; Machine Complete';
-    btn.disabled = true;
-    btn.style.opacity = '0.5';
+function togglePlay() {
+  if (!rvStarted) { startBuild(); return; }
+  if (vid.paused) {
+    vid.play();
+    document.getElementById('pp-btn').innerHTML = '&#9646;&#9646;';
   } else {
-    btn.innerHTML = 'Next Stage &rarr;';
+    vid.pause();
+    document.getElementById('pp-btn').innerHTML = '&#9654;';
+    if (rvPauseFlash) rvPauseFlash.kill();
+    gsap.set('#pause-indicator',{opacity:0});
+    rvPauseFlash = gsap.timeline()
+      .to('#pause-indicator',{opacity:1,duration:.15})
+      .to('#pause-indicator',{opacity:0,duration:.4,delay:.5});
   }
+}
+
+function seekVid(e) {
+  if (!rvStarted) return;
+  var rect = e.currentTarget.getBoundingClientRect();
+  vid.currentTime = Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width)) * vid.duration;
+}
+
+function startBuild() {
+  rvStarted = true;
+  document.getElementById('start-overlay').classList.add('hidden');
+  document.getElementById('pp-btn').innerHTML = '&#9646;&#9646;';
+  gsap.set('#bp-icon',{xPercent:-50,yPercent:-50,scale:0});
+  vid.playbackRate = 0.5;
+  vid.play();
+  document.getElementById('status-lbl').textContent = 'Building...';
+}
+
+function rvStage1() {
+  if (rvTriggered[0]) return; rvTriggered[0]=true;
+  document.getElementById('status-lbl').textContent = 'Chassis rolling in...';
+  var dur=1.1, tl=gsap.timeline();
+  tl.fromTo('#card-1',{x:-360,opacity:0},{x:0,opacity:1,duration:dur,ease:'power2.out'});
+  tl.to('#line-1',{attr:{x1:210},opacity:.8,duration:dur,ease:'power2.out'},'<');
+  tl.to('#spark-1',{attr:{r:14},opacity:1,duration:.2,ease:'power3.out'},'<0.7');
+  tl.to('#spark-1',{attr:{r:0},opacity:0,duration:.5,ease:'power2.in'});
+  tl.fromTo('#ring-1',{attr:{r:5},opacity:.8},{attr:{r:32},opacity:0,duration:.7,ease:'power2.out'},'<-0.4');
+  tl.to('#dot-1',{opacity:1,duration:.3},'<');
+}
+
+function rvStage2() {
+  if (rvTriggered[1]) return; rvTriggered[1]=true;
+  document.getElementById('status-lbl').textContent = 'Body locking on...';
+  var dur=1.0, tl=gsap.timeline();
+  tl.fromTo('#card-3',{x:360,opacity:0},{x:0,opacity:1,duration:dur,ease:'power2.out'});
+  tl.to('#line-2',{attr:{x1:790},opacity:.8,duration:dur,ease:'power2.out'},'<');
+  tl.fromTo('#spark-2',{attr:{r:0},opacity:0},{attr:{r:20},opacity:1,duration:.15,ease:'power3.out'},'<0.75');
+  tl.to('#spark-2',{attr:{r:0},opacity:0,duration:.5,ease:'power2.in'});
+  tl.fromTo('#ring-2a',{attr:{r:5},opacity:.9},{attr:{r:30},opacity:0,duration:.6,ease:'power2.out'},'<-0.4');
+  tl.fromTo('#ring-2b',{attr:{r:5},opacity:.6},{attr:{r:20},opacity:0,duration:.9,ease:'power1.out'},'<0.15');
+  tl.to('#dot-2',{opacity:1,duration:.3},'<');
+}
+
+function rvStage3() {
+  if (rvTriggered[2]) return; rvTriggered[2]=true;
+  document.getElementById('status-lbl').textContent = 'Wheels locking in...';
+  var dur=0.9, tl=gsap.timeline();
+  tl.fromTo('#card-2',{y:280,opacity:0},{y:0,opacity:1,duration:dur,ease:'power2.out'});
+  tl.to('#line-3',{attr:{y1:462},opacity:.8,duration:dur,ease:'power2.out'},'<');
+  tl.fromTo('#spark-3a',{attr:{r:0},opacity:0},{attr:{r:16},opacity:1,duration:.12,ease:'power3.out'},'<0.6');
+  tl.to('#spark-3a',{attr:{r:0},opacity:0,duration:.4,ease:'power2.in'});
+  tl.fromTo('#ring-3a',{attr:{r:5},opacity:.9},{attr:{r:28},opacity:0,duration:.6,ease:'power2.out'},'<-0.3');
+  tl.fromTo('#spark-3b',{attr:{r:0},opacity:0},{attr:{r:16},opacity:1,duration:.12,ease:'power3.out'},'<0.1');
+  tl.to('#spark-3b',{attr:{r:0},opacity:0,duration:.4,ease:'power2.in'});
+  tl.fromTo('#ring-3b',{attr:{r:5},opacity:.9},{attr:{r:28},opacity:0,duration:.6,ease:'power2.out'},'<-0.3');
+  tl.to('#dot-3',{opacity:1,duration:.3},'<');
+}
+
+function rvStage4() {
+  if (rvTriggered[3]) return; rvTriggered[3]=true;
+  document.getElementById('status-lbl').textContent = 'Engine igniting...';
+  var dur=1.0, tl=gsap.timeline();
+  tl.fromTo('#card-4',{y:-380,opacity:0},{y:0,opacity:1,duration:dur,ease:'power2.out'});
+  tl.to('#line-4',{attr:{y1:148},opacity:.85,duration:dur,ease:'power2.out'},'<');
+  tl.fromTo('#spark-4a',{attr:{r:0,cx:460,cy:275},opacity:0},{attr:{r:28},opacity:1,duration:.18,ease:'power3.out'},'<0.6');
+  tl.to('#spark-4a',{attr:{r:0},opacity:0,duration:.6,ease:'power2.in'});
+  tl.fromTo('#spark-4b',{attr:{r:0,cx:430,cy:240},opacity:0},{attr:{r:18},opacity:1,duration:.15,ease:'power3.out'},'<-0.1');
+  tl.to('#spark-4b',{attr:{r:0,cx:430,cy:175},opacity:0,duration:.7,ease:'power1.in'});
+  tl.fromTo('#spark-4c',{attr:{r:0,cx:490,cy:220},opacity:0},{attr:{r:14},opacity:1,duration:.15,ease:'power3.out'},'<-0.5');
+  tl.to('#spark-4c',{attr:{r:0,cx:490,cy:155},opacity:0,duration:.7,ease:'power1.in'});
+  tl.fromTo('#ring-4a',{attr:{r:5},opacity:1},{attr:{r:55},opacity:0,duration:1.0,ease:'power2.out'},'<-0.8');
+  tl.fromTo('#ring-4b',{attr:{r:5},opacity:.8},{attr:{r:40},opacity:0,duration:1.2,ease:'power1.out'},'<0.1');
+  tl.fromTo('#ring-4c',{attr:{r:5},opacity:.6},{attr:{r:28},opacity:0,duration:1.4,ease:'power1.out'},'<0.2');
+  tl.to('#dot-4',{opacity:1,duration:.3},'<0.5');
+}
+
+function rvRevealLogo() {
+  if (rvTriggered[4]) return; rvTriggered[4]=true;
+  document.getElementById('status-lbl').textContent = '🏁 Machine complete';
+  var tl=gsap.timeline();
+  tl.fromTo('#bp-icon',{scale:0,opacity:0},{scale:1,opacity:1,duration:.85,ease:'elastic.out(1,.45)'});
+  tl.fromTo('#icon-ring',{attr:{r:5},opacity:.9},{attr:{r:42},opacity:0,duration:.75,ease:'power2.out'},'<0.3');
+  tl.fromTo('#icon-ring2',{attr:{r:5},opacity:.6},{attr:{r:28},opacity:0,duration:1.0,ease:'power2.out'},'<0.2');
+  tl.to('#bp-icon',{filter:'drop-shadow(0 0 16px rgba(201,168,76,1)) drop-shadow(0 0 40px rgba(201,168,76,.8))',duration:.3},'<0.4');
+  tl.to('#bp-icon',{filter:'drop-shadow(0 0 8px rgba(201,168,76,.8)) drop-shadow(0 0 20px rgba(201,168,76,.5))',duration:.8});
+}
+
+if (vid) {
+  vid.addEventListener('timeupdate', function() {
+    var t=vid.currentTime, d=vid.duration||1;
+    var fill = document.getElementById('vprog-fill');
+    var lbl = document.getElementById('time-lbl');
+    if (fill) fill.style.width=(t/d*100)+'%';
+    if (lbl) lbl.textContent=fmtTime(t*2);
+    if(t>=TIMES[0]&&!rvTriggered[0]) rvStage1();
+    if(t>=TIMES[1]&&!rvTriggered[1]) rvStage2();
+    if(t>=TIMES[2]&&!rvTriggered[2]) rvStage3();
+    if(t>=TIMES[3]&&!rvTriggered[3]) rvStage4();
+    if(t>=TIMES[4]&&!rvTriggered[4]) rvRevealLogo();
+  });
+  vid.addEventListener('ended',function(){
+    var btn=document.getElementById('pp-btn');
+    if(btn) btn.innerHTML='&#9654;';
+  });
 }
 </script>
 
