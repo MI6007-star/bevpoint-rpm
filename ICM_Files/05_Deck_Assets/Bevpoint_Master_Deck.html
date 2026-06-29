@@ -1272,6 +1272,53 @@ html, body {
     max-width: 100%;
   }
 }
+
+/* ── INVESTMENT SLIDE 1: VIDEO RALLY ─────────────────────────── */
+#investment-slide-1 { padding: 16px 24px 52px; }
+.video-slide-inner { width:100%; max-width:1140px; display:flex; flex-direction:column; gap:8px; }
+.vid-header { text-align:center; }
+.video-wrap {
+  position:relative; width:100%; border-radius:10px;
+  overflow:hidden; border:1px solid rgba(201,168,76,.2);
+  background:#000; cursor:pointer; aspect-ratio:16/9;
+}
+.video-wrap video { position:absolute; top:0; left:0; width:100%; height:100%; display:block; object-fit:cover; }
+.overlay-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
+.rvcard {
+  position:absolute; opacity:0;
+  background:rgba(6,7,26,.92); backdrop-filter:blur(8px);
+  border-radius:9px; padding:10px 12px;
+  display:flex; flex-direction:column; gap:3px;
+  border:1px solid rgba(91,95,232,.5); width:21%;
+}
+.rvcard.rvcard-gold { border-color:rgba(201,168,76,.6); }
+#card-1 { left:1%; top:28%; }
+#card-2 { left:38%; bottom:5%; }
+#card-3 { right:1%; top:7%; }
+#card-4 { left:38%; top:7%; }
+.rvcard-num  { font-size:9px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#A0A4FF; }
+.rvcard.rvcard-gold .rvcard-num { color:#E8D08A; }
+.rvcard-icon { font-size:16px; line-height:1; margin:2px 0; }
+.rvcard-title { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
+.rvcard-desc { font-size:10px; color:rgba(255,255,255,.55); line-height:1.45; }
+.rvcard-tag { padding-top:5px; border-top:1px solid rgba(91,95,232,.15); font-size:9px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:#A0A4FF; }
+.rvcard.rvcard-gold .rvcard-tag { border-top-color:rgba(201,168,76,.2); color:#C9A84C; }
+#bp-icon { position:absolute; left:64%; top:58%; opacity:0; width:7%; pointer-events:none; filter:drop-shadow(0 0 8px rgba(201,168,76,1)) drop-shadow(0 0 22px rgba(201,168,76,.7)); }
+#bp-icon svg { width:100%; display:block; }
+#start-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(6,7,26,.52); border-radius:10px; transition:background .3s; }
+#start-overlay:hover { background:rgba(6,7,26,.28); }
+#start-overlay.hidden { display:none; }
+#pause-indicator { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; }
+.play-btn { width:56px; height:56px; border-radius:50%; background:rgba(201,168,76,.14); border:2px solid rgba(201,168,76,.65); display:flex; align-items:center; justify-content:center; font-size:20px; color:#C9A84C; transition:all .2s; flex-shrink:0; }
+#start-overlay:hover .play-btn { background:rgba(201,168,76,.28); transform:scale(1.08); }
+.vid-controls { display:flex; align-items:center; gap:10px; }
+.ctrl-btn { width:28px; height:28px; border-radius:50%; flex-shrink:0; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(255,255,255,.6); font-size:11px; transition:all .18s; }
+.ctrl-btn:hover { background:rgba(201,168,76,.15); border-color:rgba(201,168,76,.4); color:#C9A84C; }
+.vprog-wrap { flex:1; cursor:pointer; padding:7px 0; }
+.vprog-bar { height:3px; background:rgba(255,255,255,.06); border-radius:2px; overflow:hidden; }
+.vprog-fill { height:100%; width:0%; background:linear-gradient(90deg,#5B5FE8,#C9A84C); border-radius:2px; }
+.time-label { font-size:10px; color:rgba(255,255,255,.3); white-space:nowrap; font-variant-numeric:tabular-nums; }
+.status-label { font-size:11px; color:rgba(255,255,255,.35); letter-spacing:.05em; white-space:nowrap; }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
@@ -2599,143 +2646,103 @@ html, body {
 <div class="section-container" id="investment-section">
 <div class="slides-wrapper">
 
-  <!-- INVESTMENT SLIDE 1: BUILD THE MACHINE -->
+  <!-- INVESTMENT SLIDE 1: VIDEO ASSEMBLY -->
   <div class="inv-slide active" id="investment-slide-1" data-slide="1">
-    <div class="grid-bg"></div>
-    <div style="position:relative;z-index:2;width:100%;max-width:1360px;display:flex;flex-direction:column;gap:12px;">
-
-      <div class="ai" style="text-align:center;">
-        <div style="font-size:10px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:#C9A84C;margin-bottom:5px;">The Investment</div>
-        <div class="display-md" style="line-height:1.05;">Building the Machine</div>
-        <div style="font-size:14px;color:rgba(255,255,255,0.42);margin-top:5px;">Every great car &#8212; and every great brand &#8212; is built in the right order.</div>
+    <div class="video-slide-inner">
+      <div class="vid-header">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#C9A84C;margin-bottom:4px;">The Investment</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,3.5vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1;">Building the Machine</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.38);margin-top:3px;">Every great car &#8212; and every great brand &#8212; is built in the right order.</div>
       </div>
 
-      <div class="ai" style="display:flex;align-items:center;gap:16px;justify-content:center;">
-        <div style="flex:1;max-width:520px;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;">
-          <div id="car-progress" style="height:100%;width:0%;background:linear-gradient(90deg,#5B5FE8,#C9A84C);transition:width 0.6s ease;"></div>
-        </div>
-        <button id="build-btn" onclick="buildNextStage()" style="background:rgba(201,168,76,0.1);border:1.5px solid rgba(201,168,76,0.5);color:#C9A84C;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:8px 22px;border-radius:4px;cursor:pointer;transition:all 0.3s;">&#9654; Start Build</button>
-      </div>
+      <div class="video-wrap" id="video-wrap" onclick="togglePlay()">
+        <video id="car-video" muted playsinline preload="auto"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_3F4C2roGhIYBwLD0Rn9XxKj8UW6/hf_20260629_185038_d683e19d-cce0-4f0c-b70d-a0ae8c8f3b44.mp4">
+        </video>
 
-      <!-- F1 CAR SVG -->
-      <div class="ai">
-        <svg viewBox="0 0 640 175" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;height:auto;display:block;margin:0 auto;">
+        <svg class="overlay-svg" viewBox="0 0 1000 562" preserveAspectRatio="none">
           <defs>
-            <radialGradient id="eGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C9A84C" stop-opacity="0.6"/><stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/></radialGradient>
-            <filter id="eBlur"><feGaussianBlur stdDeviation="2.5"/></filter>
+            <filter id="glow-blue" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="glow-gold" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           </defs>
-
-          <!-- LAYER 1: DESIGN - blueprint outline -->
-          <g id="car-layer-1" opacity="0">
-            <path d="M 62,142 L 62,103 C 95,76 152,60 228,52 C 308,44 385,43 445,57 L 492,83 L 522,108 L 522,142 Z" fill="rgba(91,95,232,0.05)" stroke="#5B5FE8" stroke-width="1.4" stroke-dasharray="7 4"/>
-            <circle cx="108" cy="155" r="24" fill="none" stroke="#5B5FE8" stroke-width="1.2" stroke-dasharray="5 4"/>
-            <circle cx="440" cy="155" r="26" fill="none" stroke="#5B5FE8" stroke-width="1.2" stroke-dasharray="5 4"/>
-            <path d="M 10,145 L 100,145 L 100,153 L 10,153 Z" fill="none" stroke="#5B5FE8" stroke-width="1" stroke-dasharray="5 4"/>
-            <path d="M 462,72 L 462,50 L 548,50 L 548,72 Z" fill="none" stroke="#5B5FE8" stroke-width="1" stroke-dasharray="5 4"/>
-            <text x="300" y="20" fill="#5B5FE8" font-size="8" font-family="monospace" text-anchor="middle" opacity="0.5" letter-spacing="2">DESIGN BLUEPRINT v1.0</text>
-          </g>
-
-          <!-- LAYER 2: MODEL - chassis prototype -->
-          <g id="car-layer-2" opacity="0">
-            <path d="M 62,142 L 522,142 L 522,153 L 62,153 Z" fill="#0D0F2B" stroke="rgba(160,164,255,0.22)" stroke-width="1"/>
-            <path d="M 62,142 L 62,110 C 92,83 148,65 228,56 C 308,48 382,47 445,60 L 490,86 L 520,110 L 520,142 Z" fill="#0D0F2B" stroke="rgba(160,164,255,0.15)" stroke-width="1"/>
-          </g>
-
-          <!-- LAYER 3: CHASSIS - gold frame accents -->
-          <g id="car-layer-3" opacity="0">
-            <path d="M 62,142 L 62,107 C 90,80 146,63 228,54 C 308,46 382,45 445,58 L 490,84 L 520,108 L 520,142 Z" fill="#111330"/>
-            <path d="M 64,128 L 188,105 L 368,102 L 520,126" fill="none" stroke="rgba(201,168,76,0.22)" stroke-width="1.5"/>
-            <path d="M 64,124 L 108,146" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M 64,138 L 108,155" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M 518,118 L 440,146" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M 518,138 L 440,155" fill="none" stroke="rgba(201,168,76,0.45)" stroke-width="2.5" stroke-linecap="round"/>
-            <circle cx="108" cy="155" r="24" fill="#0A0A18" stroke="rgba(201,168,76,0.3)" stroke-width="1.5"/>
-            <circle cx="440" cy="155" r="26" fill="#0A0A18" stroke="rgba(201,168,76,0.3)" stroke-width="1.5"/>
-          </g>
-
-          <!-- LAYER 4: BODYWORK - full surface -->
-          <g id="car-layer-4" opacity="0">
-            <path d="M 22,149 L 64,142 L 64,130 L 38,128 Z" fill="#111330" stroke="rgba(201,168,76,0.15)" stroke-width="0.8"/>
-            <path d="M 8,147 L 104,147 L 104,155 L 8,155 Z" fill="#0D0F2B" stroke="rgba(201,168,76,0.28)" stroke-width="1"/>
-            <path d="M 10,141 L 102,141 L 102,148 L 10,148 Z" fill="#111330" stroke="rgba(201,168,76,0.15)" stroke-width="0.7"/>
-            <path d="M 8,136 L 14,136 L 14,158 L 8,158 Z" fill="#0D0F2B"/>
-            <path d="M 104,136 L 110,136 L 110,158 L 104,158 Z" fill="#0D0F2B"/>
-            <path d="M 258,54 C 260,59 267,80 270,102 L 292,102 C 294,78 300,56 302,53 Z" fill="#181A3A" stroke="rgba(201,168,76,0.15)" stroke-width="0.7"/>
-            <path d="M 228,54 L 223,44 C 245,33 268,28 288,27 C 310,26 333,31 354,44 L 348,54" fill="none" stroke="rgba(201,168,76,0.65)" stroke-width="4.5" stroke-linecap="round"/>
-            <path d="M 462,74 L 462,52 L 548,52 L 548,74 Z" fill="#0D0F2B" stroke="rgba(201,168,76,0.28)" stroke-width="1"/>
-            <path d="M 470,64 L 470,42 L 540,42 L 540,64 Z" fill="#111330" stroke="rgba(201,168,76,0.15)" stroke-width="0.7"/>
-            <path d="M 462,40 L 468,40 L 468,78 L 462,78 Z" fill="#0D0F2B"/>
-            <path d="M 542,40 L 548,40 L 548,78 L 542,78 Z" fill="#0D0F2B"/>
-            <path d="M 504,56 L 504,102 L 508,102 L 508,56 Z" fill="rgba(160,164,255,0.22)"/>
-            <path d="M 62,122 L 448,57 L 456,62 L 70,128 Z" fill="rgba(201,168,76,0.08)"/>
-            <circle cx="108" cy="155" r="24" fill="#0A0A18"/>
-            <circle cx="108" cy="155" r="17" fill="#111330" stroke="rgba(201,168,76,0.18)" stroke-width="1"/>
-            <circle cx="108" cy="155" r="7" fill="#0D0F2B" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
-            <circle cx="440" cy="155" r="26" fill="#0A0A18"/>
-            <circle cx="440" cy="155" r="18" fill="#111330" stroke="rgba(201,168,76,0.18)" stroke-width="1"/>
-            <circle cx="440" cy="155" r="8" fill="#0D0F2B" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
-          </g>
-
-          <!-- LAYER 5: ENGINE - power glow -->
-          <g id="car-layer-5" opacity="0">
-            <ellipse cx="388" cy="96" rx="62" ry="28" fill="url(#eGlow)" opacity="0.7"/>
-            <path d="M 358,57 L 448,66 L 448,112 L 358,112 Z" fill="rgba(201,168,76,0.06)"/>
-            <path d="M 364,78 L 442,78" stroke="rgba(201,168,76,0.55)" stroke-width="1.5" stroke-dasharray="4 3"/>
-            <path d="M 364,90 L 442,90" stroke="rgba(201,168,76,0.38)" stroke-width="1" stroke-dasharray="4 3"/>
-            <path d="M 364,102 L 442,102" stroke="rgba(201,168,76,0.25)" stroke-width="1" stroke-dasharray="4 3"/>
-            <ellipse cx="538" cy="122" rx="18" ry="7" fill="#FF6B00" opacity="0.28" filter="url(#eBlur)"/>
-            <ellipse cx="558" cy="122" rx="9" ry="5" fill="#FF8C00" opacity="0.32" filter="url(#eBlur)"/>
-            <circle cx="578" cy="120" r="4" fill="#FFA500" opacity="0.22"/>
-            <circle cx="592" cy="118" r="3" fill="#FFA500" opacity="0.14"/>
-            <rect x="365" y="114" width="68" height="6" rx="2" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.28)" stroke-width="0.8"/>
-            <rect id="pwr-bar" x="365" y="114" width="0" height="6" rx="2" fill="#C9A84C" style="transition:width 0.9s ease"/>
-          </g>
+          <line id="line-1" x1="-140" y1="290" x2="400" y2="390" stroke="#A0A4FF" stroke-width="1.4" opacity="0"/>
+          <line id="line-2" x1="1140" y1="105" x2="620" y2="340" stroke="#A0A4FF" stroke-width="1.4" opacity="0"/>
+          <line id="line-3" x1="500"  y1="620" x2="490" y2="435" stroke="#C9A84C" stroke-width="1.4" opacity="0"/>
+          <line id="line-4" x1="500"  y1="-60" x2="460" y2="275" stroke="#C9A84C" stroke-width="1.6" opacity="0"/>
+          <circle id="dot-1" cx="400" cy="390" r="4.5" fill="#A0A4FF" filter="url(#glow-blue)" opacity="0"/>
+          <circle id="dot-2" cx="620" cy="340" r="4.5" fill="#5B5FE8" filter="url(#glow-blue)" opacity="0"/>
+          <circle id="dot-3" cx="490" cy="435" r="4.5" fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="dot-4" cx="460" cy="275" r="4.5" fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="spark-1"  cx="380" cy="415" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="ring-1"   cx="380" cy="415" r="5"  fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+          <circle id="spark-2"  cx="580" cy="370" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="ring-2a"  cx="580" cy="370" r="5"  fill="none" stroke="#A0A4FF" stroke-width="1.5" opacity="0"/>
+          <circle id="ring-2b"  cx="580" cy="370" r="5"  fill="none" stroke="#A0A4FF" stroke-width="1"   opacity="0"/>
+          <circle id="spark-3a" cx="285" cy="435" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="spark-3b" cx="695" cy="430" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="ring-3a"  cx="285" cy="435" r="5"  fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+          <circle id="ring-3b"  cx="695" cy="430" r="5"  fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+          <circle id="spark-4a" cx="460" cy="275" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="spark-4b" cx="430" cy="240" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="spark-4c" cx="490" cy="220" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="ring-4a"  cx="460" cy="275" r="5"  fill="none" stroke="#C9A84C" stroke-width="2"   opacity="0"/>
+          <circle id="ring-4b"  cx="460" cy="275" r="5"  fill="none" stroke="#C9A84C" stroke-width="1.2" opacity="0"/>
+          <circle id="ring-4c"  cx="460" cy="275" r="5"  fill="none" stroke="#C9A84C" stroke-width="1"   opacity="0"/>
+          <circle id="icon-ring"  cx="640" cy="326" r="5" fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+          <circle id="icon-ring2" cx="640" cy="326" r="5" fill="none" stroke="#C9A84C" stroke-width="1"   opacity="0"/>
         </svg>
+
+        <div id="bp-icon">
+          <svg viewBox="0 0 80 95" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="ih" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse"><line x1="0" y1="5" x2="5" y2="0" stroke="#C9A84C" stroke-width="1.6" stroke-linecap="square"/></pattern></defs>
+            <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="#C9A84C" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+            <polygon points="40,13 57,57 40,57" fill="#C9A84C"/>
+            <polygon points="40,13 23,57 40,57" fill="url(#ih)"/>
+            <line x1="40" y1="13" x2="40" y2="57" stroke="rgba(0,0,0,0.2)" stroke-width="0.8"/>
+            <rect x="37.5" y="57" width="5" height="22" fill="#C9A84C" rx="0.5"/>
+          </svg>
+        </div>
+
+        <div class="rvcard" id="card-1">
+          <div class="rvcard-num">01 &mdash; Blueprint</div>
+          <div class="rvcard-icon">&#9998;</div>
+          <div class="rvcard-title">Brand Strategy</div>
+          <div class="rvcard-desc">Architecture &middot; Identity &middot; Messaging &middot; Positioning</div>
+          <div class="rvcard-tag">Included &mdash; First 90 Days</div>
+        </div>
+        <div class="rvcard" id="card-2">
+          <div class="rvcard-num">02 &mdash; Framework</div>
+          <div class="rvcard-icon">&#128295;</div>
+          <div class="rvcard-title">Infrastructure &amp; Toolkit</div>
+          <div class="rvcard-desc">CRM &middot; Tech stack &middot; Collateral &middot; Playbook</div>
+          <div class="rvcard-tag">Included &mdash; First 90 Days</div>
+        </div>
+        <div class="rvcard" id="card-3">
+          <div class="rvcard-num">03 &mdash; Launch</div>
+          <div class="rvcard-icon">&#127919;</div>
+          <div class="rvcard-title">Campaigns &amp; PR</div>
+          <div class="rvcard-desc">Paid campaigns &middot; Content &middot; Email &middot; PR push</div>
+          <div class="rvcard-tag">Funded from Capital Raise</div>
+        </div>
+        <div class="rvcard rvcard-gold" id="card-4">
+          <div class="rvcard-num">04 &mdash; Engine</div>
+          <div class="rvcard-icon">&#9889;</div>
+          <div class="rvcard-title">Media &amp; Performance</div>
+          <div class="rvcard-desc">Paid media &middot; Targeting &middot; ROI &middot; Scales with raise</div>
+          <div class="rvcard-tag">Variable &mdash; Performance-Based</div>
+        </div>
+
+        <div id="start-overlay"><div class="play-btn">&#9654;</div></div>
+        <div id="pause-indicator"><div class="play-btn" style="font-size:18px;">&#9646;&#9646;</div></div>
       </div>
 
-      <!-- STAGE CARDS -->
-      <div class="ai" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
-
-        <div id="stage-card-1" style="opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease;background:#111330;border:1px solid rgba(91,95,232,0.38);border-radius:10px;padding:13px 11px;display:flex;flex-direction:column;gap:5px;">
-          <div style="font-size:18px;line-height:1;">&#9998;</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:#A0A4FF;">01 &#8212; Design</div>
-          <div style="font-size:10.5px;font-weight:600;color:#fff;">Brand Strategy &amp; Creative Foundation</div>
-          <div style="font-size:9.5px;color:rgba(255,255,255,0.48);line-height:1.45;">Brand architecture &middot; Visual identity &middot; Messaging system &middot; Positioning</div>
-          <div style="margin-top:auto;padding-top:7px;border-top:1px solid rgba(91,95,232,0.2);font-size:9px;color:#A0A4FF;font-weight:700;letter-spacing:0.05em;">Included &#8212; First 90 Days</div>
+      <div class="vid-controls">
+        <div class="ctrl-btn" id="pp-btn" onclick="togglePlay();event.stopPropagation();">&#9654;</div>
+        <span class="time-label" id="time-lbl">0:00</span>
+        <div class="vprog-wrap" onclick="seekVid(event);event.stopPropagation();">
+          <div class="vprog-bar"><div class="vprog-fill" id="vprog-fill"></div></div>
         </div>
-
-        <div id="stage-card-2" style="opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease;background:#111330;border:1px solid rgba(91,95,232,0.28);border-radius:10px;padding:13px 11px;display:flex;flex-direction:column;gap:5px;">
-          <div style="font-size:18px;line-height:1;">&#128295;</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:#A0A4FF;">02 &#8212; Prototype</div>
-          <div style="font-size:10.5px;font-weight:600;color:#fff;">Digital Infrastructure &amp; Tech Stack</div>
-          <div style="font-size:9.5px;color:rgba(255,255,255,0.48);line-height:1.45;">CRM setup &middot; Analytics &middot; Website brief &middot; Marketing technology</div>
-          <div style="margin-top:auto;padding-top:7px;border-top:1px solid rgba(91,95,232,0.2);font-size:9px;color:#A0A4FF;font-weight:700;letter-spacing:0.05em;">Included &#8212; First 90 Days</div>
-        </div>
-
-        <div id="stage-card-3" style="opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease;background:#111330;border:1px solid rgba(201,168,76,0.28);border-radius:10px;padding:13px 11px;display:flex;flex-direction:column;gap:5px;">
-          <div style="font-size:18px;line-height:1;">&#128295;</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:#C9A84C;">03 &#8212; Chassis</div>
-          <div style="font-size:10.5px;font-weight:600;color:#fff;">Marketing Framework &amp; Sales Toolkit</div>
-          <div style="font-size:9.5px;color:rgba(255,255,255,0.48);line-height:1.45;">Content calendar &middot; Channel strategy &middot; Sales collateral &middot; Playbook</div>
-          <div style="margin-top:auto;padding-top:7px;border-top:1px solid rgba(201,168,76,0.2);font-size:9px;color:#C9A84C;font-weight:700;letter-spacing:0.05em;">Included &#8212; First 90 Days</div>
-        </div>
-
-        <div id="stage-card-4" style="opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease;background:#111330;border:1px solid rgba(201,168,76,0.32);border-radius:10px;padding:13px 11px;display:flex;flex-direction:column;gap:5px;">
-          <div style="font-size:18px;line-height:1;">&#127950;</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:#C9A84C;">04 &#8212; Bodywork</div>
-          <div style="font-size:10.5px;font-weight:600;color:#fff;">Campaigns, Content &amp; PR Launch</div>
-          <div style="font-size:9.5px;color:rgba(255,255,255,0.48);line-height:1.45;">Paid campaigns &middot; Social content &middot; Email nurture &middot; PR push</div>
-          <div style="margin-top:auto;padding-top:7px;border-top:1px solid rgba(201,168,76,0.2);font-size:9px;color:#C9A84C;font-weight:700;letter-spacing:0.05em;">Funded from capital raise</div>
-        </div>
-
-        <div id="stage-card-5" style="opacity:0;transform:translateY(18px);transition:opacity 0.5s ease,transform 0.5s ease;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.48);border-radius:10px;padding:13px 11px;display:flex;flex-direction:column;gap:5px;">
-          <div style="font-size:18px;line-height:1;">&#9889;</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:#E8D08A;">05 &#8212; Engine</div>
-          <div style="font-size:10.5px;font-weight:600;color:#fff;">Media Spend &amp; Performance</div>
-          <div style="font-size:9.5px;color:rgba(255,255,255,0.48);line-height:1.45;">Paid media &middot; Audience targeting &middot; Optimization &middot; ROI tracking</div>
-          <div style="margin-top:auto;padding-top:7px;border-top:1px solid rgba(201,168,76,0.25);font-size:9px;color:#E8D08A;font-weight:700;letter-spacing:0.05em;">Variable &#8212; scales with capital raise</div>
-        </div>
-
+        <div class="status-label" id="status-lbl">Click play to start</div>
       </div>
     </div>
   </div>
