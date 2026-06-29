@@ -35,8 +35,8 @@
   #bp-icon {
     position:absolute;
     left:50%;
-    top:72%;
-    transform:translate(-50%, -50%) scale(0);
+    top:66%;
+    /* transform handled entirely by GSAP to avoid translate/scale conflict */
     opacity:0;
     width:7%;
     pointer-events:none;
@@ -270,13 +270,14 @@ function revealIcon() {
   document.getElementById('status-label').textContent = '🏁 Powered by Bevpoint';
   gsap.to('#progress-fill', { width:'100%', duration:0.5 });
 
+  // GSAP owns all transforms — xPercent centers, scale animates in
+  gsap.set('#bp-icon', { xPercent:-50, yPercent:-50, scale:0 });
+
   var tl = gsap.timeline();
 
-  // CSS div — scale from 0→1, translate stays put (set via CSS top/left)
   tl.fromTo('#bp-icon',
     { scale:0, opacity:0 },
-    { scale:1, opacity:1, duration:0.85, ease:'elastic.out(1, 0.45)',
-      transformOrigin:'50% 50%' }
+    { scale:1, opacity:1, duration:0.85, ease:'elastic.out(1, 0.45)' }
   );
   // SVG pulse rings (at 63% height = 354/562 in SVG coords)
   tl.fromTo('#icon-ring',
