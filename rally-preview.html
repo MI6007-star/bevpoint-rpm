@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bevpoint × Roaring Pines — Investment</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --bg:#06071A; --surface:#0D0F2E; --border:rgba(255,255,255,0.08);
+  --blue:#5B5FE8; --blue-lt:#A0A4FF; --gold:#C9A84C; --gold-lt:#E8D08A;
+  --text:#F0F2FF; --muted:rgba(240,242,255,0.55);
+}
+html,body {
+  width:100%; height:100%; background:#06071A; color:#fff;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+
+/* ── TOP NAV ── */
+.top-nav {
+  position:fixed; top:0; left:0; right:0; height:56px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px;
+  background:rgba(6,7,26,.97); border-bottom:1px solid rgba(255,255,255,.07);
+  z-index:200; backdrop-filter:blur(12px);
+}
+.nav-brand { display:flex; align-items:center; gap:9px; flex-shrink:0; }
+.nav-brand-text { font-size:13px; font-weight:700; letter-spacing:.04em; color:rgba(255,255,255,.65); }
+.nav-brand-sep { color:rgba(255,255,255,.18); font-size:13px; }
+.nav-title { font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
+.slide-counter { font-size:12px; font-weight:500; color:rgba(255,255,255,.35); letter-spacing:.08em; flex-shrink:0; }
+.slide-counter .cur { color:#fff; font-weight:700; }
+
+/* ── PROGRESS ── */
+.prog-bar { position:fixed; bottom:0; left:0; width:100%; height:3px; background:rgba(255,255,255,.07); z-index:200; }
+.prog-fill { height:100%; background:linear-gradient(90deg,#C9A84C,#5B5FE8); transition:width .45s ease; }
+
+/* ── SLIDE WRAPPER ── */
+.deck {
+  position:fixed; top:56px; left:0; right:0; bottom:0;
+  overflow:hidden;
+}
+.slide {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:32px 52px 56px;
+  opacity:0; transform:translateX(50px);
+  transition:opacity .48s cubic-bezier(.4,0,.2,1), transform .48s cubic-bezier(.4,0,.2,1);
+  pointer-events:none; overflow:hidden;
+}
+.slide.active { opacity:1; transform:translateX(0); pointer-events:all; }
+.slide.exit   { opacity:0; transform:translateX(-50px); }
+
+/* Slide 1 needs less horizontal padding since video needs room */
+#slide-1 { padding:16px 24px 52px; }
+
+/* ── BACKGROUNDS ── */
+.grid-bg {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:64px 64px;
+}
+.cover-accent { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.cover-accent::before {
+  content:''; position:absolute; top:-40%; right:-8%; width:55%; height:200%;
+  background:linear-gradient(175deg,rgba(91,95,232,.07) 0%,transparent 55%);
+}
+.cover-accent::after {
+  content:''; position:absolute; bottom:0; left:0; width:100%; height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(91,95,232,.25) 50%,transparent 100%);
+}
+
+/* ── NAV ARROWS + DOTS ── */
+.nav-arrows { position:fixed; bottom:18px; right:36px; display:flex; gap:10px; z-index:199; }
+.nav-btn {
+  width:42px; height:42px; border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.03); color:#fff; border-radius:50%;
+  cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;
+  transition:all .2s; backdrop-filter:blur(12px);
+}
+.nav-btn:hover { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.25); }
+.nav-btn:disabled { opacity:.25; cursor:default; pointer-events:none; }
+.dots { position:fixed; bottom:26px; left:50%; transform:translateX(-50%); display:flex; gap:7px; z-index:199; }
+.dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.18); cursor:pointer; transition:all .3s; }
+.dot.active { background:var(--gold); width:22px; border-radius:3px; }
+
+/* ── TYPOGRAPHY ── */
+.eyebrow { display:block; font-size:10px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue); margin-bottom:18px; }
+.eyebrow.gold { color:var(--gold); }
+.display-md { font-size:clamp(26px,4vw,52px); font-weight:800; line-height:1.05; letter-spacing:-.02em; }
+.display-xl { font-size:clamp(38px,6vw,76px); font-weight:900; line-height:.95; letter-spacing:-.03em; }
+.headline { font-size:clamp(18px,2.4vw,30px); font-weight:700; line-height:1.25; color:#fff; }
+.body-lg { font-size:clamp(14px,1.4vw,17px); font-weight:400; line-height:1.72; color:rgba(255,255,255,.58); }
+
+/* ── CARDS ── */
+.card-glass {
+  background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.07);
+  border-radius:12px; padding:24px;
+}
+.card-gold {
+  background:rgba(201,168,76,.07); border:1px solid rgba(201,168,76,.35);
+  border-radius:14px; padding:24px 28px;
+}
+.card-blue {
+  background:rgba(91,95,232,.07); border:1px solid rgba(91,95,232,.18);
+  border-radius:12px; padding:20px 24px;
+}
+.check-list { list-style:none; display:flex; flex-direction:column; gap:9px; }
+.check-list li { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:rgba(255,255,255,.72); line-height:1.55; }
+.check-list li::before { content:'✓'; color:var(--gold); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+/* ROI blocks */
+.roi-block { display:grid; grid-template-columns:repeat(3,1fr); background:rgba(91,95,232,.08); border:1px solid rgba(91,95,232,.22); border-radius:10px; overflow:hidden; }
+.roi-cell { padding:20px 22px; border-right:1px solid rgba(91,95,232,.15); }
+.roi-cell:last-child { border-right:none; }
+.roi-label { font-size:9px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--blue-lt); margin-bottom:7px; }
+.roi-value { font-size:26px; font-weight:900; color:#fff; letter-spacing:-.03em; line-height:1; margin-bottom:4px; }
+.roi-value.gold { color:var(--gold); }
+.roi-note { font-size:11px; color:rgba(255,255,255,.48); line-height:1.4; }
+
+/* ── SLIDE 1: VIDEO LAYOUT ── */
+.video-slide-inner { width:100%; max-width:1120px; display:flex; flex-direction:column; gap:12px; }
+.vid-header { text-align:center; }
+.video-wrap {
+  position:relative; width:100%; border-radius:12px;
+  overflow:hidden; border:1px solid rgba(201,168,76,.2);
+  background:#000; cursor:pointer;
+}
+.video-wrap video { width:100%; display:block; }
+.overlay-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
+
+/* Stage cards (overlaid on video) */
+.stage-card {
+  position:absolute; opacity:0;
+  background:rgba(6,7,26,.92); backdrop-filter:blur(8px);
+  border-radius:10px; padding:11px 13px;
+  display:flex; flex-direction:column; gap:4px;
+  border:1px solid rgba(91,95,232,.5); width:21%;
+}
+.stage-card.gold { border-color:rgba(201,168,76,.6); }
+#card-1 { left:1%; top:28%; }
+#card-2 { left:38%; bottom:5%; }
+#card-3 { right:1%; top:7%; }
+#card-4 { left:38%; top:7%; }
+.stage-num  { font-size:9px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--blue-lt); }
+.stage-card.gold .stage-num { color:#E8D08A; }
+.stage-icon { font-size:18px; line-height:1; margin:2px 0; }
+.stage-title { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
+.stage-desc { font-size:10px; color:rgba(255,255,255,.55); line-height:1.5; }
+.stage-tag { padding-top:6px; border-top:1px solid rgba(91,95,232,.15); font-size:9px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--blue-lt); }
+.stage-card.gold .stage-tag { border-top-color:rgba(201,168,76,.2); color:var(--gold); }
+
+/* Bevpoint nose icon */
+#bp-icon { position:absolute; left:64%; top:58%; opacity:0; width:7%; pointer-events:none; filter:drop-shadow(0 0 8px rgba(201,168,76,1)) drop-shadow(0 0 22px rgba(201,168,76,.7)); }
+#bp-icon svg { width:100%; display:block; }
+
+/* Play overlay */
+#start-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(6,7,26,.52); border-radius:12px; transition:background .3s; }
+#start-overlay:hover { background:rgba(6,7,26,.28); }
+#start-overlay.hidden { display:none; }
+#pause-indicator { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; }
+.play-btn { width:60px; height:60px; border-radius:50%; background:rgba(201,168,76,.14); border:2px solid rgba(201,168,76,.65); display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--gold); transition:all .2s; flex-shrink:0; }
+#start-overlay:hover .play-btn { background:rgba(201,168,76,.28); transform:scale(1.08); }
+
+/* Video controls */
+.vid-controls { display:flex; align-items:center; gap:12px; }
+.ctrl-btn { width:30px; height:30px; border-radius:50%; flex-shrink:0; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(255,255,255,.6); font-size:11px; transition:all .18s; }
+.ctrl-btn:hover { background:rgba(201,168,76,.15); border-color:rgba(201,168,76,.4); color:var(--gold); }
+.vprog-wrap { flex:1; cursor:pointer; padding:8px 0; }
+.vprog-bar { height:3px; background:rgba(255,255,255,.06); border-radius:2px; overflow:hidden; }
+.vprog-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--blue),var(--gold)); border-radius:2px; }
+.time-label { font-size:10px; color:rgba(255,255,255,.3); white-space:nowrap; font-variant-numeric:tabular-nums; }
+.status-label { font-size:11px; color:rgba(255,255,255,.35); letter-spacing:.05em; white-space:nowrap; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+.slide.active .ani { opacity:0; animation:fadeUp .55s ease forwards; }
+.slide.active .ani:nth-child(1) { animation-delay:.05s; }
+.slide.active .ani:nth-child(2) { animation-delay:.15s; }
+.slide.active .ani:nth-child(3) { animation-delay:.25s; }
+.slide.active .ani:nth-child(4) { animation-delay:.35s; }
+.slide.active .ani:nth-child(5) { animation-delay:.42s; }
+.slide.active .ani:nth-child(6) { animation-delay:.48s; }
+
+/* ── SLIDE 2 SPECIFIC ── */
+.stack-card {
+  padding:16px 18px; background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08); border-radius:10px;
+  margin-bottom:12px;
+}
+.stack-card:last-child { margin-bottom:0; }
+.stack-num {
+  width:22px; height:22px; border-radius:50%; background:rgba(160,164,255,.12);
+  border:1px solid rgba(160,164,255,.3); display:flex; align-items:center;
+  justify-content:center; font-size:11px; font-weight:900; color:var(--blue-lt);
+  flex-shrink:0;
+}
+.stack-num.gold { background:rgba(201,168,76,.12); border-color:rgba(201,168,76,.35); color:var(--gold); }
+
+/* ── CONTACT ── */
+.contact-inner { display:flex; flex-direction:column; align-items:center; gap:28px; text-align:center; position:relative; z-index:2; width:100%; max-width:760px; }
+.contact-rule { width:80px; height:2px; background:linear-gradient(90deg,var(--gold),var(--blue)); border-radius:2px; margin:0 auto; }
+.contact-row { display:flex; gap:0; flex-wrap:wrap; justify-content:center; }
+.contact-col { padding:0 44px; }
+.contact-col:not(:last-child) { border-right:1px solid rgba(255,255,255,.1); }
+.contact-label { font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:8px; }
+.contact-val { font-size:20px; font-weight:700; color:#fff; letter-spacing:-.01em; }
+.contact-val.gold { color:var(--gold); }
+.contact-val.blue { color:var(--blue-lt); }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-nav">
+  <div class="nav-brand">
+    <svg viewBox="0 0 80 95" height="26" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="nav-h" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse"><line x1="0" y1="5" x2="5" y2="0" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="square"/></pattern></defs>
+      <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+      <polygon points="40,13 57,57 40,57" fill="white"/>
+      <polygon points="40,13 23,57 40,57" fill="url(#nav-h)"/>
+      <rect x="37.5" y="57" width="5" height="22" fill="white"/>
+    </svg>
+    <span class="nav-brand-text">Bevpoint</span>
+    <span class="nav-brand-sep">×</span>
+    <span class="nav-brand-text">Roaring Pines Motor Club</span>
+    <span style="width:1px;height:18px;background:rgba(255,255,255,.12);margin:0 4px;"></span>
+    <span class="nav-title">Investment</span>
+  </div>
+  <div class="slide-counter"><span class="cur" id="cs">01</span>&nbsp;/&nbsp;<span>04</span></div>
+</div>
+
+<div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:25%"></div></div>
+
+<!-- DECK CONTAINER -->
+<div class="deck">
+
+  <!-- ═══ SLIDE 1: VIDEO ASSEMBLY ═══ -->
+  <div class="slide active" id="slide-1">
+    <div class="video-slide-inner">
+      <div class="vid-header">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">The Investment</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,3.5vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1;">Building the Machine</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.38);margin-top:3px;">Every great car — and every great brand — is built in the right order.</div>
+      </div>
+
+      <div class="video-wrap" id="video-wrap" onclick="togglePlay()">
+        <video id="car-video" muted playsinline preload="auto"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_3F4C2roGhIYBwLD0Rn9XxKj8UW6/hf_20260629_185038_d683e19d-cce0-4f0c-b70d-a0ae8c8f3b44.mp4">
+        </video>
+
+        <svg class="overlay-svg" viewBox="0 0 1000 562" preserveAspectRatio="none">
+          <defs>
+            <filter id="glow-blue" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="glow-gold" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+
+          <!-- Tracking lines (card anchors travel WITH the cards) -->
+          <line id="line-1" x1="-140" y1="290" x2="400" y2="390" stroke="#A0A4FF" stroke-width="1.4" opacity="0"/>
+          <line id="line-2" x1="1140" y1="105" x2="620" y2="340" stroke="#A0A4FF" stroke-width="1.4" opacity="0"/>
+          <line id="line-3" x1="500"  y1="620" x2="490" y2="435" stroke="#C9A84C" stroke-width="1.4" opacity="0"/>
+          <line id="line-4" x1="500"  y1="-60" x2="460" y2="275" stroke="#C9A84C" stroke-width="1.6" opacity="0"/>
+
+          <!-- Lock dots -->
+          <circle id="dot-1" cx="400" cy="390" r="4.5" fill="#A0A4FF" filter="url(#glow-blue)" opacity="0"/>
+          <circle id="dot-2" cx="620" cy="340" r="4.5" fill="#5B5FE8" filter="url(#glow-blue)" opacity="0"/>
+          <circle id="dot-3" cx="490" cy="435" r="4.5" fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="dot-4" cx="460" cy="275" r="4.5" fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+
+          <!-- Stage sparks -->
+          <circle id="spark-1"  cx="380" cy="415" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="ring-1"   cx="380" cy="415" r="5"  fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+          <circle id="spark-2"  cx="580" cy="370" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="ring-2a"  cx="580" cy="370" r="5"  fill="none" stroke="#A0A4FF" stroke-width="1.5" opacity="0"/>
+          <circle id="ring-2b"  cx="580" cy="370" r="5"  fill="none" stroke="#A0A4FF" stroke-width="1"   opacity="0"/>
+          <circle id="spark-3a" cx="285" cy="435" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="spark-3b" cx="695" cy="430" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="ring-3a"  cx="285" cy="435" r="5"  fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+          <circle id="ring-3b"  cx="695" cy="430" r="5"  fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+          <circle id="spark-4a" cx="460" cy="275" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="spark-4b" cx="430" cy="240" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="spark-4c" cx="490" cy="220" r="0"  fill="#C9A84C" filter="url(#glow-gold)" opacity="0"/>
+          <circle id="ring-4a"  cx="460" cy="275" r="5"  fill="none" stroke="#C9A84C" stroke-width="2"   opacity="0"/>
+          <circle id="ring-4b"  cx="460" cy="275" r="5"  fill="none" stroke="#C9A84C" stroke-width="1.2" opacity="0"/>
+          <circle id="ring-4c"  cx="460" cy="275" r="5"  fill="none" stroke="#C9A84C" stroke-width="1"   opacity="0"/>
+
+          <!-- Logo pulse rings at door (34%x 51%y → SVG 340,287) -->
+          <circle id="icon-ring"  cx="640" cy="326" r="5" fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0"/>
+          <circle id="icon-ring2" cx="640" cy="326" r="5" fill="none" stroke="#C9A84C" stroke-width="1"   opacity="0"/>
+        </svg>
+
+        <!-- Bevpoint icon mark — door panel -->
+        <div id="bp-icon">
+          <svg viewBox="0 0 80 95" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="ih" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse"><line x1="0" y1="5" x2="5" y2="0" stroke="#C9A84C" stroke-width="1.6" stroke-linecap="square"/></pattern></defs>
+            <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="#C9A84C" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+            <polygon points="40,13 57,57 40,57" fill="#C9A84C"/>
+            <polygon points="40,13 23,57 40,57" fill="url(#ih)"/>
+            <line x1="40" y1="13" x2="40" y2="57" stroke="rgba(0,0,0,0.2)" stroke-width="0.8"/>
+            <rect x="37.5" y="57" width="5" height="22" fill="#C9A84C" rx="0.5"/>
+          </svg>
+        </div>
+
+        <!-- Stage cards (4 — card rides in WITH its car part) -->
+        <div class="stage-card" id="card-1">
+          <div class="stage-num">01 — Blueprint</div>
+          <div class="stage-icon">✏</div>
+          <div class="stage-title">Brand Strategy</div>
+          <div class="stage-desc">Architecture · Identity · Messaging · Positioning</div>
+          <div class="stage-tag">Included — First 90 Days</div>
+        </div>
+        <div class="stage-card" id="card-2">
+          <div class="stage-num">02 — Framework</div>
+          <div class="stage-icon">🔧</div>
+          <div class="stage-title">Infrastructure & Toolkit</div>
+          <div class="stage-desc">CRM · Tech stack · Collateral · Playbook</div>
+          <div class="stage-tag">Included — First 90 Days</div>
+        </div>
+        <div class="stage-card" id="card-3">
+          <div class="stage-num">03 — Launch</div>
+          <div class="stage-icon">🎯</div>
+          <div class="stage-title">Campaigns & PR</div>
+          <div class="stage-desc">Paid campaigns · Content · Email · PR push</div>
+          <div class="stage-tag">Funded from Capital Raise</div>
+        </div>
+        <div class="stage-card gold" id="card-4">
+          <div class="stage-num">04 — Engine</div>
+          <div class="stage-icon">⚡</div>
+          <div class="stage-title">Media & Performance</div>
+          <div class="stage-desc">Paid media · Targeting · ROI · Scales with raise</div>
+          <div class="stage-tag">Variable — Performance-Based</div>
+        </div>
+
+        <div id="start-overlay"><div class="play-btn">&#9654;</div></div>
+        <div id="pause-indicator"><div class="play-btn" style="font-size:18px;">⏸</div></div>
+      </div>
+
+      <div class="vid-controls">
+        <div class="ctrl-btn" id="pp-btn" onclick="togglePlay();event.stopPropagation();">&#9654;</div>
+        <span class="time-label" id="time-lbl">0:00</span>
+        <div class="vprog-wrap" onclick="seekVid(event);event.stopPropagation();">
+          <div class="vprog-bar"><div class="vprog-fill" id="vprog-fill"></div></div>
+        </div>
+        <div class="status-label" id="status-lbl">Click play to start</div>
+      </div>
+    </div>
+  </div><!-- /slide-1 -->
+
+
+  <!-- ═══ SLIDE 2: INVESTMENT STRUCTURE ═══ -->
+  <div class="slide" id="slide-2">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:1060px;">
+
+      <div class="ani" style="margin-bottom:24px;">
+        <div class="eyebrow gold">The Structure</div>
+        <div class="headline" style="font-size:clamp(22px,3vw,40px);margin-bottom:6px;">First 90 Days &amp; Beyond</div>
+        <div style="width:44px;height:3px;background:var(--gold);border-radius:2px;"></div>
+      </div>
+
+      <div class="ani" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+
+        <!-- Left — $45K block -->
+        <div class="card-gold">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">First 90 Days — All In</div>
+          <div style="font-size:clamp(44px,6vw,68px);font-weight:900;color:var(--gold);letter-spacing:-.04em;line-height:1;margin-bottom:8px;">$45,000</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.52);line-height:1.65;margin-bottom:20px;">Covers Blueprint, Framework, and Launch phases — the full brand and marketing foundation. One flat number. No surprises.</div>
+          <div style="border-top:1px solid rgba(201,168,76,.2);padding-top:16px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:10px;">What's included</div>
+            <ul class="check-list">
+              <li>Full brand identity &amp; messaging system</li>
+              <li>Digital infrastructure &amp; CRM setup</li>
+              <li>Content strategy &amp; editorial calendar</li>
+              <li>Sales collateral &amp; partner playbook</li>
+              <li>Hospitality concept &amp; ops framework</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right — contingent structure -->
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(160,164,255,.9);margin-bottom:12px;">Post 90 Days — Contingent Structure</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:16px;">Bevpoint structures the ongoing engagement around how Roaring Pines is funded. Three levers:</div>
+
+          <div class="stack-card">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+              <div class="stack-num">1</div>
+              <div style="font-size:12px;font-weight:700;color:#fff;">Budget vs. Funds Raised</div>
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,.48);line-height:1.6;">Monthly investment scales with capital raised. No commitment beyond what's been funded. As you raise, the machine accelerates.</div>
+          </div>
+
+          <div class="stack-card">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+              <div class="stack-num">2</div>
+              <div style="font-size:12px;font-weight:700;color:#fff;">Startup Monthly Retainer</div>
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,.48);line-height:1.6;">Willing to defer full retainer to a reduced startup rate until fundraising reaches a defined threshold — amount set by mutual agreement at signing.</div>
+          </div>
+
+          <div class="stack-card" style="background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.22);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+              <div class="stack-num gold">3</div>
+              <div style="font-size:12px;font-weight:700;color:#fff;">Variable Commission Formula</div>
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,.48);line-height:1.6;">Performance-based commission (% of founding membership sales attributable to Bevpoint) replaces or supplements fixed retainer. We win when you win.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /slide-2 -->
+
+
+  <!-- ═══ SLIDE 3: THE MATH ═══ -->
+  <div class="slide" id="slide-3">
+    <div class="grid-bg"></div>
+    <div style="width:100%;max-width:940px;text-align:center;">
+
+      <div class="ani">
+        <div class="eyebrow gold" style="text-align:center;">The Math</div>
+        <div class="display-md" style="margin-bottom:6px;">One close pays for everything.</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.42);margin-bottom:28px;">The ROI calculation is not complicated.</div>
+      </div>
+
+      <div class="ani roi-block" style="margin-bottom:22px;">
+        <div class="roi-cell">
+          <div class="roi-label">First 90 Days — Full Foundation</div>
+          <div class="roi-value">$45K</div>
+          <div class="roi-note">Brand, infrastructure, framework &amp; launch toolkit</div>
+        </div>
+        <div class="roi-cell">
+          <div class="roi-label">Minimum Founding Membership</div>
+          <div class="roi-value">$800K</div>
+          <div class="roi-note">Level I pricing — initiation &amp; annualized dues, all-in</div>
+        </div>
+        <div class="roi-cell">
+          <div class="roi-label">Break-Even Point</div>
+          <div class="roi-value gold">1 Close</div>
+          <div class="roi-note">One founding membership = 17× return before month four</div>
+        </div>
+      </div>
+
+      <div class="ani" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;text-align:left;">
+        <div class="card-gold">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">25 Founding Members Closed</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;"><span style="font-size:12px;color:rgba(255,255,255,.52);">Revenue @ $1M avg</span><span style="font-size:20px;font-weight:900;color:var(--gold);">$25M</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;"><span style="font-size:12px;color:rgba(255,255,255,.52);">Bevpoint First 90 Days</span><span style="font-size:16px;font-weight:700;color:rgba(255,255,255,.68);">$45K</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;"><span style="font-size:12px;color:rgba(255,255,255,.52);">Variable commission</span><span style="font-size:16px;font-weight:700;color:rgba(255,255,255,.68);">TBD</span></div>
+          <div style="border-top:1px solid rgba(201,168,76,.2);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:12px;font-weight:700;color:#fff;">Net return on Bevpoint</span><span style="font-size:20px;font-weight:900;color:var(--gold);">&gt;36×</span></div>
+        </div>
+        <div class="card-glass">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(160,164,255,.8);margin-bottom:12px;">The Bevpoint Guarantee</div>
+          <p style="font-size:13px;color:rgba(255,255,255,.58);line-height:1.7;margin-bottom:14px;">Deferred retainer. Variable commission. First 90 days flat. We structure our compensation to win only when you win.</p>
+          <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:12px;display:flex;flex-direction:column;gap:7px;">
+            <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.1em;">Start</span><span style="font-size:12px;font-weight:700;color:#fff;">Week of agreement</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.1em;">First 90 Days</span><span style="font-size:12px;font-weight:700;color:var(--gold);">$45,000 flat</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.1em;">Post 90 Days</span><span style="font-size:12px;font-weight:700;color:#fff;">Deferred / contingent</span></div>
+            <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.1em;">Commission</span><span style="font-size:12px;font-weight:700;color:#fff;">Variable formula</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ani card-blue" style="text-align:center;">
+        <span style="font-size:14px;color:rgba(255,255,255,.72);line-height:1.6;">The question is not whether Bevpoint is worth the investment. The question is: <strong style="color:#fff;">can you afford not to have a unified marketing machine when the founding window is open?</strong></span>
+      </div>
+
+    </div>
+  </div><!-- /slide-3 -->
+
+
+  <!-- ═══ SLIDE 4: CONTACT ═══ -->
+  <div class="slide" id="slide-4">
+    <div class="cover-accent"></div>
+    <div class="grid-bg"></div>
+    <div class="contact-inner">
+
+      <div class="ani">
+        <svg viewBox="0 0 520 95" height="50" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 14px;">
+          <defs><pattern id="ct-h" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse"><line x1="0" y1="5" x2="5" y2="0" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="square"/></pattern></defs>
+          <path d="M 31.9,72.0 A 31,31 0 1,1 48.1,72.0" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="butt"/>
+          <polygon points="40,13 57,57 40,57" fill="white"/>
+          <polygon points="40,13 23,57 40,57" fill="url(#ct-h)"/>
+          <rect x="37.5" y="57" width="5" height="28" fill="white"/>
+          <text x="105" y="67" font-family="'Barlow Condensed',Impact,sans-serif" font-weight="800" font-size="56" fill="white" letter-spacing="1">BEVPOINT</text>
+        </svg>
+        <div style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:6px;">Full-Service Marketing</div>
+        <div class="contact-rule"></div>
+      </div>
+
+      <div class="ani contact-row">
+        <div class="contact-col">
+          <div class="contact-label">Team</div>
+          <div class="contact-val">Chris Sellers</div>
+        </div>
+        <div class="contact-col">
+          <div class="contact-label">Email</div>
+          <div class="contact-val gold">Info@bev-point.com</div>
+        </div>
+        <div class="contact-col">
+          <div class="contact-label">Web</div>
+          <div class="contact-val blue">bev-point.com</div>
+        </div>
+      </div>
+
+      <div class="ani" style="max-width:520px;padding:22px 32px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.22);border-radius:12px;">
+        <div style="font-size:16px;font-weight:400;font-style:italic;color:rgba(255,255,255,.72);line-height:1.6;">
+          "The track is ready. The window is open. We know the buyer, we know the gaps, and we're ready to build the machine — starting week one."
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;">Bevpoint</div>
+      </div>
+
+      <div class="ani" style="padding-top:8px;border-top:1px solid rgba(255,255,255,.06);width:100%;max-width:600px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.18);letter-spacing:.05em;text-align:center;">Confidential — Prepared exclusively for Roaring Pines Motor Club</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.14);margin-top:4px;text-align:center;">Use ← → arrow keys or click the arrows to navigate</div>
+      </div>
+
+    </div>
+  </div><!-- /slide-4 -->
+
+</div><!-- /deck -->
+
+<!-- NAV ARROWS -->
+<div class="nav-arrows">
+  <button class="nav-btn" id="prev-btn" onclick="goSlide(-1)" disabled>&#8592;</button>
+  <button class="nav-btn" id="next-btn" onclick="goSlide(1)">&#8594;</button>
+</div>
+
+<!-- DOTS -->
+<div class="dots">
+  <div class="dot active" onclick="goTo(0)"></div>
+  <div class="dot" onclick="goTo(1)"></div>
+  <div class="dot" onclick="goTo(2)"></div>
+  <div class="dot" onclick="goTo(3)"></div>
+</div>
+
+
+<script>
+/* ══════════════════════════════════════
+   DECK NAVIGATION
+══════════════════════════════════════ */
+var curSlide = 0;
+var TOTAL = 4;
+var slides = [
+  document.getElementById('slide-1'),
+  document.getElementById('slide-2'),
+  document.getElementById('slide-3'),
+  document.getElementById('slide-4')
+];
+var dots = document.querySelectorAll('.dot');
+var progW = [25, 50, 75, 100]; // progress fill %
+
+function goSlide(dir) { goTo(curSlide + dir); }
+
+function goTo(n) {
+  if (n < 0 || n >= TOTAL || n === curSlide) return;
+  var leaving = slides[curSlide];
+  var entering = slides[n];
+  leaving.classList.add('exit');
+  leaving.classList.remove('active');
+  setTimeout(function() { leaving.classList.remove('exit'); }, 500);
+  entering.classList.add('active');
+  dots[curSlide].classList.remove('active');
+  dots[n].classList.add('active');
+  curSlide = n;
+  document.getElementById('cs').textContent = String(curSlide+1).padStart(2,'0');
+  document.getElementById('prog-fill').style.width = progW[curSlide] + '%';
+  document.getElementById('prev-btn').disabled = curSlide === 0;
+  document.getElementById('next-btn').disabled = curSlide === TOTAL-1;
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goSlide(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goSlide(-1);
+});
+
+
+/* ══════════════════════════════════════
+   VIDEO ANIMATION
+   Timing at 0.5x playback:
+   Stage1 (chassis from LEFT) = 0.15s
+   Stage2 (body from RIGHT)   = 2.0s
+   Stage3 (wheels from BELOW) = 4.05s
+   Stage4 (hood/engine ABOVE) = 6.2s
+   Logo                       = 8.2s
+══════════════════════════════════════ */
+var started = false;
+var triggered = [false,false,false,false,false];
+var TIMES = [0.05, 0.85, 1.85, 2.85, 4.2];
+var vid = document.getElementById('car-video');
+var pauseFlashTween = null;
+
+function fmtTime(s) {
+  var m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m + ':' + (sec<10?'0':'') + sec;
+}
+
+function togglePlay() {
+  if (!started) { startBuild(); return; }
+  if (vid.paused) {
+    vid.play();
+    document.getElementById('pp-btn').innerHTML = '⏸';
+  } else {
+    vid.pause();
+    document.getElementById('pp-btn').innerHTML = '&#9654;';
+    if (pauseFlashTween) pauseFlashTween.kill();
+    gsap.set('#pause-indicator',{opacity:0});
+    pauseFlashTween = gsap.timeline()
+      .to('#pause-indicator',{opacity:1,duration:.15})
+      .to('#pause-indicator',{opacity:0,duration:.4,delay:.5});
+  }
+}
+
+function seekVid(e) {
+  if (!started) return;
+  var rect = e.currentTarget.getBoundingClientRect();
+  vid.currentTime = Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width)) * vid.duration;
+}
+
+function startBuild() {
+  started = true;
+  document.getElementById('start-overlay').classList.add('hidden');
+  document.getElementById('pp-btn').innerHTML = '⏸';
+  gsap.set('#bp-icon',{xPercent:-50,yPercent:-50,scale:0});
+  vid.playbackRate = 0.5;
+  vid.play();
+  document.getElementById('status-lbl').textContent = 'Building...';
+}
+
+/* Stage 1: Chassis from LEFT — Blueprint card rides in with it */
+function stage1() {
+  if (triggered[0]) return; triggered[0]=true;
+  document.getElementById('status-lbl').textContent = 'Chassis rolling in...';
+  var dur=1.1, tl=gsap.timeline();
+  tl.fromTo('#card-1',{x:-360,opacity:0},{x:0,opacity:1,duration:dur,ease:'power2.out'});
+  tl.to('#line-1',{attr:{x1:210},opacity:.8,duration:dur,ease:'power2.out'},'<');
+  tl.to('#spark-1',{attr:{r:14},opacity:1,duration:.2,ease:'power3.out'},'<0.7');
+  tl.to('#spark-1',{attr:{r:0},opacity:0,duration:.5,ease:'power2.in'});
+  tl.fromTo('#ring-1',{attr:{r:5},opacity:.8},{attr:{r:32},opacity:0,duration:.7,ease:'power2.out'},'<-0.4');
+  tl.to('#dot-1',{opacity:1,duration:.3},'<');
+}
+
+/* Stage 2: Body from RIGHT — Launch card rides in with it */
+function stage2() {
+  if (triggered[1]) return; triggered[1]=true;
+  document.getElementById('status-lbl').textContent = 'Body locking on...';
+  var dur=1.0, tl=gsap.timeline();
+  tl.fromTo('#card-3',{x:360,opacity:0},{x:0,opacity:1,duration:dur,ease:'power2.out'});
+  tl.to('#line-2',{attr:{x1:790},opacity:.8,duration:dur,ease:'power2.out'},'<');
+  tl.fromTo('#spark-2',{attr:{r:0},opacity:0},{attr:{r:20},opacity:1,duration:.15,ease:'power3.out'},'<0.75');
+  tl.to('#spark-2',{attr:{r:0},opacity:0,duration:.5,ease:'power2.in'});
+  tl.fromTo('#ring-2a',{attr:{r:5},opacity:.9},{attr:{r:30},opacity:0,duration:.6,ease:'power2.out'},'<-0.4');
+  tl.fromTo('#ring-2b',{attr:{r:5},opacity:.6},{attr:{r:20},opacity:0,duration:.9,ease:'power1.out'},'<0.15');
+  tl.to('#dot-2',{opacity:1,duration:.3},'<');
+}
+
+/* Stage 3: Wheels from BELOW — Framework card rises with them */
+function stage3() {
+  if (triggered[2]) return; triggered[2]=true;
+  document.getElementById('status-lbl').textContent = 'Wheels locking in...';
+  var dur=0.9, tl=gsap.timeline();
+  tl.fromTo('#card-2',{y:280,opacity:0},{y:0,opacity:1,duration:dur,ease:'power2.out'});
+  tl.to('#line-3',{attr:{y1:462},opacity:.8,duration:dur,ease:'power2.out'},'<');
+  tl.fromTo('#spark-3a',{attr:{r:0},opacity:0},{attr:{r:16},opacity:1,duration:.12,ease:'power3.out'},'<0.6');
+  tl.to('#spark-3a',{attr:{r:0},opacity:0,duration:.4,ease:'power2.in'});
+  tl.fromTo('#ring-3a',{attr:{r:5},opacity:.9},{attr:{r:28},opacity:0,duration:.6,ease:'power2.out'},'<-0.3');
+  tl.fromTo('#spark-3b',{attr:{r:0},opacity:0},{attr:{r:16},opacity:1,duration:.12,ease:'power3.out'},'<0.1');
+  tl.to('#spark-3b',{attr:{r:0},opacity:0,duration:.4,ease:'power2.in'});
+  tl.fromTo('#ring-3b',{attr:{r:5},opacity:.9},{attr:{r:28},opacity:0,duration:.6,ease:'power2.out'},'<-0.3');
+  tl.to('#dot-3',{opacity:1,duration:.3},'<');
+}
+
+/* Stage 4: Hood opens, spark fountain UP — Engine card drops from above */
+function stage4() {
+  if (triggered[3]) return; triggered[3]=true;
+  document.getElementById('status-lbl').textContent = 'Engine igniting...';
+  var dur=1.0, tl=gsap.timeline();
+  tl.fromTo('#card-4',{y:-380,opacity:0},{y:0,opacity:1,duration:dur,ease:'power2.out'});
+  tl.to('#line-4',{attr:{y1:148},opacity:.85,duration:dur,ease:'power2.out'},'<');
+  tl.fromTo('#spark-4a',{attr:{r:0,cx:460,cy:275},opacity:0},{attr:{r:28},opacity:1,duration:.18,ease:'power3.out'},'<0.6');
+  tl.to('#spark-4a',{attr:{r:0},opacity:0,duration:.6,ease:'power2.in'});
+  tl.fromTo('#spark-4b',{attr:{r:0,cx:430,cy:240},opacity:0},{attr:{r:18},opacity:1,duration:.15,ease:'power3.out'},'<-0.1');
+  tl.to('#spark-4b',{attr:{r:0,cx:430,cy:175},opacity:0,duration:.7,ease:'power1.in'});
+  tl.fromTo('#spark-4c',{attr:{r:0,cx:490,cy:220},opacity:0},{attr:{r:14},opacity:1,duration:.15,ease:'power3.out'},'<-0.5');
+  tl.to('#spark-4c',{attr:{r:0,cx:490,cy:155},opacity:0,duration:.7,ease:'power1.in'});
+  tl.fromTo('#ring-4a',{attr:{r:5},opacity:1},{attr:{r:55},opacity:0,duration:1.0,ease:'power2.out'},'<-0.8');
+  tl.fromTo('#ring-4b',{attr:{r:5},opacity:.8},{attr:{r:40},opacity:0,duration:1.2,ease:'power1.out'},'<0.1');
+  tl.fromTo('#ring-4c',{attr:{r:5},opacity:.6},{attr:{r:28},opacity:0,duration:1.4,ease:'power1.out'},'<0.2');
+  tl.to('#dot-4',{opacity:1,duration:.3},'<0.5');
+}
+
+/* Logo reveal — nose cone */
+function revealLogo() {
+  if (triggered[4]) return; triggered[4]=true;
+  document.getElementById('status-lbl').textContent = '🏁 Machine complete';
+  var tl=gsap.timeline();
+  tl.fromTo('#bp-icon',{scale:0,opacity:0},{scale:1,opacity:1,duration:.85,ease:'elastic.out(1,.45)'});
+  tl.fromTo('#icon-ring',{attr:{r:5},opacity:.9},{attr:{r:42},opacity:0,duration:.75,ease:'power2.out'},'<0.3');
+  tl.fromTo('#icon-ring2',{attr:{r:5},opacity:.6},{attr:{r:28},opacity:0,duration:1.0,ease:'power2.out'},'<0.2');
+  tl.to('#bp-icon',{filter:'drop-shadow(0 0 16px rgba(201,168,76,1)) drop-shadow(0 0 40px rgba(201,168,76,.8))',duration:.3},'<0.4');
+  tl.to('#bp-icon',{filter:'drop-shadow(0 0 8px rgba(201,168,76,.8)) drop-shadow(0 0 20px rgba(201,168,76,.5))',duration:.8});
+}
+
+vid.addEventListener('timeupdate', function() {
+  var t=vid.currentTime, d=vid.duration||1;
+  document.getElementById('vprog-fill').style.width=(t/d*100)+'%';
+  document.getElementById('time-lbl').textContent=fmtTime(t*2);
+  if(t>=TIMES[0]&&!triggered[0]) stage1();
+  if(t>=TIMES[1]&&!triggered[1]) stage2();
+  if(t>=TIMES[2]&&!triggered[2]) stage3();
+  if(t>=TIMES[3]&&!triggered[3]) stage4();
+  if(t>=TIMES[4]&&!triggered[4]) revealLogo();
+});
+vid.addEventListener('ended',function(){ document.getElementById('pp-btn').innerHTML='&#9654;'; });
+</script>
+</body>
+</html>
