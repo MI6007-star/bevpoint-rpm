@@ -824,6 +824,46 @@ html, body {
 .contact-slide.active .ai:nth-child(2) { animation-delay: 0.15s; }
 .contact-slide.active .ai:nth-child(3) { animation-delay: 0.25s; }
 .contact-slide.active .ai:nth-child(4) { animation-delay: 0.38s; }
+.inv-slide.active .ai:nth-child(5) { animation-delay: 0.45s; }
+.inv-slide.active .ai:nth-child(6) { animation-delay: 0.95s; }
+
+/* ===== INVESTMENT "FLY IN & STACK" CARD ANIMATIONS ===== */
+@keyframes flyInLeft {
+  0%   { opacity: 0; transform: translateX(-64px) scale(0.94); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes flyInRight {
+  0%   { opacity: 0; transform: translateX(64px) scale(0.94); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+/* cards drop in from above and settle — reads as dealing onto a stack */
+@keyframes stackDrop {
+  0%   { opacity: 0; transform: translateY(-42px) scale(0.96) rotateX(-16deg); }
+  68%  { opacity: 1; transform: translateY(7px) scale(1.006) rotateX(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0); }
+}
+@keyframes popIn {
+  0%   { opacity: 0; transform: translateY(28px) scale(0.9); }
+  62%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.inv-slide.active .fly-left   { opacity: 0; animation: flyInLeft 0.7s cubic-bezier(.2,.75,.2,1) both; }
+.inv-slide.active .fly-right  { opacity: 0; animation: flyInRight 0.7s cubic-bezier(.2,.75,.2,1) both; }
+.inv-slide.active .stack-card { opacity: 0; animation: stackDrop 0.62s cubic-bezier(.2,.8,.25,1) both; transform-origin: top center; }
+.inv-slide.active .pop-card   { opacity: 0; animation: popIn 0.58s cubic-bezier(.2,.8,.25,1) both; }
+/* shared stagger ladder */
+.inv-slide.active .dly1 { animation-delay: 0.25s; }
+.inv-slide.active .dly2 { animation-delay: 0.40s; }
+.inv-slide.active .dly3 { animation-delay: 0.55s; }
+.inv-slide.active .dly4 { animation-delay: 0.70s; }
+.inv-slide.active .dly5 { animation-delay: 0.85s; }
+.stack-perspective { perspective: 1100px; }
+@media (prefers-reduced-motion: reduce) {
+  .inv-slide.active .fly-left,
+  .inv-slide.active .fly-right,
+  .inv-slide.active .stack-card,
+  .inv-slide.active .pop-card { animation: fadeUp 0.4s ease both; }
+}
 
 /* ===== GLOBAL SECTION STYLES ===== */
 .global-slide {
@@ -2705,10 +2745,10 @@ html, body {
     <div class="full-content" style="position:relative;z-index:2;">
       <div class="ai eyebrow">The Structure</div>
       <div class="ai headline" style="margin-bottom:24px;">First 90 Days &amp; Beyond</div>
-      <div class="ai" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
 
         <!-- Left: $45K -->
-        <div style="padding:28px 30px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.35);border-radius:14px;">
+        <div class="fly-left dly1" style="padding:28px 30px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.35);border-radius:14px;">
           <div style="font-size:10px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:#C9A84C;margin-bottom:10px;">First 90 Days &#8212; All In</div>
           <div style="font-size:60px;font-weight:900;color:#C9A84C;letter-spacing:-0.04em;line-height:1;margin-bottom:8px;">$45,000</div>
           <div style="font-size:13px;color:rgba(255,255,255,0.52);line-height:1.65;margin-bottom:20px;">Covers Design, Prototype, and Chassis phases &#8212; the full brand and marketing foundation. One flat number. No surprises.</div>
@@ -2725,11 +2765,11 @@ html, body {
         </div>
 
         <!-- Right: Post 90 Days -->
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:rgba(160,164,255,0.9);">Post 90 Days &#8212; Contingent Structure</div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Bevpoint structures the ongoing engagement around how Roaring Pines is funded. Three levers:</div>
+        <div class="stack-perspective" style="display:flex;flex-direction:column;gap:14px;">
+          <div class="fly-left dly1" style="font-size:10px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:rgba(160,164,255,0.9);">Post 90 Days &#8212; Contingent Structure</div>
+          <div class="fly-left dly2" style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Bevpoint structures the ongoing engagement around how Roaring Pines is funded. Three levers:</div>
 
-          <div style="padding:16px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
+          <div class="stack-card dly3" style="padding:16px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
               <div style="width:22px;height:22px;border-radius:50%;background:rgba(160,164,255,0.12);border:1px solid rgba(160,164,255,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#A0A4FF;flex-shrink:0;">1</div>
               <div style="font-size:12px;font-weight:700;color:#fff;">Budget vs. Funds Raised</div>
@@ -2737,7 +2777,7 @@ html, body {
             <div style="font-size:12px;color:rgba(255,255,255,0.48);line-height:1.6;">Monthly investment scales with capital raised. No commitment beyond what's been funded. As you raise, the machine accelerates.</div>
           </div>
 
-          <div style="padding:16px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
+          <div class="stack-card dly4" style="padding:16px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
               <div style="width:22px;height:22px;border-radius:50%;background:rgba(160,164,255,0.12);border:1px solid rgba(160,164,255,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#A0A4FF;flex-shrink:0;">2</div>
               <div style="font-size:12px;font-weight:700;color:#fff;">Startup Monthly Retainer</div>
@@ -2745,7 +2785,7 @@ html, body {
             <div style="font-size:12px;color:rgba(255,255,255,0.48);line-height:1.6;">Willing to defer full retainer to a reduced startup rate until fundraising reaches a defined threshold &#8212; amount set by mutual agreement at signing.</div>
           </div>
 
-          <div style="padding:16px 18px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.22);border-radius:10px;">
+          <div class="stack-card dly5" style="padding:16px 18px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.22);border-radius:10px;">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
               <div style="width:22px;height:22px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#C9A84C;flex-shrink:0;">3</div>
               <div style="font-size:12px;font-weight:700;color:#fff;">Variable Commission Formula</div>
@@ -2765,32 +2805,32 @@ html, body {
       <div class="ai eyebrow" style="text-align:center;">The Math</div>
       <div class="ai display-md" style="margin-bottom:8px;">One close pays for everything.</div>
       <div class="ai" style="font-size:15px;color:rgba(255,255,255,0.42);margin-bottom:30px;">The ROI calculation is not complicated.</div>
-      <div class="ai roi-block" style="margin-bottom:24px;">
-        <div class="roi-cell">
+      <div class="roi-block" style="margin-bottom:24px;">
+        <div class="roi-cell pop-card dly1">
           <div class="roi-label">First 90 Days &#8212; Full Foundation</div>
           <div class="roi-value">$45K</div>
           <div class="roi-note">Brand, infrastructure, framework &amp; hospitality concept</div>
         </div>
-        <div class="roi-cell">
+        <div class="roi-cell pop-card dly2">
           <div class="roi-label">Minimum Founding Membership</div>
           <div class="roi-value">$800K</div>
           <div class="roi-note">Level I pricing &#8212; initiation &amp; annualized dues, all-in</div>
         </div>
-        <div class="roi-cell">
+        <div class="roi-cell pop-card dly3">
           <div class="roi-label">Break-Even Point</div>
           <div class="roi-value gold">1 Close</div>
           <div class="roi-note">One founding membership = 17&#215; return before month four</div>
         </div>
       </div>
-      <div class="ai" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px;text-align:left;">
-        <div style="padding:22px 26px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px;text-align:left;">
+        <div class="fly-left dly4" style="padding:22px 26px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:12px;">
           <div style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#C9A84C;margin-bottom:14px;">25 Founding Members Closed</div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;"><span style="font-size:13px;color:rgba(255,255,255,0.52);">Revenue @ $1M avg</span><span style="font-size:20px;font-weight:900;color:#C9A84C;">$25M</span></div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;"><span style="font-size:13px;color:rgba(255,255,255,0.52);">Bevpoint First 90 Days</span><span style="font-size:17px;font-weight:700;color:rgba(255,255,255,0.68);">$45K</span></div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;"><span style="font-size:13px;color:rgba(255,255,255,0.52);">Variable commission</span><span style="font-size:17px;font-weight:700;color:rgba(255,255,255,0.68);">TBD</span></div>
           <div style="border-top:1px solid rgba(201,168,76,0.2);margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:13px;font-weight:700;color:#fff;">Net return on Bevpoint</span><span style="font-size:20px;font-weight:900;color:#C9A84C;">&gt;36&#215;</span></div>
         </div>
-        <div style="padding:22px 26px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+        <div class="fly-right dly4" style="padding:22px 26px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
           <div style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(160,164,255,0.8);margin-bottom:14px;">The Bevpoint Guarantee</div>
           <p style="font-size:13px;color:rgba(255,255,255,0.58);line-height:1.7;margin-bottom:16px;">Deferred retainer. Variable commission. First 90 days flat. We structure our compensation to win only when you win.</p>
           <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;display:flex;flex-direction:column;gap:8px;">
@@ -2912,37 +2952,37 @@ function buildNextStage() {
       <!-- Flag row -->
       <div class="ai" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:8px;">
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <span style="font-size:32px;">&#127463;&#127479;</span>
+          <img src="https://flagcdn.com/w40/br.png" width="40" height="27" style="border-radius:3px;vertical-align:middle;" alt="Brazil">
           <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Brazil</span>
         </div>
         <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <span style="font-size:32px;">&#127468;&#127463;</span>
+          <img src="https://flagcdn.com/w40/gb.png" width="40" height="27" style="border-radius:3px;vertical-align:middle;" alt="UK">
           <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">UK</span>
         </div>
         <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <span style="font-size:32px;">&#127465;&#127466;</span>
+          <img src="https://flagcdn.com/w40/de.png" width="40" height="27" style="border-radius:3px;vertical-align:middle;" alt="Germany">
           <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Germany</span>
         </div>
         <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <span style="font-size:32px;">&#127475;&#127473;</span>
+          <img src="https://flagcdn.com/w40/nl.png" width="40" height="27" style="border-radius:3px;vertical-align:middle;" alt="Netherlands">
           <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Netherlands</span>
         </div>
         <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <span style="font-size:32px;">&#127470;&#127481;</span>
+          <img src="https://flagcdn.com/w40/it.png" width="40" height="27" style="border-radius:3px;vertical-align:middle;" alt="Italy">
           <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Italy</span>
         </div>
         <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <span style="font-size:32px;">&#127474;&#127485;</span>
+          <img src="https://flagcdn.com/w40/mx.png" width="40" height="27" style="border-radius:3px;vertical-align:middle;" alt="Mexico">
           <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Mexico</span>
         </div>
         <span style="color:rgba(255,255,255,0.15);font-size:18px;">&middot;</span>
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <span style="font-size:32px;">&#127471;&#127477;</span>
+          <img src="https://flagcdn.com/w40/jp.png" width="40" height="27" style="border-radius:3px;vertical-align:middle;" alt="Japan">
           <span style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Japan</span>
         </div>
       </div>
@@ -2968,7 +3008,7 @@ function buildNextStage() {
         <div style="background:#111330;border:1px solid rgba(201,168,76,0.22);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
           <!-- Country header -->
           <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(201,168,76,0.18);">
-            <span style="font-size:26px;line-height:1;">&#127463;&#127479;</span>
+            <img src="https://flagcdn.com/w40/br.png" width="32" height="21" style="border-radius:2px;vertical-align:middle;" alt="Brazil">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.1;">Brasil</div>
               <div style="font-size:8px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;">#1 F1 Market &nbsp;&middot;&nbsp; Portugu&ecirc;s</div>
@@ -2998,14 +3038,14 @@ function buildNextStage() {
           </div>
           <!-- English translation -->
           <div style="padding:10px 12px;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.22);flex:1;">
-            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;">&#127468;&#127463; In English</div>
+            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;"><img src="https://flagcdn.com/w40/us.png" width="18" height="12" style="border-radius:2px;vertical-align:middle;margin-right:4px;" alt="US"> In English</div>
             <div style="font-size:10px;color:rgba(240,242,255,0.72);line-height:1.55;font-style:italic;">"One track. A whole life built around it. Exclusive founding now open &mdash; only 25 members. Brazil has Interlagos &mdash; now there's a home for those who live for the engine."</div>
           </div>
         </div>
         <div style="background:#111330;border:1px solid rgba(201,168,76,0.22);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
           <!-- Country header -->
           <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(201,168,76,0.18);">
-            <span style="font-size:26px;line-height:1;">&#127468;&#127463;</span>
+            <img src="https://flagcdn.com/w40/gb.png" width="32" height="21" style="border-radius:2px;vertical-align:middle;" alt="UK">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.1;">United Kingdom</div>
               <div style="font-size:8px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;">#2 F1 Market &nbsp;&middot;&nbsp; English</div>
@@ -3035,14 +3075,14 @@ function buildNextStage() {
           </div>
           <!-- English translation -->
           <div style="padding:10px 12px;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.22);flex:1;">
-            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;">&#127468;&#127463; In English</div>
+            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;"><img src="https://flagcdn.com/w40/us.png" width="18" height="12" style="border-radius:2px;vertical-align:middle;margin-right:4px;" alt="US"> In English</div>
             <div style="font-size:10px;color:rgba(240,242,255,0.72);line-height:1.55;font-style:italic;">"Already in English &mdash; written natively for the UK market. Silverstone reference grounds it culturally for British motorsport fans."</div>
           </div>
         </div>
         <div style="background:#111330;border:1px solid rgba(201,168,76,0.22);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
           <!-- Country header -->
           <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(201,168,76,0.18);">
-            <span style="font-size:26px;line-height:1;">&#127465;&#127466;</span>
+            <img src="https://flagcdn.com/w40/de.png" width="32" height="21" style="border-radius:2px;vertical-align:middle;" alt="Germany">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.1;">Deutschland</div>
               <div style="font-size:8px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;">#3 F1 Market &nbsp;&middot;&nbsp; Deutsch</div>
@@ -3072,14 +3112,14 @@ function buildNextStage() {
           </div>
           <!-- English translation -->
           <div style="padding:10px 12px;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.22);flex:1;">
-            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;">&#127468;&#127463; In English</div>
+            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;"><img src="https://flagcdn.com/w40/us.png" width="18" height="12" style="border-radius:2px;vertical-align:middle;margin-right:4px;" alt="US"> In English</div>
             <div style="font-size:10px;color:rgba(240,242,255,0.72);line-height:1.55;font-style:italic;">"Not an event venue. A private race track. A lifestyle. &mdash; Germany has the N&uuml;rburgring. We offer something more exclusive: a club that belongs to you."</div>
           </div>
         </div>
         <div style="background:#111330;border:1px solid rgba(201,168,76,0.22);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
           <!-- Country header -->
           <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(201,168,76,0.18);">
-            <span style="font-size:26px;line-height:1;">&#127475;&#127473;</span>
+            <img src="https://flagcdn.com/w40/nl.png" width="32" height="21" style="border-radius:2px;vertical-align:middle;" alt="Netherlands">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.1;">Nederland</div>
               <div style="font-size:8px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;">#4 F1 Market &nbsp;&middot;&nbsp; Nederlands</div>
@@ -3109,7 +3149,7 @@ function buildNextStage() {
           </div>
           <!-- English translation -->
           <div style="padding:10px 12px;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.22);flex:1;">
-            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;">&#127468;&#127463; In English</div>
+            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;"><img src="https://flagcdn.com/w40/us.png" width="18" height="12" style="border-radius:2px;vertical-align:middle;margin-right:4px;" alt="US"> In English</div>
             <div style="font-size:10px;color:rgba(240,242,255,0.72);line-height:1.55;font-style:italic;">"One circuit. Your club. A life built around it. &mdash; The Netherlands knows motorsport &mdash; Zandvoort, Max, the orange wave. Now there's a home for serious drivers."</div>
           </div>
         </div>
@@ -3129,7 +3169,7 @@ function buildNextStage() {
         <div style="background:#111330;border:1px solid rgba(201,168,76,0.22);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
           <!-- Country header -->
           <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(201,168,76,0.18);">
-            <span style="font-size:26px;line-height:1;">&#127470;&#127481;</span>
+            <img src="https://flagcdn.com/w40/it.png" width="32" height="21" style="border-radius:2px;vertical-align:middle;" alt="Italy">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.1;">Italia</div>
               <div style="font-size:8px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;">#5 F1 Market &nbsp;&middot;&nbsp; Italiano</div>
@@ -3159,14 +3199,14 @@ function buildNextStage() {
           </div>
           <!-- English translation -->
           <div style="padding:10px 12px;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.22);flex:1;">
-            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;">&#127468;&#127463; In English</div>
+            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;"><img src="https://flagcdn.com/w40/us.png" width="18" height="12" style="border-radius:2px;vertical-align:middle;margin-right:4px;" alt="US"> In English</div>
             <div style="font-size:10px;color:rgba(240,242,255,0.72);line-height:1.55;font-style:italic;">"A private track. Twenty-five members. A passion without compromise. &mdash; Italy has Monza &mdash; we offer a space where that passion becomes a lifestyle."</div>
           </div>
         </div>
         <div style="background:#111330;border:1px solid rgba(201,168,76,0.22);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
           <!-- Country header -->
           <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(201,168,76,0.18);">
-            <span style="font-size:26px;line-height:1;">&#127474;&#127485;</span>
+            <img src="https://flagcdn.com/w40/mx.png" width="32" height="21" style="border-radius:2px;vertical-align:middle;" alt="Mexico">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.1;">M&eacute;xico</div>
               <div style="font-size:8px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;">#6 F1 Market &nbsp;&middot;&nbsp; Espa&ntilde;ol</div>
@@ -3196,14 +3236,14 @@ function buildNextStage() {
           </div>
           <!-- English translation -->
           <div style="padding:10px 12px;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.22);flex:1;">
-            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;">&#127468;&#127463; In English</div>
+            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;"><img src="https://flagcdn.com/w40/us.png" width="18" height="12" style="border-radius:2px;vertical-align:middle;margin-right:4px;" alt="US"> In English</div>
             <div style="font-size:10px;color:rgba(240,242,255,0.72);line-height:1.55;font-style:italic;">"A private track. Twenty-five spots. A lifestyle without limits. &mdash; Mexico lives F1 like few others &mdash; Hermanos Rodr&iacute;guez knows it. Now there's a club for those who truly live for the engine."</div>
           </div>
         </div>
         <div style="background:#111330;border:1px solid rgba(201,168,76,0.22);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
           <!-- Country header -->
           <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,0.35);border-bottom:1px solid rgba(201,168,76,0.18);">
-            <span style="font-size:26px;line-height:1;">&#127471;&#127477;</span>
+            <img src="https://flagcdn.com/w40/jp.png" width="32" height="21" style="border-radius:2px;vertical-align:middle;" alt="Japan">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.1;">&#26085;&#26412; (Japan)</div>
               <div style="font-size:8px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;">#7 F1 Market &nbsp;&middot;&nbsp; &#26085;&#26412;&#35486;</div>
@@ -3233,7 +3273,7 @@ function buildNextStage() {
           </div>
           <!-- English translation -->
           <div style="padding:10px 12px;background:rgba(201,168,76,0.05);border-top:1px solid rgba(201,168,76,0.22);flex:1;">
-            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;">&#127468;&#127463; In English</div>
+            <div style="font-size:7.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px;"><img src="https://flagcdn.com/w40/us.png" width="18" height="12" style="border-radius:2px;vertical-align:middle;margin-right:4px;" alt="US"> In English</div>
             <div style="font-size:10px;color:rgba(240,242,255,0.72);line-height:1.55;font-style:italic;">"Just one circuit. Just 25 members. That is the lifestyle. &mdash; Japan has Suzuka &mdash; a club for true drivers who carry that sound and culture."</div>
           </div>
         </div>
